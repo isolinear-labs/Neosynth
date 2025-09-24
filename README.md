@@ -2,24 +2,16 @@
 
 ![Demo](demo.png)
 
-NeoSynth is a cyberpunk-themed music and video player web application that allows users to create, save, and manage playlists. Built with a modern tech stack and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media.
+NeoSynth is a cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with a modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!
 
 ## Features
 
-- Play audio and video files from URLs
+- Play audio and video files from network locations / storage
 - Create and manage multiple playlists
-- Drag and drop support for links and media files
-- Basic local user authentication and profile saving
 - Shuffle mode with intelligent track selection
 - Responsive design for both desktop and mobile
-- Persistent settings and preferences
-
-## Technology Stack
-
-- **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **Deployment**: Docker and Kubernetes ready
+- Multiple themes ready to use
+- Modular design to allow easy implementation of features and themes
 
 ## Getting Started
 
@@ -29,12 +21,33 @@ NeoSynth is a cyberpunk-themed music and video player web application that allow
 - MongoDB (v4.4 or higher)
 - npm or yarn
 
+### Generate Production Secrets
+
+```bash
+# Generate TOTP encryption key (32 bytes = 64 hex chars)
+node -e "console.log('TOTP_ENCRYPTION_KEY=' + require('crypto').randomBytes(32).toString('hex'))"
+
+# Generate cookie secret (32+ characters)
+node -e "console.log('COOKIE_SECRET=' + require('crypto').randomBytes(32).toString('base64'))"
+```
+
+### Set Up Environment Variables
+```bash
+NODE_ENV=production                    # You can set NODE_ENV=development instad to lower security 
+                                       # protocols for local testing
+FRONTEND_URL=http://myNeoSythURL:5000  # Default is http://localhost:5000
+MONGODB_URI="mongodb://myMongoURI:27017/neosynth"
+COOKIE_SECRET=mySuperSecretCookieSecretGeneratedAbove
+TOTP_ENCRYPTION_KEY="mySuperSecretTOTPEnncryptionKeyGeneratedAbove"
+```
+
+
 ### Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/neosynth.git
-   cd neosynth
+   git clone gh repo clone isolinear-labs/Neosynth
+   cd Neosynth
    ```
 
 2. Install dependencies:
@@ -43,45 +56,59 @@ NeoSynth is a cyberpunk-themed music and video player web application that allow
    npm install
    ```
 
-3. Set up your environment variables:
-   Create a `.env` file in the backend directory with:
-   ```
-   MONGODB_URI=mongodb://localhost:27017/neosynth
-   PORT=5000
-   ```
-
-4. Start the application:
+3. Start the application:
    ```
    cd backend
    npm start
    ```
 
-5. Access the application at `http://localhost:5000`
+4. Access the application at `http://localhost:5000` (Or what was set in the FRONTEND_URL env variable)
 
-### Docker Deployment
+### Docker Compose
 
-```
-docker build -t neosynth:latest .
-docker run -p 5000:5000 -p 80:80 neosynth:latest
+```docker
+version: '3.8'
+
+services:
+  neosynth:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - FRONTEND_URL=http://localhost:5000
+      - MONGODB_URI=mongodb://mongodb:27017/neosynth
+      - COOKIE_SECRET=your_super_secret_cookie_secret_here
+      - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
+    depends_on:
+      - mongodb
+    networks:
+      - neosynth-network
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - neosynth-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  neosynth-network:
+    driver: bridge
 ```
 
 ### Kubernetes Deployment
 
-Apply the included Kubernetes configuration:
-
-```
-kubectl apply -f k8s/deployment.yaml
-```
-
-## Project Structure
-
-- `/frontend`: Contains all client-side code including HTML, CSS, and JavaScript
-- `/backend`: Contains the Express server, API routes, and database models
-- `/k8s`: Kubernetes deployment configuration
+Docs coming soon...
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Docs coming soon...
 
 ## License
 

@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.*
+*.env.*
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Editor specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.svg
+
+# Claude Code directory
+.claude
+CLAUDE.local.md
+
+# Local Archieved files
+Testing
+deprecated
+*.old

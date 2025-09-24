@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  neosynth:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - FRONTEND_URL=http://localhost:5000
+      - MONGODB_URI=mongodb://mongodb:27017/neosynth
+      - COOKIE_SECRET=your_super_secret_cookie_secret_here
+      - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
+    depends_on:
+      - mongodb
+    networks:
+      - neosynth-network
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - neosynth-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  neosynth-network:
+    driver: bridge
