@@ -1,0 +1,54 @@
+# Deployment files (not needed in container)
+deployments/
+docs/
+
+# Git files
+.git
+.gitignore
+.github/
+
+# Environment variables
+.env
+.env.*
+*.env.*
+
+# Docker files (to prevent recursion)
+Dockerfile.*
+!Dockerfile
+
+# Node.js dependencies and cache
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.yarn/
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Test files and directories
+*/tests/
+**/*.test.js
+**/*.spec.js
+**/test/
+jest.config.js
+**/__tests__/
+
+# Other files not needed in the container
+README.md
+LICENSE
+*.md
+
+# Claude Code directory
+.claude
+CLAUDE.local.md
+
+# Package archives
+*.tgz
+*.tar.gz
+
+# Local Archieved files
+*.old
