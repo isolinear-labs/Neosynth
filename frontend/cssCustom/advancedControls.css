@@ -1,0 +1,82 @@
+/* Advanced controls row */
+.player-advanced-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(13, 2, 33, 0.4);
+    margin-top: 8px;
+  }
+  
+  .advanced-buttons {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .advanced-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .advanced-btn:hover {
+    color: var(--tertiary-accent);
+  }
+  
+  .advanced-btn.active {
+    color: var(--warning-accent);
+    border: 1px solid var(--warning-accent);
+    background-color: rgba(255, 230, 0, 0.15);
+    text-shadow: 0 0 8px var(--warning-accent);
+    box-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
+    font-weight: bold;
+  }
+  
+  .btn-icon {
+    transform: rotate(-45deg);
+    display: inline-block;
+  }
+  
+  /* Status indicator */
+  .now-playing-container .player-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    color: var(--warning-accent);
+  }
+  
+  .now-playing-container .player-status-indicator .status-text {
+    color: var(--warning-accent);
+  }
+  
+  .now-playing-container .status-dot {
+    height: 8px; /* Slightly larger */
+    width: 8px; /* Slightly larger */
+    border-radius: 50%;
+    border: 2px solid var(--warning-accent); /* Create border instead of fill */
+    background-color: transparent; /* Hollow inside */
+  }
+  
+/* Only add the pulse animation when shuffle is active */
+.now-playing-container .player-status-indicator.active .status-dot {
+  background-color: var(--warning-accent); /* Fill when active */
+  animation: pulse 2s infinite;
+}
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }

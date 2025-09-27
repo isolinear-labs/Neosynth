@@ -1,0 +1,81 @@
+/* Cyberpunk border effects for panels */
+.music-panel, .playlist-panel, .now-playing-container {
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(5, 217, 232, 0.15);
+}
+
+/* Animated border effect using specific border divs */
+.cyberpunk-border {
+    position: absolute;
+    background-image: linear-gradient(90deg, var(--primary-accent), var(--secondary-base), var(--tertiary-accent));
+    animation: borderglow 3s linear infinite;
+    background-size: 200% 100%;
+    z-index: 1;
+}
+
+.border-top {
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+}
+
+.border-right {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+}
+
+.border-bottom {
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+}
+
+.border-left {
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+}
+
+/* Different border colors for different panels */
+.music-panel .cyberpunk-border {
+    background-image: linear-gradient(90deg, var(--primary-accent), var(--secondary-base), var(--interactive-highlight));
+}
+
+.playlist-panel .cyberpunk-border {
+    background-image: linear-gradient(90deg, var(--accent-dark), var(--success-accent), var(--accent-dark));
+}
+
+.now-playing-container .cyberpunk-border {
+    background-image: linear-gradient(90deg, var(--tertiary-accent), var(--primary-accent), var(--interactive-highlight));
+}
+
+@keyframes borderglow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Drag and drop highlight effects */
+.music-panel.drag-over {
+    border-color: var(--warning-accent);
+    box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+}
+
+.music-panel .status-indicator.warning {
+    background-color: rgba(255, 230, 0, 0.2);
+    color: var(--warning-accent);
+    border-color: var(--warning-accent);
+}

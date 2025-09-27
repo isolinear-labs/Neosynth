@@ -1,0 +1,66 @@
+/* Theme: Synthwave - Classic 80s magenta/cyan contrast */
+body.theme-synthwave {
+	/* Primary color palette */
+	--primary-accent: #ff00ff;
+	--secondary-base: #00ffff;
+	--tertiary-accent: #ff00ff;
+	--interactive-highlight: #00ffff;
+	--warning-accent: #ffff00;
+	--success-accent: #ffff00;
+	--accent-dark: #cc00cc;
+	
+	/* Background system */
+	--dark-bg: #1a0033;
+	--darker-bg: #0d001a;
+	--panel-bg: rgba(26, 0, 51, 0.85);
+	--panel-bg-hover: rgba(26, 0, 51, 0.95);
+	
+	/* Classic synthwave gradient */
+	background: linear-gradient(135deg, 
+		#1a0033 0%, 
+		#330066 25%, 
+		#660099 50%, 
+		#330066 75%, 
+		#1a0033 100%);
+	background-attachment: fixed;
+}
+
+body.theme-synthwave .digit-rain {
+	color: var(--interactive-highlight);
+	text-shadow: 0 0 10px var(--interactive-highlight);
+}
+
+/* Synthwave - sharp, high contrast */
+body.theme-synthwave .glitch-title {
+	color: var(--primary-accent);
+	text-shadow:
+		2px 2px 0px var(--interactive-highlight),
+		4px 4px 0px var(--tertiary-accent),
+		0 0 20px var(--primary-accent);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+	animation: glitch 5s infinite;
+}
+
+body.theme-synthwave .panel-title {
+	text-shadow: 
+		1px 1px 0px var(--interactive-highlight),
+		0 0 15px var(--secondary-base);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

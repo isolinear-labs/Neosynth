@@ -1,0 +1,149 @@
+/* Glitch animation for title */
+@keyframes glitch {
+    0%, 95%, 100% {
+        transform: none;
+        opacity: 1;
+        text-shadow: 
+            0 0 10px var(--primary-accent),
+            0 0 20px var(--primary-accent),
+            0 0 30px var(--primary-accent);
+    }
+    92.5% {
+        transform: translate(-2px, 0);
+        opacity: 0.8;
+        text-shadow: 
+            0 0 10px var(--secondary-base),
+            0 0 20px var(--secondary-base),
+            0 0 30px var(--secondary-base);
+    }
+    97.5% {
+        transform: translate(2px, 0);
+        opacity: 0.8;
+        text-shadow: 
+            0 0 10px var(--interactive-highlight),
+            0 0 20px var(--interactive-highlight),
+            0 0 30px var(--interactive-highlight);
+    }
+}
+
+/* Pulsing animations */
+@keyframes pulseItem {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(1, 255, 195, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(1, 255, 195, 0.6);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes progressPulse {
+    0% {
+        left: -50%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes selectGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(5, 217, 232, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(5, 217, 232, 0.3);
+    }
+}
+
+@keyframes selectGlowLime {
+    0% {
+        box-shadow: 0 0 5px rgba(192, 255, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(192, 255, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(192, 255, 0, 0.3);
+    }
+}
+
+/* Digital rain animation */
+@keyframes rain {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+/* Button glitch effect */
+@keyframes glitchButton {
+    0%, 100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+    20% {
+        transform: translate(-2px, 1px);
+        opacity: 0.9;
+    }
+    40% {
+        transform: translate(2px, -1px);
+        opacity: 0.8;
+    }
+    60% {
+        transform: translate(-1px, -1px);
+        opacity: 0.9;
+    }
+    80% {
+        transform: translate(1px, 1px);
+        opacity: 1;
+    }
+}
+
+/* Digital rain effect styling */
+#digitalRain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.digit-rain {
+    position: absolute;
+    color: var(--secondary-base);
+    font-size: 14px;
+    opacity: 0.3;
+    text-align: center;
+    animation: rain linear infinite;
+    overflow: hidden;
+    max-width: 20px;
+}
+
+/* Glitch title styling with animation */
+.glitch-title {
+    font-size: 3rem;
+    font-weight: bold;            
+    letter-spacing: 4px;
+    color: var(--text-color);
+    text-shadow: 
+        0 0 10px var(--primary-accent),
+        0 0 20px var(--primary-accent),
+        0 0 30px var(--primary-accent);
+    animation: glitch 5s infinite;
+}

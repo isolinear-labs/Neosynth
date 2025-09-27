@@ -1,0 +1,149 @@
+/* Theme: Laser Grid - Hot pink/electric blue with retro gaming aesthetics */
+body.theme-laser {
+	/* Primary color palette */
+	--primary-accent: #ff0080;
+	--secondary-base: #0080ff;
+	--tertiary-accent: #ff0080;
+	--interactive-highlight: #0080ff;
+	--warning-accent: #ffff00;
+	--success-accent: #ffff00;
+	--accent-dark: #cc0066;
+	
+	/* Background system */
+	--dark-bg: #0a0015 !important;
+	--darker-bg: #050008 !important;
+	--panel-bg: rgba(10, 0, 21, 0.85);
+	--panel-bg-hover: rgba(10, 0, 21, 0.95);
+	
+	/* Laser grid gradient with electric energy */
+	background: linear-gradient(135deg, 
+		#0a0015 0%, 
+		#15002a 25%, 
+		#200040 50%, 
+		#15002a 75%, 
+		#0a0020 100%) !important;
+	background-attachment: fixed;
+	
+	/* Add subtle grid pattern */
+	background-image: 
+		linear-gradient(rgba(255, 0, 128, 0.03) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(0, 128, 255, 0.03) 1px, transparent 1px);
+	background-size: 50px 50px;
+}
+
+body.theme-laser .digit-rain {
+	color: var(--primary-accent);
+	text-shadow: 0 0 10px var(--primary-accent), 0 0 20px var(--secondary-base);
+}
+
+/* Laser Grid - Retro gaming grid effects */
+body.theme-laser .glitch-title {
+	color: var(--primary-accent);
+	text-shadow:
+		0 0 20px var(--primary-accent),
+		0 0 40px var(--secondary-base),
+		0 0 60px var(--warning-accent);
+	animation: laserPulse 1.5s ease-in-out infinite alternate, glitch 5s infinite;
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+}
+
+body.theme-laser .panel-title {
+	text-shadow:
+		0 0 15px var(--secondary-base),
+		0 0 30px var(--primary-accent);
+	animation: laserScan 2s linear infinite;
+}
+
+@keyframes laserPulse {
+	0% {
+		filter: brightness(1) saturate(1);
+		transform: scale(1);
+	}
+	100% {
+		filter: brightness(1.3) saturate(1.4);
+		transform: scale(1.02);
+	}
+}
+
+body.theme-laser::after {
+	content: '';
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: linear-gradient(90deg, 
+		transparent 0%, 
+		var(--primary-accent) 45%,
+		var(--secondary-base) 50%,
+		var(--primary-accent) 55%, 
+		transparent 100%
+	);
+	opacity: 0.8;
+	pointer-events: none;
+	z-index: 1000;
+	animation: laserSweep 3s ease-in-out infinite;
+}
+
+@keyframes laserSweep {
+	0% { transform: translateX(-100%); }
+	100% { transform: translateX(100%); }
+}
+
+@keyframes laserScan {
+	0% {
+		text-shadow:
+			0 0 15px var(--secondary-base),
+			0 0 30px var(--primary-accent);
+	}
+	50% {
+		text-shadow:
+			0 0 20px var(--primary-accent),
+			0 0 40px var(--secondary-base),
+			0 0 60px var(--warning-accent);
+	}
+	100% {
+		text-shadow:
+			0 0 15px var(--secondary-base),
+			0 0 30px var(--primary-accent);
+	}
+}
+
+/* Laser theme panels get electric grid effect */
+body.theme-laser .music-panel,
+body.theme-laser .playlist-panel,
+body.theme-laser .now-playing-container {
+	box-shadow: 
+		0 8px 32px rgba(255, 0, 128, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		0 0 25px rgba(0, 128, 255, 0.2);
+	border: 1px solid rgba(255, 0, 128, 0.2);
+}
+
+/* Enhanced progress bars for laser theme */
+body.theme-laser .progress-bar {
+	background: linear-gradient(90deg,
+		var(--primary-accent),
+		var(--secondary-base),
+		var(--warning-accent)
+	);
+	box-shadow: 0 0 15px var(--primary-accent);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

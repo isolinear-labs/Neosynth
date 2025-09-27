@@ -1,0 +1,143 @@
+/* Resume Feature - Neon Text Button in Content Box */
+
+/* Neon Resume Button Container */
+.neon-resume-container {
+    display: none; /* Hidden by default, shown when resume data available */
+    margin: 15px 0;
+    text-align: center;
+}
+
+/* Neon Resume Button */
+.neon-resume-btn {
+    background: transparent;
+    border: 2px solid var(--interactive-highlight);
+    border-radius: 8px;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 280px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Main RESUME text */
+.neon-text {
+    display: block;
+    color: var(--primary-accent);
+    font-size: 18px;
+    text-shadow: 
+        0 0 5px var(--primary-accent),
+        0 0 10px var(--primary-accent),
+        0 0 15px var(--primary-accent),
+        0 0 20px var(--primary-accent);
+    margin-bottom: 4px;
+}
+
+/* Subtitle with track info */
+.neon-subtitle {
+    display: block;
+    color: var(--interactive-highlight);
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-shadow: 
+        0 0 3px var(--interactive-highlight),
+        0 0 6px var(--interactive-highlight);
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Button hover effects */
+.neon-resume-btn:hover {
+    border-color: var(--primary-accent);
+    box-shadow: 
+        0 0 10px var(--interactive-highlight),
+        0 0 20px var(--interactive-highlight),
+        0 0 30px var(--interactive-highlight),
+        inset 0 0 10px rgba(1, 255, 195, 0.1);
+    transform: translateY(-2px);
+}
+
+.neon-resume-btn:hover .neon-text {
+    text-shadow: 
+        0 0 5px var(--primary-accent),
+        0 0 10px var(--primary-accent),
+        0 0 15px var(--primary-accent),
+        0 0 20px var(--primary-accent),
+        0 0 25px var(--primary-accent);
+}
+
+.neon-resume-btn:hover .neon-subtitle {
+    text-shadow: 
+        0 0 3px var(--interactive-highlight),
+        0 0 6px var(--interactive-highlight),
+        0 0 9px var(--interactive-highlight);
+}
+
+/* Active state */
+.neon-resume-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Animated border glow */
+.neon-resume-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg, 
+        var(--interactive-highlight), 
+        var(--primary-accent), 
+        var(--tertiary-accent),
+        var(--interactive-highlight)
+    );
+    background-size: 400% 100%;
+    animation: neonBorderFlow 3s linear infinite;
+    border-radius: 8px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.neon-resume-btn:hover::before {
+    opacity: 0.6;
+}
+
+@keyframes neonBorderFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .neon-resume-btn {
+        padding: 12px 20px;
+        min-width: 240px;
+    }
+    
+    .neon-text {
+        font-size: 16px;
+    }
+    
+    .neon-subtitle {
+        font-size: 11px;
+    }
+}

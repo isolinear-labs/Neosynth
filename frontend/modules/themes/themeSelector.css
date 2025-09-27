@@ -1,0 +1,352 @@
+/* Custom Theme Selector with Descriptions - Separate CSS file */
+
+.theme-selector-wrapper {
+	position: relative;
+	display: inline-block;
+	z-index: 1001;
+    overflow: visible !important; /* Ensure no clipping */
+}
+
+.theme-selector-custom {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	min-width: 120px;
+}
+
+.theme-current {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+    min-height: auto;
+	background: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(10px);
+	border: 1px solid var(--neon-purple);
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	user-select: none;
+}
+
+.theme-current:hover {
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: 0 0 15px rgba(216, 0, 255, 0.4);
+}
+
+.theme-current.open {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom: none;
+	box-shadow: 0 0 20px rgba(216, 0, 255, 0.5);
+}
+
+.theme-current-info {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	flex: 1;
+}
+
+.theme-current-label {
+	color: var(--neon-purple);
+	font-size: 0.6rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: bold;
+	text-shadow: 0 0 8px var(--neon-purple);
+    line-height: 1;
+}
+
+.theme-current-name {
+	color: var(--neon-cyan);
+	font-weight: bold;
+	font-size: 0.8rem;
+	line-height: 1.1;
+	text-shadow: 0 0 8px var(--neon-cyan);
+	transition: all 0.3s ease;
+}
+
+.theme-dropdown-arrow {
+	color: var(--neon-purple);
+	font-size: 0.7rem;
+	transition: transform 0.3s ease;
+	margin-left: 8px;
+}
+
+.theme-current.open .theme-dropdown-arrow {
+	transform: rotate(180deg);
+}
+
+.theme-options {
+	position: fixed !important; /* Changed from absolute to fixed */
+	bottom: 60px !important; /* Position above the footer */
+	right: 20px !important; /* Align with right side */
+	left: auto !important; /* Override the left: 0 */
+	top: auto !important; /* Override any top positioning */
+	width: 240px !important; /* Set a fixed width */
+	max-height: 60vh !important; /* Limit height */
+	overflow-y: auto !important; /* Allow scrolling if needed */
+	background: rgba(0, 0, 0, 0.95);
+	backdrop-filter: blur(15px);
+	border: 1px solid var(--neon-purple);
+	border-radius: 5px 5px 0 0; /* Top corners rounded since it's above the trigger */
+	z-index: 2000 !important; /* Higher z-index to ensure it's on top */
+	box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5); /* Shadow going up instead of down */
+	display: none;
+	pointer-events: none;
+}
+
+.theme-options.show {
+	display: block;
+	animation: slideUp  0.3s ease;
+	pointer-events: auto;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.theme-option {
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border-bottom: 1px solid rgba(216, 0, 255, 0.2);
+	position: relative;
+}
+
+.theme-option:last-child {
+	border-bottom: none;
+}
+
+.theme-option:hover {
+	background: rgba(216, 0, 255, 0.2);
+}
+
+.theme-option.active {
+	background: rgba(216, 0, 255, 0.3);
+	border-left: 3px solid var(--neon-yellow);
+	padding-left: 12px;
+}
+
+.theme-option.active::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background: linear-gradient(180deg, 
+		var(--neon-yellow) 0%,
+		var(--neon-cyan) 50%,
+		var(--neon-yellow) 100%
+	);
+	box-shadow: 0 0 10px var(--neon-yellow);
+}
+
+.theme-option.active .theme-option-name {
+	color: var(--neon-yellow);
+	text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+.theme-option.active .theme-option-desc {
+	color: rgba(255, 230, 0, 0.8);
+}
+
+.theme-option:hover:not(.active) .theme-option-name {
+	color: var(--neon-cyan);
+	text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.theme-option:hover:not(.active) .theme-option-desc {
+	color: rgba(1, 255, 195, 0.8);
+}
+
+.theme-option-name {
+	font-weight: bold;
+	font-size: 0.75rem;
+	margin-bottom: 2px;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.theme-option-desc {
+	font-size: 0.65rem;
+	color: rgba(255, 255, 255, 0.6);
+	line-height: 1.2;
+	transition: all 0.3s ease;
+}
+
+/* Theme-specific hover effects for options */
+.theme-option[data-theme="vapor"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(255, 113, 206, 0.1), 
+		rgba(1, 205, 254, 0.1)
+	);
+}
+
+.theme-option[data-theme="synthwave"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(255, 0, 255, 0.1), 
+		rgba(0, 255, 255, 0.1)
+	);
+}
+
+.theme-option[data-theme="quantum"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(170, 0, 255, 0.1), 
+		rgba(136, 255, 0, 0.1)
+	);
+}
+
+.theme-option[data-theme="noir"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(255, 255, 255, 0.1), 
+		rgba(255, 0, 85, 0.1)
+	);
+}
+
+.theme-option[data-theme="mint"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(0, 255, 170, 0.1), 
+		rgba(255, 119, 170, 0.1)
+	);
+}
+
+.theme-option[data-theme="laser"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(255, 0, 128, 0.1), 
+		rgba(0, 128, 255, 0.1)
+	);
+}
+
+.theme-option[data-theme="toxic"]:hover:not(.active) {
+	background: linear-gradient(90deg, 
+		rgba(57, 255, 20, 0.1), 
+		rgba(255, 255, 0, 0.1)
+	);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+	.theme-selector-custom {
+		min-width: 180px;
+	}
+	
+	.theme-current {
+		padding: 8px 12px;
+	}
+	
+	.theme-current-label {
+		font-size: 0.65rem;
+	}
+	
+	.theme-current-name {
+		font-size: 0.8rem;
+	}
+	
+	.theme-option {
+		padding: 10px 12px;
+	}
+	
+	.theme-option-name {
+		font-size: 0.8rem;
+	}
+	
+	.theme-option-desc {
+		font-size: 0.65rem;
+	}
+	
+	.theme-options {
+		max-height: 60vh;
+		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--neon-purple) rgba(0, 0, 0, 0.3);
+	}
+	
+	.theme-options::-webkit-scrollbar {
+		width: 6px;
+	}
+	
+	.theme-options::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.3);
+	}
+	
+	.theme-options::-webkit-scrollbar-thumb {
+		background: var(--neon-purple);
+		border-radius: 3px;
+	}
+}
+
+/* Enhanced footer layout for custom selector */
+.footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.8);
+	backdrop-filter: blur(20px);
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 
+		0 -5px 20px rgba(0, 0, 0, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	padding: 10px 20px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	gap: 20px;
+	z-index: 1000 !important;
+}
+
+/* Pulse animation for theme name when changed */
+@keyframes themePulse {
+	0% { 
+		transform: scale(1);
+		text-shadow: 0 0 8px var(--neon-cyan);
+	}
+	50% { 
+		transform: scale(1.05);
+		text-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-yellow);
+	}
+	100% { 
+		transform: scale(1);
+		text-shadow: 0 0 8px var(--neon-cyan);
+	}
+}
+
+/* Additional subtle animations */
+.theme-current:active {
+	transform: scale(0.98);
+}
+
+.theme-option:active {
+	transform: scale(0.98);
+	background: rgba(216, 0, 255, 0.4) !important;
+}
+
+/* Accessibility improvements */
+.theme-current:focus,
+.theme-option:focus {
+	outline: 2px solid var(--neon-yellow);
+	outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	.theme-current,
+	.theme-option {
+		border-width: 2px;
+	}
+	
+	.theme-option-desc {
+		color: rgba(255, 255, 255, 0.8);
+	}
+}

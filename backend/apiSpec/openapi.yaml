@@ -1,0 +1,859 @@
+openapi: "3.0.0"
+info:
+  title: NeoSynth API
+  version: 3.0.0
+  description: |
+    NeoSynth Music Player API - Manage your playlists, preferences, and playback state.
+    
+    ## Authentication
+    This API requires an API key for access. Include your API key in the request header.
+    
+    ## Base URL
+    All endpoints are relative to `/api` from the current domain.
+  #contact:
+  #  name: NeoSynth API Support
+  #  url: https://github.com/RC-Projects/NEOSYNTH/issues
+
+servers:
+  - url: /api
+
+tags:
+  - name: Users
+    description: User profile access
+  - name: Now Playing
+    description: Managing the currently playing track state
+  - name: Playlists
+    description: Playlist creation and management  
+  - name: Preferences
+    description: User preferences and settings
+  - name: Tracks
+    description: Search for tracks across playlists
+
+paths:
+  # User Profile Endpoints
+
+  /users/{userId}:
+    get:
+      tags: [Users]
+      summary: Get user profile
+      description: Retrieve a user profile by their ID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+            example: "user_john"
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: "User not found"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /nowplaying/{userId}:
+    get:
+      tags: [Now Playing]
+      summary: Get user's now playing state  
+      description: Retrieve the currently playing track state for a user
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Now playing state retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NowPlaying'
+              example:
+                playListId: "64def789abc123456"
+                trackUrl: "https://example.com/track1.mp3"
+                trackName: "Synthwave Mix SH"
+                position: 120
+                isPlaying: true
+                updated: "2024-01-15T00:00:00.000Z"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: "User not found"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Now Playing]
+      summary: Update user's now playing state
+      description: Save the currently playing track state for a user
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NowPlaying'
+            example:
+              playListId: "64def789abc123456"
+              trackUrl: "https://example.com/track1.mp3"
+              trackName: "Synthwave Mix SH"
+              position: 120
+              isPlaying: true
+      responses:
+        '200':
+          description: Now playing state updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NowPlaying'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: "User not found"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /playlists/{userId}:
+    get:
+      tags: [Playlists]
+      summary: Get user's playlists
+      description: Retrieve all playlists belonging to a specific user
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Playlists retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playlist'
+              example:
+                - _id: "64def789abc123456"
+                  name: "My Favorites"
+                  userId: "user_john"
+                  tracks:
+                    - url: "https://example.com/track1.mp3"
+                      name: "Synthwave Mix SH"
+                      duration: 180
+                      volume_multiplier: 1.2
+                  created: "2024-01-01T00:00:00.000Z"
+                  updated: "2024-01-15T00:00:00.000Z"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /playlists/detail/{id}:
+    get:
+      tags: [Playlists]
+      summary: Get playlist by ID
+      description: Retrieve a specific playlist by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Playlist's unique identifier
+          schema:
+            type: string
+            format: objectid
+            example: "64def789abc123456"
+      responses:
+        '200':
+          description: Playlist found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '404':
+          description: Playlist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /playlists:
+    post:
+      tags: [Playlists]
+      summary: Create a new playlist
+      description: Create a new playlist for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  description: Playlist name
+                  example: "My Favorites"
+                userId:
+                  type: string
+                  description: Owner's user ID (optional, defaults to 'anonymous')
+                  example: "user_john"
+                tracks:
+                  type: array
+                  description: Initial tracks (optional)
+                  items:
+                    $ref: '#/components/schemas/Track'
+            example:
+              name: "My New Playlist"
+              userId: "user_john"
+              tracks:
+                - url: "https://example.com/track1.mp3"
+                  name: "Track 1"
+                  duration: 180
+                  volume_multiplier: 1.0
+      responses:
+        '201':
+          description: Playlist created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /playlists/{id}:
+    put:
+      tags: [Playlists]
+      summary: Update playlist
+      description: Update an existing playlist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Playlist's unique identifier
+          schema:
+            type: string
+            format: objectid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New playlist name
+                tracks:
+                  type: array
+                  description: Updated tracks
+                  items:
+                    $ref: '#/components/schemas/Track'
+            example:
+              name: "Updated Playlist Name"
+              tracks:
+                - url: "https://example.com/new-track.mp3"
+                  name: "New Track"
+                  duration: 200
+                  volume_multiplier: 0.8
+      responses:
+        '200':
+          description: Playlist updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '404':
+          description: Playlist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Playlists]
+      summary: Delete playlist
+      description: Delete an existing playlist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Playlist's unique identifier
+          schema:
+            type: string
+            format: objectid
+      responses:
+        '200':
+          description: Playlist deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Playlist removed"
+              example:
+                message: "Playlist removed"
+        '404':
+          description: Playlist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tracks/{trackName}:
+    get:
+      tags: [Tracks]
+      summary: Search for tracks
+      description: Find tracks by name (searches own playlists for users, all playlists for admins)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: trackName
+          in: path
+          required: true
+          description: Track name to search for (case-insensitive)
+          schema:
+            type: string
+            example: "awesome track"
+      responses:
+        '200':
+          description: Matching tracks found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        PlaylistName:
+                          type: string
+                          description: Name of the playlist containing the track
+                          example: "My Favorites"
+                        userId:
+                          type: string
+                          description: Owner of the playlist
+                          example: "john_doe"
+                        trackUrl:
+                          type: string
+                          format: uri
+                          description: URL of the track
+                          example: "https://example.com/track.mp3"
+                        trackName:
+                          type: string
+                          description: Name of the track
+                          example: "Awesome Track"
+                        trackDuration:
+                          type: number
+                          nullable: true
+                          description: Duration of the track in seconds
+                          example: 180
+                  total:
+                    type: integer
+                    example: 2
+                  searchTerm:
+                    type: string
+                    example: "awesome track"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{userId}/preferences:
+    get:
+      tags: [Preferences]
+      summary: Get user preferences
+      description: Retrieve a user's preferences and settings (own data or admin access)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preferences retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+              example:
+                shuffleEnabled: false
+                volume: 75
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Preferences]
+      summary: Update user preferences
+      description: Update specific user preferences (own data or admin access)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shuffleEnabled:
+                  type: boolean
+                  description: Enable/disable shuffle mode
+                volume:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Volume level (0-100)
+            examples:
+              shuffle_only:
+                summary: Update shuffle setting only
+                value:
+                  shuffleEnabled: true
+              volume_only:
+                summary: Update volume only
+                value:
+                  volume: 75
+              both:
+                summary: Update both settings
+                value:
+                  shuffleEnabled: true
+                  volume: 85
+      responses:
+        '200':
+          description: Preferences updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Preferences]
+      summary: Reset preferences to defaults
+      description: Reset user preferences to default values
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's unique identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preferences reset successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+              example:
+                shuffleEnabled: false
+                volume: 100
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Enter your API key
+
+  responses:
+    Unauthorized:
+      description: API key required or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "API key required"
+              message:
+                type: string
+                example: "Please provide an API key in X-API-Key header"
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+            example: "API-Key"
+    
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Insufficient permissions"
+              message:
+                type: string
+                example: "This API key does not have 'admin.users.read' permission"
+    
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Rate limit exceeded"
+              message:
+                type: string
+                example: "Rate limit exceeded. Try again in 45 seconds"
+              retryAfter:
+                type: integer
+                example: 45
+      headers:
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+        Retry-After:
+          schema:
+            type: integer
+
+  schemas:
+    ApiKeyInfo:
+      type: object
+      properties:
+        keyId:
+          type: string
+          description: API key identifier
+          example: "12345678"
+        name:
+          type: string
+          description: Descriptive name for the key
+          example: "My Web App Key"
+        role:
+          type: string
+          enum: [user, admin, service]
+          example: "user"
+        permissions:
+          type: array
+          items:
+            type: string
+          example: ["users.read", "playlists.read", "playlists.write"]
+        ipWhitelist:
+          type: array
+          items:
+            type: string
+          description: IP addresses or CIDR ranges allowed to use this key
+          example: ["192.168.1.0/24", "10.0.0.0/8"]
+        lastUsed:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-01-15T10:30:00.000Z"
+        usageCount:
+          type: integer
+          example: 1250
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-04-01T00:00:00.000Z"
+        created:
+          type: string
+          format: date-time
+          example: "2024-01-01T00:00:00.000Z"
+        rateLimit:
+          type: object
+          properties:
+            requestsPerMinute:
+              type: integer
+              example: 100
+            requestsPerHour:
+              type: integer
+              example: 1000
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: objectid
+          description: MongoDB generated ID
+          example: "64abc123def456789"
+        username:
+          type: string
+          description: User's display name
+          example: "john_doe"
+        userId:
+          type: string
+          description: User's unique identifier
+          example: "user_john"
+        isAdmin:
+          type: boolean
+          description: Whether user has admin privileges
+          default: false
+          example: false
+        created:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+          example: "2024-01-01T00:00:00.000Z"
+        lastLogin:
+          type: string
+          format: date-time
+          description: Last login timestamp
+          example: "2024-01-15T10:30:00.000Z"
+        preferences:
+          $ref: '#/components/schemas/UserPreferences'
+      required:
+        - username
+        - userId
+  
+    NowPlaying:
+      type: object
+      properties:
+        playListId:
+          type: string
+          format: objectid
+          description: The MongoDB ID of the associated playlist
+          nullable: true
+          example: "64def789abc123456"
+        trackUrl:
+          type: string
+          format: uri
+          description: URL of the currently playing track
+          nullable: true
+          example: "https://example.com/track1.mp3"
+        trackName:
+          type: string
+          description: Name of the currently playing track
+          nullable: true
+          example: "Synthwave Mix SH"
+        position:
+          type: number
+          description: Current playback position in seconds
+          minimum: 0
+          default: 0
+          example: 120
+        isPlaying:
+          type: boolean
+          description: Whether the track is currently playing
+          default: false
+          example: true
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2024-01-15T00:00:00.000Z"
+
+    UserPreferences:
+      type: object
+      properties:
+        shuffleEnabled:
+          type: boolean
+          default: false
+          description: Enable shuffle mode
+          example: false
+        volume:
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 100
+          description: Volume level (0-100)
+          example: 100
+        theme:
+          type: string
+          default: default
+          enum: [default, vapor, synthwave, quantum, noir, mint, laser, toxic]
+          description: Selected visual theme
+          example: "vapor"
+
+    Playlist:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: objectid
+          description: MongoDB generated ID
+          example: "64def789abc123456"
+        name:
+          type: string
+          description: Playlist name
+          example: "My Favorites"
+        userId:
+          type: string
+          description: Owner's user ID
+          example: "user_john"
+        tracks:
+          type: array
+          description: Array of tracks in the playlist
+          items:
+            $ref: '#/components/schemas/Track'
+        created:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: "2024-01-01T00:00:00.000Z"
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2024-01-15T00:00:00.000Z"
+      required:
+        - name
+        - userId
+
+    Track:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Media file URL
+          example: "https://example.com/track1.mp3"
+        name:
+          type: string
+          description: Track name
+          example: "Awesome Track"
+        duration:
+          type: number
+          description: Track duration in seconds
+          example: 180
+          nullable: true
+        volume_multiplier:
+          type: number
+          description: Volume multiplier for this track (0.5-3.0)
+          minimum: 0.5
+          maximum: 3
+          default: 1
+          example: 1.2
+      required:
+        - url
+        - name
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "User not found"
+      required:
+        - message

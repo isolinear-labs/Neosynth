@@ -1,0 +1,75 @@
+/* Theme: Quantum Flux - High-tech purple/cyan/lime energy */
+body.theme-quantum {
+	/* Primary color palette */
+	--primary-accent: #aa00ff;
+	--secondary-base: #00ccff;
+	--tertiary-accent: #aa00ff;
+	--interactive-highlight: #00ccff;
+	--warning-accent: #88ff00;
+	--success-accent: #88ff00;
+	--accent-dark: #7700cc;
+	
+	/* Background system */
+	--dark-bg: #0a001a;
+	--darker-bg: #05000d;
+	--panel-bg: rgba(10, 0, 26, 0.85);
+	--panel-bg-hover: rgba(10, 0, 26, 0.95);
+	
+	/* Quantum energy gradient */
+	background: linear-gradient(135deg, 
+		#0a001a 0%, 
+		#15002a 25%, 
+		#200040 50%, 
+		#15002a 75%, 
+		#0a001a 100%);
+	background-attachment: fixed;
+}
+
+body.theme-quantum .digit-rain {
+	color: var(--success-accent);
+	text-shadow: 0 0 10px var(--success-accent);
+}
+
+/* Quantum Flux - energy and movement */
+body.theme-quantum .glitch-title {
+	color: var(--tertiary-accent);
+	text-shadow:
+		0 0 20px var(--tertiary-accent),
+		0 0 40px var(--interactive-highlight),
+		0 0 60px var(--success-accent);
+	animation: quantumPulse 2s ease-in-out infinite alternate, glitch 5s infinite;
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+}
+
+body.theme-quantum .panel-title {
+	text-shadow: 
+		0 0 15px var(--interactive-highlight),
+		0 0 30px var(--success-accent);
+}
+
+@keyframes quantumPulse {
+	0% {
+		filter: brightness(1) saturate(1);
+	}
+	100% {
+		filter: brightness(1.2) saturate(1.3);
+	}
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

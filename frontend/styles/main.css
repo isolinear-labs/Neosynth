@@ -1,0 +1,19 @@
+/* Main CSS file for NeoSynth */
+
+/* Import custom styles */
+@import '../cssCustom/themes.css';
+@import '../cssCustom/advancedControls.css';
+@import '../cssCustom/animations.css';
+@import '../cssCustom/borders.css';
+@import '../cssCustom/footer.css';
+@import '../cssCustom/header.css';
+@import '../cssCustom/player.css';
+@import '../cssCustom/playlist.css';
+@import '../cssCustom/reOrder.css';
+@import '../cssCustom/scrollbar.css';
+@import '../cssCustom/settings.css';
+@import '../cssCustom/terminal.css';
+@import '../cssCustom/session.css';
+@import '../cssCustom/resume.css';
+@import '../modules/themes/themeSelector.css';
+@import '../cssCustom/passwordTerminal.css';

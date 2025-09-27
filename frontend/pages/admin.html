@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEOSYNTH - Admin Control Panel</title>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon.png">
+    <meta name="msapplication-TileImage" content="../assets/favicon.png">
+    <meta name="msapplication-TileColor" content="#1a0d33">
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        /* Admin-specific styles */
+        body {
+            background: var(--background-color);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0119 0%, #1d0b3a 50%, #2e1a5c 100%);
+            position: relative;
+        }
+
+        /* Cyberpunk grid background */
+        .admin-container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(5, 217, 232, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .admin-header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--neon-cyan);
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(5, 217, 232, 0.3);
+        }
+
+        .admin-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-title::before {
+            content: '⚡';
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .admin-subtitle {
+            color: var(--neon-purple);
+            font-size: 1rem;
+            margin-top: 8px;
+            text-shadow: 0 0 10px var(--neon-purple);
+            letter-spacing: 2px;
+        }
+
+        .admin-content {
+            position: relative;
+            z-index: 10;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .control-section {
+            background: rgba(5, 5, 15, 0.85);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(1, 255, 195, 0.6);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 12px 40px rgba(1, 255, 195, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .control-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            opacity: 0.5;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 15px var(--neon-yellow);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--neon-yellow);
+            padding-bottom: 10px;
+        }
+
+        .feature-flags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .flag-card {
+            background: rgba(10, 10, 25, 0.8);
+            border: 1px solid rgba(1, 255, 195, 0.3);
+            border-radius: 10px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .flag-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .flag-card:hover::before {
+            left: 100%;
+        }
+
+        .flag-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 4px 20px rgba(5, 217, 232, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .flag-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flag-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .flag-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .flag-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .status-enabled {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow);
+        }
+
+        .status-disabled {
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-enabled .status-indicator {
+            background: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        .status-disabled .status-indicator {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rollout-info {
+            font-size: 0.9rem;
+            color: #b8e6ff;
+            margin-bottom: 12px;
+            background: rgba(184, 230, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #b8e6ff;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(5, 217, 232, 0.4);
+        }
+
+        .admin-btn.danger {
+            background: linear-gradient(45deg, #ff0080, #ff4040);
+        }
+
+        .admin-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .create-flag-form {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--neon-cyan);
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(10, 10, 25, 0.7);
+            border: 2px solid rgba(1, 255, 195, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(1, 255, 195, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: rgba(10, 10, 25, 0.9);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--neon-cyan);
+            font-size: 1.2rem;
+            padding: 40px;
+        }
+
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4040;
+            color: #ff4040;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .template-category {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .template-category:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
+        }
+
+        .template-title {
+            font-size: 1.1rem;
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--neon-purple);
+            padding-bottom: 8px;
+        }
+
+        .template-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .template-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(5, 217, 232, 0.5);
+            color: var(--neon-cyan);
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-btn:hover {
+            background: rgba(5, 217, 232, 0.1);
+            border-color: var(--neon-cyan);
+            color: white;
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .template-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .template-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Edit form styles */
+        .edit-form {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .edit-form.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .edit-form-title {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--neon-purple);
+            padding-bottom: 8px;
+        }
+
+        .edit-form-group {
+            margin-bottom: 15px;
+        }
+
+        .edit-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .edit-form-label {
+            display: block;
+            color: var(--neon-cyan);
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .edit-form-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-form-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 8px rgba(5, 217, 232, 0.3);
+        }
+
+        .edit-form-textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .edit-form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .edit-form-checkbox input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .edit-form-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Enhanced form help text styling */
+        .form-help-text {
+            color: #a8d8ff;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: block;
+            font-weight: 400;
+            line-height: 1.4;
+            background: rgba(168, 216, 255, 0.08);
+            padding: 6px 10px;
+            border-radius: 4px;
+            border-left: 2px solid rgba(168, 216, 255, 0.4);
+        }
+
+        /* Enhanced section titles - override existing */
+        .section-title {
+            font-size: 1.6rem !important;
+            color: var(--neon-yellow) !important;
+            text-shadow: 0 0 20px rgba(255, 230, 0, 0.6) !important;
+            margin-bottom: 25px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 2px !important;
+            border-bottom: 2px solid rgba(255, 230, 0, 0.4) !important;
+            padding-bottom: 12px !important;
+            position: relative !important;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        /* Enhanced admin buttons - override existing */
+        .admin-btn {
+            background: linear-gradient(45deg, rgba(1, 255, 195, 0.2), rgba(255, 230, 0, 0.2)) !important;
+            border: 2px solid var(--neon-cyan) !important;
+            color: var(--neon-cyan) !important;
+            padding: 12px 20px !important;
+            border-radius: 6px !important;
+            cursor: pointer !important;
+            font-family: inherit !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            font-size: 0.85rem !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .admin-btn:hover {
+            background: linear-gradient(45deg, rgba(1, 255, 195, 0.3), rgba(255, 230, 0, 0.3)) !important;
+            color: white !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(1, 255, 195, 0.4) !important;
+        }
+
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 20px;
+            }
+            
+            .feature-flags-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <a href="/" class="back-link">← Back to App</a>
+        
+        <header class="admin-header">
+            <h1 class="admin-title">Admin Control Panel</h1>
+        </header>
+
+        <main class="admin-content">
+            <section class="control-section">
+                <h2 class="section-title">Feature Flags</h2>
+                <div id="featureFlagsContainer" class="loading">
+                    Loading feature flags...
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="section-title">Quick Create Templates</h2>
+                <div id="templatesContainer" class="templates-grid">
+                    <div class="loading-placeholder">Loading templates...</div>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="section-title">Create New Feature Flag</h2>
+                <form id="createFlagForm" class="create-flag-form">
+                    <div class="form-group">
+                        <label for="flagName" class="form-label">Flag Name</label>
+                        <input type="text" id="flagName" class="form-input" placeholder="e.g., beta_feature_xyz" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="flagDescription" class="form-label">Description</label>
+                        <textarea id="flagDescription" class="form-input form-textarea" placeholder="Describe what this feature flag controls..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="flagCategory" class="form-label">Category</label>
+                        <select id="flagCategory" class="form-input">
+                            <option value="general">General</option>
+                            <option value="themes">Themes</option>
+                            <option value="audio">Audio</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="admin">Admin</option>
+                            <option value="navigation">Navigation</option>
+                            <option value="ui">UI</option>
+                            <option value="developer">Developer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-checkbox">
+                            <input type="checkbox" id="flagEnabled">
+                            <span>Enable Feature Flag</span>
+                        </label>
+                        <small class="form-help-text">
+                            Master switch - feature is OFF for everyone if unchecked
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rolloutPercentage" class="form-label">Rollout Percentage (0-100)</label>
+                        <input type="number" id="rolloutPercentage" class="form-input" min="0" max="100" value="0">
+                        <small class="form-help-text">
+                            0% = admin only, 100% = all users (auto-enables feature)
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-checkbox">
+                            <input type="checkbox" id="adminOnly">
+                            <span>Admin only access</span>
+                        </label>
+                        <small class="form-help-text">
+                            Admin-only features automatically set rollout to 0% and disable percentage-based rollout
+                        </small>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn">Create Feature Flag</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="../scripts/admin.js"></script>
+</body>
+</html>

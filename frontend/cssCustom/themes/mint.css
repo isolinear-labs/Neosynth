@@ -1,0 +1,196 @@
+/* Theme: Vapor Mint - Fresh mint/pink/purple with retro-futuristic vibe */
+body.theme-mint {
+	/* Primary color palette */
+	--primary-accent: #ff77aa;
+	--secondary-base: #00ffaa;
+	--tertiary-accent: #cc00ff;
+	--interactive-highlight: #00ffaa;
+	--warning-accent: #ff77aa;
+	--success-accent: #00ffaa;
+	--accent-dark: #aa00cc;
+	
+	/* Background system */
+	--dark-bg: #001a0a;
+	--darker-bg: #000d05;
+	--panel-bg: rgba(0, 26, 10, 0.85);
+	--panel-bg-hover: rgba(0, 26, 10, 0.95);
+	
+	/* Fresh mint gradient with organic flow */
+	background: linear-gradient(135deg, 
+		#001a0a 0%, 
+		#002a15 25%, 
+		#00331a 50%, 
+		#002a15 75%, 
+		#001a10 100%);
+	background-attachment: fixed;
+}
+
+body.theme-mint .digit-rain {
+	color: var(--success-accent);
+	text-shadow: 0 0 12px var(--success-accent), 0 0 24px var(--primary-accent);
+}
+
+/* Vapor Mint - Organic, fresh aesthetics */
+body.theme-mint .glitch-title {
+	color: var(--success-accent);
+	text-shadow:
+		0 0 20px var(--success-accent),
+		0 0 40px var(--primary-accent),
+		0 0 60px var(--tertiary-accent);
+	filter: brightness(1.1) hue-rotate(5deg);
+	animation: mintFlow 3s ease-in-out infinite alternate, glitch 5s infinite;
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+}
+
+body.theme-mint .panel-title {
+	text-shadow: 
+		0 0 15px var(--success-accent),
+		0 0 30px var(--primary-accent);
+	animation: mintGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes mintFlow {
+	0% {
+		filter: brightness(1.1) hue-rotate(0deg);
+	}
+	100% {
+		filter: brightness(1.2) hue-rotate(10deg);
+	}
+}
+
+@keyframes mintGlow {
+	0% {
+		text-shadow:
+			0 0 15px var(--success-accent),
+			0 0 30px var(--primary-accent);
+	}
+	100% {
+		text-shadow:
+			0 0 20px var(--success-accent),
+			0 0 40px var(--primary-accent),
+			0 0 60px var(--tertiary-accent);
+	}
+}
+
+/* Mint theme panels get organic glow */
+body.theme-mint .music-panel,
+body.theme-mint .playlist-panel,
+body.theme-mint .now-playing-container {
+	box-shadow: 
+		0 8px 32px rgba(0, 255, 170, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		0 0 20px rgba(0, 255, 170, 0.1);
+}
+
+/* Enhanced progress bars for mint theme */
+body.theme-mint .progress-bar {
+	background: linear-gradient(90deg,
+		var(--success-accent),
+		var(--primary-accent),
+		var(--tertiary-accent)
+	);
+	box-shadow: 0 0 15px var(--success-accent);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}
+
+/* Enable pixel effects for mint theme footer */
+body.theme-mint .footer {
+	position: fixed !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	
+	/* Add pixel-specific properties */
+	overflow: visible; /* Allow pixels to peek above footer */
+	z-index: 1000 !important; /* Ensure footer stays on top */
+}
+
+/* Digital mint pixel styling */
+.mint-pixel {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background: var(--success-accent); /* Use your mint green color */
+	animation: pixelGlitch 2s ease-in-out infinite;
+	pointer-events: none; /* Don't interfere with footer clicks */
+	z-index: 999; /* Below footer content but above background */
+	box-shadow: 0 0 8px var(--success-accent);
+}
+
+/* Enhanced digital pixel glitch animation */
+@keyframes pixelGlitch {
+	0%, 85%, 100% { 
+		opacity: 0;
+		transform: scale(0) translateY(0);
+		background: var(--success-accent);
+		box-shadow: 0 0 0 var(--success-accent);
+	}
+	15% { 
+		opacity: 1;
+		transform: scale(2) translateY(-25px);
+		background: var(--success-accent);
+		box-shadow: 0 0 15px var(--success-accent);
+	}
+	25% {
+		opacity: 0.3;
+		transform: scale(1.5) translateY(-20px) translateX(2px);
+		background: var(--primary-accent); /* Glitch to pink */
+		box-shadow: 0 0 12px var(--primary-accent);
+	}
+	35% {
+		opacity: 1;
+		transform: scale(2) translateY(-15px) translateX(-2px);
+		background: var(--tertiary-accent); /* Glitch to purple */
+		box-shadow: 0 0 15px var(--tertiary-accent);
+	}
+	50% { 
+		opacity: 0.7;
+		transform: scale(1) translateY(-8px);
+		background: var(--success-accent); /* Back to mint */
+		box-shadow: 0 0 10px var(--success-accent);
+	}
+	65% {
+		opacity: 0.4;
+		transform: scale(0.8) translateY(-3px) translateX(1px);
+		background: var(--success-accent);
+		box-shadow: 0 0 8px var(--success-accent);
+	}
+}
+
+/* Add some variety with different pixel sizes */
+.mint-pixel.large {
+	width: 6px;
+	height: 6px;
+	animation-duration: 2.5s;
+}
+
+.mint-pixel.small {
+	width: 3px;
+	height: 3px;
+	animation-duration: 1.8s;
+}
+
+/* Accessibility: Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	.mint-pixel {
+		animation: none;
+		display: none;
+	}
+}

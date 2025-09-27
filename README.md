@@ -11,14 +11,15 @@ NeoSynth is a cyberpunk themed music and video streaming web application that al
 - Shuffle mode with intelligent track selection
 - Responsive design for both desktop and mobile
 - Multiple themes ready to use
-- Modular design to allow easy implementation of features and themes
+- Feature flag system
+- Modular features and CSS design allowing easy contributions
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- MongoDB (v4.4 or higher)
+- MongoDB (v7 or higher)
 - npm or yarn
 
 ### Generate Production Secrets
@@ -71,7 +72,7 @@ version: '3.8'
 
 services:
   neosynth:
-    build: .
+    image: rcsilver/neosynth:nightly
     ports:
       - "5000:5000"
     environment:
@@ -81,7 +82,22 @@ services:
       - COOKIE_SECRET=your_super_secret_cookie_secret_here
       - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 1s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
     networks:
       - neosynth-network
 
@@ -91,6 +107,12 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - neosynth-network
 

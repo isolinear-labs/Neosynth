@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural System Initialization | NeoSynth</title>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon.png">
+    <meta name="msapplication-TileImage" content="../assets/favicon.png">
+    <meta name="msapplication-TileColor" content="#1a0d33">
+
+    <!-- Theme and Custom Styles -->
+    <link rel="stylesheet" href="../cssCustom/themes/root.css">
+    <link rel="stylesheet" href="../cssCustom/first-time-setup.css">
+
+    <style>
+        /* Page-specific accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* High contrast mode improvements */
+        @media (prefers-contrast: high) {
+            .setup-option:focus {
+                outline: 3px solid;
+                outline-offset: 2px;
+            }
+
+            button:focus {
+                outline: 3px solid;
+                outline-offset: 2px;
+            }
+        }
+    </style>
+</head>
+<body class="setup-page">
+    <div id="digitalRain"></div>
+
+    <!-- Main setup container -->
+    <div class="setup-container">
+        <div class="setup-panel">
+            <!-- Cyberpunk borders -->
+            <div class="cyberpunk-border border-top"></div>
+            <div class="cyberpunk-border border-right"></div>
+            <div class="cyberpunk-border border-bottom"></div>
+            <div class="cyberpunk-border border-left"></div>
+
+            <!-- Header section -->
+            <div class="setup-header">
+                <h1 class="glitch-title">NeoSynth</h1>
+                <div class="subtitle">Neural System Initialization</div>
+                <div class="setup-status" id="setupStatus">
+                    <span class="status-indicator"></span>
+                    System Configuration Required
+                </div>
+            </div>
+
+            <!-- Setup content -->
+            <div class="setup-content">
+                <div class="setup-section active" id="welcomeSection">
+                    <div class="section-header">
+                        <div class="section-title">// FIRST TIME SETUP</div>
+                        <div class="section-subtitle">Initialize Neural Network Administrator</div>
+                    </div>
+
+                    <div class="setup-message">
+                        <div class="message-content">
+                            <div class="message-icon">></div>
+                            <div class="message-text">
+                                <h3>Welcome to NeoSynth Neural System</h3>
+                                <p>This appears to be your first time accessing the system. To ensure secure operation, you'll need to create an administrator account.</p>
+                                <div class="setup-info">
+                                    <div class="info-item">
+                                        <span class="info-label">Security Level:</span>
+                                        <span class="info-value">Maximum (2FA Required)</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Account Type:</span>
+                                        <span class="info-value">Administrator (Full Access)</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Setup Time:</span>
+                                        <span class="info-value">~2-3 Minutes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setup-actions">
+                        <button class="btn btn-primary" id="beginSetupBtn">
+                            <span class="btn-text">INITIALIZE SYSTEM</span>
+                            <span class="btn-icon">→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin creation section -->
+                <div class="setup-section" id="adminSection">
+                    <div class="section-header">
+                        <div class="section-title">// ADMINISTRATOR CREATION</div>
+                        <div class="section-subtitle">Secure Neural Profile Setup</div>
+                    </div>
+
+                    <div class="setup-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Step 1 of 3: Account Details</div>
+                    </div>
+
+                    <div class="setup-form" id="setupForm">
+                        <!-- Form content will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Completion section -->
+                <div class="setup-section" id="completeSection">
+                    <div class="section-header">
+                        <div class="section-title">// SYSTEM INITIALIZED</div>
+                        <div class="section-subtitle">Neural Network Ready</div>
+                    </div>
+
+                    <div class="setup-complete">
+                        <div class="complete-icon">[OK]</div>
+                        <h3>Administrator Account Created</h3>
+                        <p>Your NeoSynth neural system has been successfully initialized with maximum security protocols.</p>
+
+                        <div class="complete-info">
+                            <div class="info-item">
+                                <span class="info-label">Account Status:</span>
+                                <span class="info-value success">Active Administrator</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Security Level:</span>
+                                <span class="info-value">2FA Enabled</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">System Status:</span>
+                                <span class="info-value success">Operational</span>
+                            </div>
+                        </div>
+
+                        <div class="setup-actions">
+                            <button class="btn btn-primary" id="enterSystemBtn">
+                                <span class="btn-text">ENTER NEURAL SYSTEM</span>
+                                <span class="btn-icon">→</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="setup-footer">
+                <div class="footer-text">NeoSynth Neural System v2.10.1 | Secure Initialization Protocol</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status messages -->
+    <div id="statusMessage" class="status-message"></div>
+
+    <!-- Scripts -->
+    <script src="../modules/themes/digitalRain.js"></script>
+    <script src="../scripts/first-time-setup.js"></script>
+</body>
+</html>
