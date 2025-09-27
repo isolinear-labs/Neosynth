@@ -190,7 +190,15 @@ app.use('/api', featureFlagRoutes);
 
 
 // Serve static files from the frontend directory (excluding index.html)
-app.use(express.static(frontendPath, { index: false }));
+// Override helmet cache headers for static assets to prevent 304s
+app.use(express.static(frontendPath, {
+    index: false,
+    maxAge: '24h', // Cache for 24 hours
+    setHeaders: (res, path) => {
+        // Override any cache-control headers set by helmet
+        res.set('Cache-Control', 'public, max-age=86400');
+    }
+}));
 
 
 /**
