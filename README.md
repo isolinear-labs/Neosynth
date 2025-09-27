@@ -1,8 +1,14 @@
+<div align="center">
+
 # NeoSynth
+
+*A cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!*
 
 ![Demo](demo.png)
 
-NeoSynth is a cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with a modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!
+---
+
+</div>
 
 ## Features
 
@@ -14,123 +20,54 @@ NeoSynth is a cyberpunk themed music and video streaming web application that al
 - Feature flag system
 - Modular features and CSS design allowing easy contributions
 
-## Getting Started
+---
 
-### Prerequisites
+## Quick Start
 
-- Node.js (v16 or higher)
-- MongoDB (v7 or higher)
-- npm or yarn
+### Production Deployment
 
-### Generate Production Secrets
+For production deployments using Docker Compose or Kubernetes, see our comprehensive [Deployment Guide](deployments/README.md).
 
-```bash
-# Generate TOTP encryption key (32 bytes = 64 hex chars)
-node -e "console.log('TOTP_ENCRYPTION_KEY=' + require('crypto').randomBytes(32).toString('hex'))"
+### Development Setup
 
-# Generate cookie secret (32+ characters)
-node -e "console.log('COOKIE_SECRET=' + require('crypto').randomBytes(32).toString('base64'))"
-```
+For local development:
 
-### Set Up Environment Variables
-```bash
-NODE_ENV=production                    # You can set NODE_ENV=development instad to lower security 
-                                       # protocols for local testing
-FRONTEND_URL=http://myNeoSythURL:5000  # Default is http://localhost:5000
-MONGODB_URI="mongodb://myMongoURI:27017/neosynth"
-COOKIE_SECRET=mySuperSecretCookieSecretGeneratedAbove
-TOTP_ENCRYPTION_KEY="mySuperSecretTOTPEnncryptionKeyGeneratedAbove"
-```
+1. **Prerequisites:**
+   - Node.js (v16 or higher)
+   - MongoDB (v7 or higher)
+   - npm or yarn
 
-
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone gh repo clone isolinear-labs/Neosynth
+2. **Clone and install:**
+   ```bash
+   git clone https://github.com/isolinear-labs/Neosynth
    cd Neosynth
-   ```
-
-2. Install dependencies:
-   ```
    cd backend
    npm install
    ```
 
-3. Start the application:
+3. **Set up environment variables:**
+   ```bash
+   NODE_ENV=development
+   FRONTEND_URL=http://localhost:5000
+   MONGODB_URI="mongodb://localhost:27017/neosynth"
+   COOKIE_SECRET="dev_cookie_secret"
+   TOTP_ENCRYPTION_KEY="dev_totp_key"
    ```
-   cd backend
+
+4. **Start the application:**
+   ```bash
    npm start
    ```
 
-4. Access the application at `http://localhost:5000` (Or what was set in the FRONTEND_URL env variable)
+5. **Access:** http://localhost:5000
 
-### Docker Compose
-
-```docker
-version: '3.8'
-
-services:
-  neosynth:
-    image: rcsilver/neosynth:nightly
-    ports:
-      - "5000:5000"
-    environment:
-      - NODE_ENV=production
-      - FRONTEND_URL=http://localhost:5000
-      - MONGODB_URI=mongodb://mongodb:27017/neosynth
-      - COOKIE_SECRET=your_super_secret_cookie_secret_here
-      - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
-      interval: 10s
-      timeout: 1s
-      retries: 3
-      start_period: 30s
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.2'
-          memory: 256M
-    networks:
-      - neosynth-network
-
-  mongodb:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 40s
-    networks:
-      - neosynth-network
-
-volumes:
-  mongodb_data:
-
-networks:
-  neosynth-network:
-    driver: bridge
-```
-
-### Kubernetes Deployment
-
-Docs coming soon...
+---
 
 ## Contributing
 
 Docs coming soon...
+
+---
 
 ## License
 
