@@ -1,4 +1,5 @@
 // First-time setup page JavaScript
+import { FOOTER_VERSION_DISPLAY } from '../constants.js';
 
 class FirstTimeSetup {
     constructor() {
@@ -11,6 +12,7 @@ class FirstTimeSetup {
         this.bindEvents();
         this.checkSetupStatus();
         this.initializeDigitalRain();
+        this.updateVersionDisplay();
     }
 
     bindEvents() {
@@ -95,8 +97,9 @@ class FirstTimeSetup {
     enterSystem() {
         this.showMessage('Entering NeoSynth Neural System...', 'success');
         setTimeout(() => {
-            window.location.href = '/';
-        }, 1500);
+            // Use assign for secure redirect like login page
+            window.location.assign('/');
+        }, 2500);
     }
 
     showSection(sectionId) {
@@ -142,6 +145,13 @@ class FirstTimeSetup {
             setTimeout(() => {
                 statusMessage.classList.remove('show');
             }, 5000);
+        }
+    }
+
+    updateVersionDisplay() {
+        const footerElement = document.getElementById('setupFooterVersion');
+        if (footerElement) {
+            footerElement.textContent = `${FOOTER_VERSION_DISPLAY} | Secure Initialization Protocol`;
         }
     }
 

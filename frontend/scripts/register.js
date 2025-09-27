@@ -23,6 +23,12 @@ async function checkFirstTimeSetup() {
     const urlParams = new URLSearchParams(window.location.search);
     const isFirstTimeSetup = urlParams.get('firstTimeSetup') === 'true';
 
+    // Hide provision link during any registration flow
+    const registerLink = document.querySelector('.register-link');
+    if (registerLink) {
+        registerLink.style.display = 'none';
+    }
+
     if (isFirstTimeSetup) {
         // Update page title and messaging for first-time setup
         const title = document.querySelector('.terminal-header h1');

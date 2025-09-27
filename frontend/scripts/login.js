@@ -19,6 +19,7 @@ class LoginManager {
             this.initializeDigitalRain();
             this.generateDeviceFingerprint();
             this.checkForTempCodeRequest();
+            this.checkProvisionLinkVisibility();
             this.setupEventListeners();
             this.setupDevelopmentTools();
         });
@@ -714,10 +715,10 @@ class LoginManager {
                 }
             }, 1200);
 
-            // Auto-redirect with longer delay to ensure localStorage is set
+            // Auto-redirect with 2.5-second delay
             const redirectTimer = setTimeout(() => {
                 this.performRedirect();
-            }, 4000);
+            }, 2500);
 
         } catch (error) {
             console.error('Login completion error:', error);
@@ -802,6 +803,17 @@ class LoginManager {
         } catch (error) {
             console.error('Temp code generation error:', error);
             this.showStatus('Failed to generate authorization code', 'error');
+        }
+    }
+
+    // Check if provision link should be visible
+    checkProvisionLinkVisibility() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const isFromFirstTimeSetup = urlParams.get('fromFirstTimeSetup') === 'true';
+        const registerLink = document.querySelector('.register-link');
+
+        if (registerLink && isFromFirstTimeSetup) {
+            registerLink.style.display = 'none';
         }
     }
 

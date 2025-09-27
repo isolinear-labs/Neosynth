@@ -14,6 +14,7 @@ import { themeSystem } from './modules/themes/themeSystem.js';
 import { sessionCheck } from './modules/sessionCheck/index.js';
 import { volumeMultiplierManager } from './modules/volumeMultiplier/index.js';
 import { PasswordResetDropdown } from './modules/passwordReset/index.js';
+import { SYSTEM_VERSION_DISPLAY } from './constants.js';
 
 // Get user ID (session token now handled by cookies)
 const userId = localStorage.getItem('neosynthUserId');
@@ -77,6 +78,12 @@ if (!userId) {
 	
     // Add logout button and user display to the header
     document.addEventListener('DOMContentLoaded', async function() {
+        // Update version display from constants
+        const systemVersionElement = document.getElementById('systemVersion');
+        if (systemVersionElement) {
+            systemVersionElement.textContent = SYSTEM_VERSION_DISPLAY;
+        }
+
         const headerSubtitle = document.querySelector('.subtitle');
 		
         // Create user status display
