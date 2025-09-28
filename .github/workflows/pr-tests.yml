@@ -90,3 +90,9 @@ jobs:
         cd backend
         npm audit --audit-level=high || echo "Audit completed with warnings"
       continue-on-error: true
+
+  changelog:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dangoslen/changelog-enforcer@v3

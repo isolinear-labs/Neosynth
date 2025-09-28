@@ -16,4 +16,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [v1.0.0] - 2025-09-28
 
-Initial release of NeoSynth Neural System.
+Initial release of NeoSynth!
