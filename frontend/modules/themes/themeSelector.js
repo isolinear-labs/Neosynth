@@ -208,11 +208,9 @@ export class ThemeSelector {
         const validThemes = [
             'default',
             'vapor',
-            'quantum',
             'noir',
             'mint',
-            'laser',
-            'toxic'
+            'laser'
         ];
         return validThemes.includes(themeName);
     }
@@ -226,7 +224,6 @@ export class ThemeSelector {
         const displayNames = {
             'default': 'Default',
             'vapor': 'Vapor Dream',
-            'quantum': 'Quantum Flux',
             'noir': 'Neon Noir',
             'mint': 'Vapor Mint',
             'laser': 'Laser Grid',
@@ -241,20 +238,15 @@ export class ThemeSelector {
 	 */
     getAvailableThemes() {
         return [
-            { 
-                id: 'default', 
+            {
+                id: 'default',
                 name: 'Default',
-                description: 'Classic NeoSynth blue/pink theme'
+                description: 'Classic 80s magenta/cyan contrast'
             },
             { 
                 id: 'vapor', 
                 name: 'Vapor Dream',
                 description: 'Soft purple/pink aesthetic with dreamy vibes'
-            },
-            { 
-                id: 'quantum', 
-                name: 'Quantum Flux',
-                description: 'High-tech purple/cyan/lime energy'
             },
             { 
                 id: 'noir', 

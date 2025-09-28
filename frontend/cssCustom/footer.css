@@ -158,3 +158,68 @@ body {
 		padding-bottom: 80px;
 	}
 }
+
+/* GitHub Link Styling */
+.github-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	margin-right: 4px;
+	color: var(--interactive-highlight);
+	text-decoration: none;
+	border-radius: 50%;
+	background: rgba(255, 0, 255, 0.05);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.github-icon {
+	width: 18px;
+	height: 18px;
+	z-index: 2;
+	position: relative;
+	transition: all 0.3s ease;
+}
+
+.github-link:hover {
+	color: var(--primary-accent);
+	border: 1px solid var(--primary-accent);
+	background: rgba(255, 0, 255, 0.1);
+	box-shadow:
+		0 0 20px rgba(255, 0, 255, 0.4),
+		inset 0 0 20px rgba(255, 0, 255, 0.1);
+	transform: translateY(-2px) scale(1.1);
+}
+
+.github-link:hover .github-icon {
+	transform: rotate(360deg);
+}
+
+.github-link::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	background: radial-gradient(circle, rgba(255, 0, 255, 0.3) 0%, transparent 70%);
+	border-radius: 50%;
+	transition: all 0.4s ease;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}
+
+.github-link:hover::before {
+	width: 50px;
+	height: 50px;
+}
+
+.github-link:active {
+	transform: translateY(0) scale(1.05);
+	box-shadow:
+		0 0 15px rgba(255, 0, 255, 0.3),
+		inset 0 0 15px rgba(255, 0, 255, 0.1);
+}

@@ -96,12 +96,6 @@ export class SettingsSystem {
 											<div class="theme-desc">Soft purple/pink aesthetic with dreamy vibes</div>
 										</div>
 									</div>
-									<div class="theme-card" data-theme="quantum">
-										<div class="theme-info">
-											<div class="theme-name">Quantum Flux</div>
-											<div class="theme-desc">High-tech purple/cyan/lime energy</div>
-										</div>
-									</div>
 									<div class="theme-card" data-theme="noir">
 										<div class="theme-info">
 											<div class="theme-name">Neon Noir</div>
@@ -118,12 +112,6 @@ export class SettingsSystem {
 										<div class="theme-info">
 											<div class="theme-name">Laser Grid</div>
 											<div class="theme-desc">Hot pink/electric blue retro gaming</div>
-										</div>
-									</div>
-									<div class="theme-card" data-theme="toxic">
-										<div class="theme-info">
-											<div class="theme-name">Toxic Waste</div>
-											<div class="theme-desc">Radioactive green/yellow hazardous energy</div>
 										</div>
 									</div>
 								</div>
@@ -1006,7 +994,7 @@ export class SettingsSystem {
         
         if (hasExperimentalFeatures) {
             experimentalGroup.style.display = 'block';
-            
+
             // Update experimental themes status
             const statusText = experimentalThemesStatus.querySelector('.status-text');
             if (statusText) {

@@ -973,11 +973,9 @@ class LoginManager {
         const themes = [
             { value: '', text: 'Default' },
             { value: 'vapor', text: 'Vapor' },
-            { value: 'quantum', text: 'Quantum' },
             { value: 'noir', text: 'Noir' },
             { value: 'mint', text: 'Mint' },
-            { value: 'laser', text: 'Laser' },
-            { value: 'toxic', text: 'Toxic' }
+            { value: 'laser', text: 'Laser' }
         ];
         
         themes.forEach(theme => {
@@ -1006,8 +1004,7 @@ const loginManager = new LoginManager();
 window.changeTheme = (themeName) => {
     // Remove existing theme classes
     document.body.classList.remove(
-        'theme-vapor', 'theme-quantum',
-        'theme-noir', 'theme-mint', 'theme-laser', 'theme-toxic'
+        'theme-vapor', 'theme-noir', 'theme-mint', 'theme-laser'
     );
     
     // Add new theme class if specified

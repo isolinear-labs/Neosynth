@@ -10,14 +10,13 @@
 @import 'themes/laser.css';
 @import 'themes/mint.css';
 @import 'themes/noir.css';
-@import 'themes/quantum.css';
-@import 'themes/toxic.css';
 @import 'themes/vapor.css';
 
 /* Experimental theme files */
 @import 'themes/experimental-hologram.css';
 @import 'themes/experimental-matrix.css';
 @import 'themes/experimental-cyber-glass.css';
+@import 'themes/experimental-toxic.css';
 
 /* Mobile responsive styles for all themes */
 @import 'themes/mobile.css';

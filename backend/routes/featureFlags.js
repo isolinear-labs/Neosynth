@@ -698,7 +698,7 @@ router.get('/themes',
             
             // Add default theme (always available, not in filesystem)
             let availableThemes = [
-                { id: 'default', name: 'Default', description: 'Classic NeoSynth blue/pink theme' },
+                { id: 'default', name: 'Default', description: 'Classic 80s magenta/cyan contrast' },
                 ...discoveredThemes
             ];
 
@@ -707,7 +707,8 @@ router.get('/themes',
                 availableThemes.push(
                     { id: 'hologram', name: 'Hologram', description: '[EXPERIMENTAL] Translucent blue/green holographic interface' },
                     { id: 'matrix', name: 'Matrix Code', description: '[EXPERIMENTAL] Green cascading code matrix theme' },
-                    { id: 'cyber-glass', name: 'Cyber Glass', description: '[EXPERIMENTAL] Transparent glass-like cyberpunk interface' }
+                    { id: 'cyber-glass', name: 'Cyber Glass', description: '[EXPERIMENTAL] Transparent glass-like cyberpunk interface' },
+                    { id: 'toxic', name: 'Toxic Waste', description: '[EXPERIMENTAL] Radioactive green/yellow hazardous energy' }
                 );
             }
 
