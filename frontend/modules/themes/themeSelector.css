@@ -22,7 +22,7 @@
     min-height: auto;
 	background: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(10px);
-	border: 1px solid var(--neon-purple);
+	border: 1px solid var(--primary-accent);
 	border-radius: 5px;
 	cursor: pointer;
 	transition: all 0.3s ease;
@@ -49,26 +49,26 @@
 }
 
 .theme-current-label {
-	color: var(--neon-purple);
+	color: var(--primary-accent);
 	font-size: 0.6rem;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-weight: bold;
-	text-shadow: 0 0 8px var(--neon-purple);
+	text-shadow: 0 0 8px var(--primary-accent);
     line-height: 1;
 }
 
 .theme-current-name {
-	color: var(--neon-cyan);
+	color: var(--interactive-highlight);
 	font-weight: bold;
 	font-size: 0.8rem;
 	line-height: 1.1;
-	text-shadow: 0 0 8px var(--neon-cyan);
+	text-shadow: 0 0 8px var(--interactive-highlight);
 	transition: all 0.3s ease;
 }
 
 .theme-dropdown-arrow {
-	color: var(--neon-purple);
+	color: var(--primary-accent);
 	font-size: 0.7rem;
 	transition: transform 0.3s ease;
 	margin-left: 8px;
@@ -89,7 +89,7 @@
 	overflow-y: auto !important; /* Allow scrolling if needed */
 	background: rgba(0, 0, 0, 0.95);
 	backdrop-filter: blur(15px);
-	border: 1px solid var(--neon-purple);
+	border: 1px solid var(--primary-accent);
 	border-radius: 5px 5px 0 0; /* Top corners rounded since it's above the trigger */
 	z-index: 2000 !important; /* Higher z-index to ensure it's on top */
 	box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5); /* Shadow going up instead of down */
@@ -132,7 +132,7 @@
 
 .theme-option.active {
 	background: rgba(216, 0, 255, 0.3);
-	border-left: 3px solid var(--neon-yellow);
+	border-left: 3px solid var(--warning-accent);
 	padding-left: 12px;
 }
 
@@ -144,16 +144,16 @@
 	bottom: 0;
 	width: 3px;
 	background: linear-gradient(180deg, 
-		var(--neon-yellow) 0%,
-		var(--neon-cyan) 50%,
-		var(--neon-yellow) 100%
+		var(--warning-accent) 0%,
+		var(--interactive-highlight) 50%,
+		var(--warning-accent) 100%
 	);
-	box-shadow: 0 0 10px var(--neon-yellow);
+	box-shadow: 0 0 10px var(--warning-accent);
 }
 
 .theme-option.active .theme-option-name {
-	color: var(--neon-yellow);
-	text-shadow: 0 0 10px var(--neon-yellow);
+	color: var(--warning-accent);
+	text-shadow: 0 0 10px var(--warning-accent);
 }
 
 .theme-option.active .theme-option-desc {
@@ -161,8 +161,8 @@
 }
 
 .theme-option:hover:not(.active) .theme-option-name {
-	color: var(--neon-cyan);
-	text-shadow: 0 0 10px var(--neon-cyan);
+	color: var(--interactive-highlight);
+	text-shadow: 0 0 10px var(--interactive-highlight);
 }
 
 .theme-option:hover:not(.active) .theme-option-desc {
@@ -263,7 +263,7 @@
 		max-height: 60vh;
 		overflow-y: auto;
 		scrollbar-width: thin;
-		scrollbar-color: var(--neon-purple) rgba(0, 0, 0, 0.3);
+		scrollbar-color: var(--primary-accent) rgba(0, 0, 0, 0.3);
 	}
 	
 	.theme-options::-webkit-scrollbar {
@@ -275,7 +275,7 @@
 	}
 	
 	.theme-options::-webkit-scrollbar-thumb {
-		background: var(--neon-purple);
+		background: var(--primary-accent);
 		border-radius: 3px;
 	}
 }
@@ -304,15 +304,15 @@
 @keyframes themePulse {
 	0% { 
 		transform: scale(1);
-		text-shadow: 0 0 8px var(--neon-cyan);
+		text-shadow: 0 0 8px var(--interactive-highlight);
 	}
 	50% { 
 		transform: scale(1.05);
-		text-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-yellow);
+		text-shadow: 0 0 15px var(--interactive-highlight), 0 0 25px var(--warning-accent);
 	}
 	100% { 
 		transform: scale(1);
-		text-shadow: 0 0 8px var(--neon-cyan);
+		text-shadow: 0 0 8px var(--interactive-highlight);
 	}
 }
 
@@ -329,7 +329,7 @@
 /* Accessibility improvements */
 .theme-current:focus,
 .theme-option:focus {
-	outline: 2px solid var(--neon-yellow);
+	outline: 2px solid var(--warning-accent);
 	outline-offset: 2px;
 }
 

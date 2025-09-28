@@ -300,15 +300,15 @@ export class ThemeSelector {
 				@keyframes themePulse {
 					0% { 
 						transform: scale(1);
-						text-shadow: 0 0 8px var(--neon-cyan);
+						text-shadow: 0 0 8px var(--interactive-highlight);
 					}
 					50% { 
 						transform: scale(1.05);
-						text-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-yellow);
+						text-shadow: 0 0 15px var(--interactive-highlight), 0 0 25px var(--warning-accent);
 					}
 					100% { 
 						transform: scale(1);
-						text-shadow: 0 0 8px var(--neon-cyan);
+						text-shadow: 0 0 8px var(--interactive-highlight);
 					}
 				}
 			`;

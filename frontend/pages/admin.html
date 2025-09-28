@@ -49,7 +49,7 @@
         .admin-header {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--neon-cyan);
+            border-bottom: 2px solid var(--interactive-highlight);
             padding: 20px;
             position: relative;
             z-index: 10;
@@ -59,8 +59,8 @@
         .admin-title {
             font-size: 2.5rem;
             font-weight: bold;
-            color: var(--neon-cyan);
-            text-shadow: 0 0 20px var(--neon-cyan);
+            color: var(--interactive-highlight);
+            text-shadow: 0 0 20px var(--interactive-highlight);
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 0;
@@ -76,10 +76,10 @@
         }
 
         .admin-subtitle {
-            color: var(--neon-purple);
+            color: var(--primary-accent);
             font-size: 1rem;
             margin-top: 8px;
-            text-shadow: 0 0 10px var(--neon-purple);
+            text-shadow: 0 0 10px var(--primary-accent);
             letter-spacing: 2px;
         }
 
@@ -110,18 +110,18 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            background: linear-gradient(90deg, transparent, var(--interactive-highlight), transparent);
             opacity: 0.5;
         }
 
         .section-title {
             font-size: 1.5rem;
-            color: var(--neon-yellow);
-            text-shadow: 0 0 15px var(--neon-yellow);
+            color: var(--warning-accent);
+            text-shadow: 0 0 15px var(--warning-accent);
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border-bottom: 1px solid var(--neon-yellow);
+            border-bottom: 1px solid var(--warning-accent);
             padding-bottom: 10px;
         }
 
@@ -159,7 +159,7 @@
         }
 
         .flag-card:hover {
-            border-color: var(--neon-cyan);
+            border-color: var(--interactive-highlight);
             box-shadow: 0 4px 20px rgba(5, 217, 232, 0.3);
             transform: translateY(-2px);
         }
@@ -167,7 +167,7 @@
         .flag-name {
             font-size: 1.2rem;
             font-weight: bold;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -199,8 +199,8 @@
         }
 
         .status-enabled {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 8px var(--neon-yellow);
+            color: var(--warning-accent);
+            text-shadow: 0 0 8px var(--warning-accent);
         }
 
         .status-disabled {
@@ -218,8 +218,8 @@
         }
 
         .status-enabled .status-indicator {
-            background: var(--neon-yellow);
-            box-shadow: 0 0 10px var(--neon-yellow);
+            background: var(--warning-accent);
+            box-shadow: 0 0 10px var(--warning-accent);
         }
 
         .status-disabled .status-indicator {
@@ -239,7 +239,7 @@
         }
 
         .admin-btn {
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            background: linear-gradient(45deg, var(--interactive-highlight), var(--primary-accent));
             border: none;
             color: white;
             padding: 8px 16px;
@@ -271,7 +271,7 @@
 
         .create-flag-form {
             background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--neon-purple);
+            border: 2px solid var(--primary-accent);
             border-radius: 10px;
             padding: 25px;
             margin-top: 20px;
@@ -283,7 +283,7 @@
 
         .form-label {
             display: block;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             font-weight: bold;
             margin-bottom: 8px;
             text-transform: uppercase;
@@ -306,7 +306,7 @@
 
         .form-input:focus {
             outline: none;
-            border-color: var(--neon-cyan);
+            border-color: var(--interactive-highlight);
             box-shadow: 0 0 15px rgba(1, 255, 195, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
             background: rgba(10, 10, 25, 0.9);
         }
@@ -329,8 +329,8 @@
             right: 20px;
             z-index: 100;
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
+            border: 1px solid var(--interactive-highlight);
+            color: var(--interactive-highlight);
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 4px;
@@ -341,14 +341,14 @@
         }
 
         .back-link:hover {
-            background: var(--neon-cyan);
+            background: var(--interactive-highlight);
             color: black;
-            box-shadow: 0 0 20px var(--neon-cyan);
+            box-shadow: 0 0 20px var(--interactive-highlight);
         }
 
         .loading {
             text-align: center;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             font-size: 1.2rem;
             padding: 40px;
         }
@@ -378,18 +378,18 @@
         }
 
         .template-category:hover {
-            border-color: var(--neon-purple);
+            border-color: var(--primary-accent);
             box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
         }
 
         .template-title {
             font-size: 1.1rem;
-            color: var(--neon-purple);
-            text-shadow: 0 0 10px var(--neon-purple);
+            color: var(--primary-accent);
+            text-shadow: 0 0 10px var(--primary-accent);
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 1px solid var(--neon-purple);
+            border-bottom: 1px solid var(--primary-accent);
             padding-bottom: 8px;
         }
 
@@ -402,7 +402,7 @@
         .template-btn {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(5, 217, 232, 0.5);
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
@@ -418,7 +418,7 @@
 
         .template-btn:hover {
             background: rgba(5, 217, 232, 0.1);
-            border-color: var(--neon-cyan);
+            border-color: var(--interactive-highlight);
             color: white;
             box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
             transform: translateY(-1px);
@@ -442,7 +442,7 @@
         /* Edit form styles */
         .edit-form {
             background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--neon-purple);
+            border: 2px solid var(--primary-accent);
             border-radius: 8px;
             padding: 20px;
             margin-top: 15px;
@@ -458,13 +458,13 @@
         }
 
         .edit-form-title {
-            color: var(--neon-purple);
-            text-shadow: 0 0 10px var(--neon-purple);
+            color: var(--primary-accent);
+            text-shadow: 0 0 10px var(--primary-accent);
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 1rem;
-            border-bottom: 1px solid var(--neon-purple);
+            border-bottom: 1px solid var(--primary-accent);
             padding-bottom: 8px;
         }
 
@@ -481,7 +481,7 @@
 
         .edit-form-label {
             display: block;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             font-weight: bold;
             margin-bottom: 5px;
             text-transform: uppercase;
@@ -503,7 +503,7 @@
 
         .edit-form-input:focus {
             outline: none;
-            border-color: var(--neon-cyan);
+            border-color: var(--interactive-highlight);
             box-shadow: 0 0 8px rgba(5, 217, 232, 0.3);
         }
 
@@ -551,7 +551,7 @@
         /* Enhanced section titles - override existing */
         .section-title {
             font-size: 1.6rem !important;
-            color: var(--neon-yellow) !important;
+            color: var(--warning-accent) !important;
             text-shadow: 0 0 20px rgba(255, 230, 0, 0.6) !important;
             margin-bottom: 25px !important;
             text-transform: uppercase !important;
@@ -568,15 +568,15 @@
             left: 0;
             width: 60px;
             height: 2px;
-            background: var(--neon-yellow);
-            box-shadow: 0 0 10px var(--neon-yellow);
+            background: var(--warning-accent);
+            box-shadow: 0 0 10px var(--warning-accent);
         }
 
         /* Enhanced admin buttons - override existing */
         .admin-btn {
             background: linear-gradient(45deg, rgba(1, 255, 195, 0.2), rgba(255, 230, 0, 0.2)) !important;
-            border: 2px solid var(--neon-cyan) !important;
-            color: var(--neon-cyan) !important;
+            border: 2px solid var(--interactive-highlight) !important;
+            color: var(--interactive-highlight) !important;
             padding: 12px 20px !important;
             border-radius: 6px !important;
             cursor: pointer !important;

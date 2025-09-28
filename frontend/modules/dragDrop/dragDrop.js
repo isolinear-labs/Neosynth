@@ -51,7 +51,7 @@ const DragDrop = (function() {
         placeholder.style.borderRadius = '5px';
         placeholder.style.borderWidth = '2px';
         placeholder.style.borderStyle = 'dashed';
-        placeholder.style.borderColor = 'var(--neon-blue, #05d9e8)';
+        placeholder.style.borderColor = 'var(--secondary-base)';
         placeholder.style.backgroundColor = 'rgba(5, 217, 232, 0.1)';
         placeholder.style.animation = 'placeholderPulse 1.5s infinite';
 		
@@ -436,11 +436,11 @@ const DragDrop = (function() {
             styleEl.textContent = `
 			@keyframes placeholderPulse {
 				0%, 100% {
-					border-color: var(--neon-blue, #05d9e8);
+					border-color: var(--secondary-base);
 					background-color: rgba(5, 217, 232, 0.1);
 				}
 				50% {
-					border-color: var(--neon-yellow, #ffe600);
+					border-color: var(--warning-accent);
 					background-color: rgba(255, 230, 0, 0.1);
 				}
 			}
@@ -453,7 +453,7 @@ const DragDrop = (function() {
 			.btn-move-item {
 				touch-action: none;
 				cursor: grab !important;
-				color: var(--neon-yellow);
+				color: var(--warning-accent);
 				transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 				/* Hide by default on desktop */
 				display: none;
@@ -463,15 +463,15 @@ const DragDrop = (function() {
 			.playlist-item:hover .btn-move-item {
 				display: inline-block;
 				transform: scale(1.2);
-				color: var(--neon-yellow);
-				text-shadow: 0 0 8px var(--neon-yellow);
+				color: var(--warning-accent);
+				text-shadow: 0 0 8px var(--warning-accent);
 			}
 			
 			/* Match your original CSS for the hover effect on the button itself */
 			.btn-move-item:hover {
-				color: var(--neon-cyan) !important;
+				color: var(--interactive-highlight) !important;
 				transform: scale(1.4) !important;
-				text-shadow: 0 0 12px var(--neon-cyan) !important;
+				text-shadow: 0 0 12px var(--interactive-highlight) !important;
 			}
 			
 			.btn-move-item:active {

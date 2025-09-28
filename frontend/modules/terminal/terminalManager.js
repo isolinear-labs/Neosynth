@@ -314,7 +314,7 @@ class TerminalManager {
         statusLine.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>✓ Key generated successfully: ${this.escapeHtml(apiKey)}</span>
-                <button onclick="terminalManager.copyToClipboard('${apiKey}')" class="action-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan); margin-left: 10px;">COPY</button>
+                <button onclick="terminalManager.copyToClipboard('${apiKey}')" class="action-btn" style="border-color: var(--interactive-highlight); color: var(--interactive-highlight); margin-left: 10px;">COPY</button>
             </div>
         `;
         statusLine.className = 'status-line status-success';

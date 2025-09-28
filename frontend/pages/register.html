@@ -29,13 +29,19 @@
             min-height: 100vh;
             position: relative;
             
-            /* Theme variables */
-            --neon-pink: #ff71ce;
-            --neon-blue: #01cdfe;
-            --neon-purple: #b967ff;
-            --neon-cyan: #00ffff;
-            --neon-yellow: #ffff00;
-            --neon-lime: #01ffc3;
+            /* Synthwave theme variables */
+            --primary-accent: #ff00ff;
+            --secondary-base: #00ffff;
+            --tertiary-accent: #ff00ff;
+            --interactive-highlight: #00ffff;
+            --warning-accent: #ffff00;
+            --success-accent: #ffff00;
+            --dark-bg: #1a0033;
+            --darker-bg: #0d001a;
+            --text-color: #ffffff;
+            --accent-dark: #cc00cc;
+            --panel-bg: rgba(26, 0, 51, 0.85);
+            --panel-bg-hover: rgba(26, 0, 51, 0.95);
             --deep-purple: #8a4fff;
         }
         
@@ -53,7 +59,7 @@
         
         .digit-rain {
             position: absolute;
-            color: var(--neon-pink);
+            color: var(--primary-accent);
             font-family: 'Share Tech Mono', monospace;
             font-size: 16px;
             opacity: 1.0;
@@ -61,7 +67,7 @@
             animation: rain linear infinite;
             overflow: hidden;
             max-width: 20px;
-            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            text-shadow: 0 0 10px var(--primary-accent), 0 0 20px var(--primary-accent);
         }
         
         @keyframes rain {
@@ -80,21 +86,21 @@
         
         .registration-panel {
             background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--neon-cyan);
+            border: 2px solid var(--interactive-highlight);
             border-radius: 10px;
             padding: 40px;
             max-width: 600px;
             width: 100%;
             box-shadow: 
-                0 0 20px var(--neon-cyan),
+                0 0 20px var(--interactive-highlight),
                 inset 0 0 20px rgba(0, 255, 255, 0.1);
             animation: panelPulse 3s infinite alternate;
             backdrop-filter: blur(10px);
         }
         
         @keyframes panelPulse {
-            0% { border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px rgba(0, 255, 255, 0.1); }
-            100% { border-color: var(--neon-pink); box-shadow: 0 0 30px var(--neon-pink), inset 0 0 30px rgba(255, 0, 255, 0.1); }
+            0% { border-color: var(--interactive-highlight); box-shadow: 0 0 20px var(--interactive-highlight), inset 0 0 20px rgba(0, 255, 255, 0.1); }
+            100% { border-color: var(--primary-accent); box-shadow: 0 0 30px var(--primary-accent), inset 0 0 30px rgba(255, 0, 255, 0.1); }
         }
         
         .title {
@@ -104,22 +110,22 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             animation: glitch 2s infinite;
-            color: var(--neon-pink);
+            color: var(--primary-accent);
         }
         
         .subtitle {
             text-align: center;
             font-size: 1.2em;
             margin-bottom: 30px;
-            color: var(--neon-blue);
+            color: var(--secondary-base);
             opacity: 0.8;
         }
         
         @keyframes glitch {
-            0%, 100% { text-shadow: 0 0 10px var(--neon-pink); }
-            25% { text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-pink); }
-            50% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-pink); }
-            75% { text-shadow: 0 0 20px var(--neon-lime); }
+            0%, 100% { text-shadow: 0 0 10px var(--primary-accent); }
+            25% { text-shadow: -2px 0 var(--secondary-base), 2px 0 var(--primary-accent); }
+            50% { text-shadow: 2px 0 var(--secondary-base), -2px 0 var(--primary-accent); }
+            75% { text-shadow: 0 0 20px var(--success-accent); }
         }
         
         .step {
@@ -145,7 +151,7 @@
         .form-label {
             display: block;
             margin-bottom: 8px;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -155,9 +161,9 @@
             width: 100%;
             padding: 15px;
             background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--neon-cyan);
+            border: 2px solid var(--interactive-highlight);
             border-radius: 5px;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.1em;
             transition: all 0.3s ease;
@@ -165,9 +171,9 @@
         
         .form-input:focus {
             outline: none;
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 15px var(--neon-pink);
-            text-shadow: 0 0 5px var(--neon-cyan);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 15px var(--primary-accent);
+            text-shadow: 0 0 5px var(--interactive-highlight);
         }
         
         .form-input::placeholder {
@@ -176,8 +182,8 @@
         
         .neural-button {
             background: transparent;
-            border: 2px solid var(--neon-cyan);
-            color: var(--neon-cyan);
+            border: 2px solid var(--interactive-highlight);
+            color: var(--interactive-highlight);
             padding: 15px 30px;
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.1em;
@@ -192,7 +198,7 @@
         
         .neural-button:hover {
             background: rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 15px var(--neon-cyan);
+            box-shadow: 0 0 15px var(--interactive-highlight);
             transform: translateY(-2px);
         }
         
@@ -202,18 +208,18 @@
         }
         
         .neural-button.secondary {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
         }
         
         .neural-button.secondary:hover {
             background: rgba(255, 0, 255, 0.2);
-            box-shadow: 0 0 15px var(--neon-pink);
+            box-shadow: 0 0 15px var(--primary-accent);
         }
         
         .qr-container {
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--neon-lime);
+            border: 1px solid var(--success-accent);
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -230,7 +236,7 @@
         
         .backup-codes {
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--neon-yellow);
+            border: 1px solid var(--warning-accent);
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -238,13 +244,13 @@
         
         .backup-code {
             background: rgba(255, 255, 0, 0.1);
-            border: 1px solid var(--neon-yellow);
+            border: 1px solid var(--warning-accent);
             border-radius: 3px;
             padding: 8px;
             margin: 5px;
             display: inline-block;
             font-family: 'Share Tech Mono', monospace;
-            color: var(--neon-yellow);
+            color: var(--warning-accent);
             letter-spacing: 1px;
         }
         
@@ -258,11 +264,11 @@
         
         .warning {
             background: rgba(255, 255, 0, 0.1);
-            border: 1px solid var(--neon-yellow);
+            border: 1px solid var(--warning-accent);
             border-radius: 5px;
             padding: 15px;
             margin: 20px 0;
-            color: var(--neon-yellow);
+            color: var(--warning-accent);
         }
         
         .success {
@@ -285,13 +291,13 @@
         }
         
         .status-indicator.active {
-            background: var(--neon-lime);
-            box-shadow: 0 0 10px var(--neon-lime);
+            background: var(--success-accent);
+            box-shadow: 0 0 10px var(--success-accent);
         }
         
         .status-indicator.waiting {
-            background: var(--neon-yellow);
-            box-shadow: 0 0 10px var(--neon-yellow);
+            background: var(--warning-accent);
+            box-shadow: 0 0 10px var(--warning-accent);
         }
         
         @keyframes blink {
@@ -303,20 +309,20 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            color: var(--neon-cyan);
+            color: var(--interactive-highlight);
             text-decoration: none;
             font-size: 0.9em;
             transition: all 0.3s ease;
         }
         
         .back-link:hover {
-            color: var(--neon-pink);
-            text-shadow: 0 0 5px var(--neon-pink);
+            color: var(--primary-accent);
+            text-shadow: 0 0 5px var(--primary-accent);
         }
         
         .device-info {
             background: rgba(0, 255, 255, 0.1);
-            border: 1px solid var(--neon-cyan);
+            border: 1px solid var(--interactive-highlight);
             border-radius: 5px;
             padding: 15px;
             margin: 20px 0;
@@ -366,7 +372,7 @@
                     </div>
                     <div class="instruction">
                         <strong>Secret Key (manual entry):</strong><br>
-                        <code id="secretKey" style="color: var(--neon-lime); letter-spacing: 2px;"></code>
+                        <code id="secretKey" style="color: var(--success-accent); letter-spacing: 2px;"></code>
                     </div>
                 </div>
                 
@@ -403,7 +409,7 @@
                 <h2><span class="status-indicator active"></span>Neural Link Established</h2>
                 
                 <div class="success">
-                    <p style="font-size: 1.3em; margin-bottom: 15px; color: var(--neon-cyan);">
+                    <p style="font-size: 1.3em; margin-bottom: 15px; color: var(--interactive-highlight);">
                         <span style="margin-right: 10px;">🧠</span>Neural Profile Created Successfully
                     </p>
                     <p style="color: #cccccc;">Your secure neural connection has been established.</p>

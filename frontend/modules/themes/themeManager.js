@@ -426,8 +426,8 @@ export class ThemeManager {
 			height: 0;
 			border-radius: 50%;
 			background: radial-gradient(circle, 
-				var(--neon-cyan), 
-				var(--neon-purple), 
+				var(--interactive-highlight), 
+				var(--primary-accent), 
 				transparent
 			);
 			opacity: 0.3;

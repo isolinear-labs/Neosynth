@@ -82,7 +82,7 @@ class AdminPanel {
     renderFeatureFlags(flags) {
         if (!flags || flags.length === 0) {
             this.featureFlagsContainer.innerHTML = `
-                <div style="text-align: center; color: var(--neon-purple); padding: 40px;">
+                <div style="text-align: center; color: var(--primary-accent); padding: 40px;">
                     <p>No feature flags found. Create your first one below!</p>
                 </div>
             `;
@@ -640,15 +640,15 @@ class AdminPanel {
         `;
 
         if (type === 'success') {
-            notification.style.background = 'linear-gradient(45deg, var(--neon-yellow), var(--neon-cyan))';
+            notification.style.background = 'linear-gradient(45deg, var(--warning-accent), var(--interactive-highlight))';
             notification.style.color = 'black';
         } else if (type === 'error') {
             notification.style.background = 'linear-gradient(45deg, #ff0080, #ff4040)';
             notification.style.color = 'white';
         } else {
             notification.style.background = 'rgba(0,0,0,0.8)';
-            notification.style.color = 'var(--neon-cyan)';
-            notification.style.border = '1px solid var(--neon-cyan)';
+            notification.style.color = 'var(--interactive-highlight)';
+            notification.style.border = '1px solid var(--interactive-highlight)';
         }
 
         notification.textContent = message;

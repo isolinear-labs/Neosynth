@@ -945,15 +945,15 @@ class LoginManager {
             background: rgba(0, 0, 0, 0.8);
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid var(--neon-cyan, #01ffc3);
+            border: 1px solid var(--interactive-highlight);
         `;
         
         // Create label
         const label = document.createElement('label');
-        label.textContent = 'Theme:';
+        label.textContent = 'Local Themes:';
         label.htmlFor = 'theme-select';
         label.style.cssText = `
-            color: var(--neon-cyan, #01ffc3);
+            color: var(--interactive-highlight);
             font-size: 0.9rem;
         `;
         
@@ -962,7 +962,7 @@ class LoginManager {
         select.id = 'theme-select';
         select.style.cssText = `
             background: var(--darker-bg, rgba(0, 0, 0, 0.8));
-            border: 1px solid var(--neon-blue, #05d9e8);
+            border: 1px solid var(--secondary-base);
             color: var(--text-color, #ffffff);
             padding: 5px;
             border-radius: 3px;
@@ -972,7 +972,6 @@ class LoginManager {
         // Add theme options
         const themes = [
             { value: '', text: 'Default' },
-            { value: 'synthwave', text: 'Synthwave' },
             { value: 'vapor', text: 'Vapor' },
             { value: 'quantum', text: 'Quantum' },
             { value: 'noir', text: 'Noir' },
@@ -1007,7 +1006,7 @@ const loginManager = new LoginManager();
 window.changeTheme = (themeName) => {
     // Remove existing theme classes
     document.body.classList.remove(
-        'theme-synthwave', 'theme-vapor', 'theme-quantum', 
+        'theme-vapor', 'theme-quantum',
         'theme-noir', 'theme-mint', 'theme-laser', 'theme-toxic'
     );
     
