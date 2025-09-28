@@ -32,3 +32,6 @@ Testing
 deprecated
 *.old
 docs
+
+# Tests
+*.cmd
