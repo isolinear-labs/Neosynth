@@ -2,6 +2,61 @@
 
 Thank you for your interest in contributing to NeoSynth! This guide will help you understand the project structure and how to contribute effectively.
 
+## Table of Contents
+
+- [Pull Request Process](#pull-request-process)
+- [Development Setup](#development-setup)
+- [Project Structure](#project-structure)
+- [Module System](#module-system)
+- [Experimental Themes](#experimental-themes)
+- [Code Quality](#code-quality)
+- [Feature Development Workflow](#feature-development-workflow)
+- [Getting Help](#getting-help)
+- [Release Process](#release-process)
+
+## Pull Request Process
+
+### Before Submitting
+
+1. **Run linting:**
+   ```bash
+   cd backend && npm run lint
+   cd frontend && npm run lint
+   ```
+
+2. **Run tests:**
+   ```bash
+   cd backend && npm test
+   ```
+
+3. **Test manually:**
+   - Verify your changes work as expected
+   - Test with different themes
+   - Check mobile responsiveness
+
+### Pull Request Guidelines
+
+- **Clear Description**: Explain what your changes do and why
+- **Feature Flags**: New features should be behind feature flags
+- **Documentation**: Update relevant documentation
+- **Screenshots**: Include screenshots for UI changes
+- **Breaking Changes**: Clearly mark any breaking changes
+
+### Commit Message Format
+
+```
+type(scope): description
+
+body (optional)
+
+footer (optional)
+```
+
+Examples:
+- `feat(themes): add hologram theme`
+- `fix(playlist): resolve shuffle mode bug`
+- `docs(contributing): update module creation guide`
+
 ## Development Setup
 
 ### Prerequisites
@@ -141,61 +196,88 @@ module-name/
 - **Performance**: Lazy load modules when possible
 - **Documentation**: Include clear JSDoc comments
 
-## Theme System
+## Experimental Themes
 
-NeoSynth supports multiple themes through a comprehensive CSS custom property system.
+NeoSynth includes an experimental themes system that allows for testing new themes before they become part of the main theme selector.
 
-### Theme Structure
+### How Experimental Themes Work
 
-Themes are defined in `/frontend/cssCustom/themes.css`:
+Experimental themes are:
+- **Feature Flag Controlled**: Only visible when the `experimental_themes` feature flag is enabled
+- **Backend Filtered**: The `/api/themes` endpoint filters themes based on feature flags
+- **Separate CSS Files**: Located in `/frontend/cssCustom/themes/experimental-*.css`
 
-```css
-:root {
-    /* Base theme variables */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --accent-primary: #00ff9f;
-    --accent-secondary: #ff6b6b;
-    /* ... more variables */
-}
+### Creating an Experimental Theme
 
-[data-theme="cyberpunk"] {
-    /* Cyberpunk theme overrides */
-    --bg-primary: #0a0a0a;
-    --accent-primary: #ff00ff;
-    /* ... theme-specific values */
-}
-```
+1. **Create the theme CSS file:**
+   ```bash
+   # Create new experimental theme file
+   touch frontend/cssCustom/themes/experimental-myTheme.css
+   ```
 
-### Creating a New Theme
-
-1. **Define theme variables:**
+2. **Define theme variables:**
    ```css
-   [data-theme="my-theme"] {
-       --bg-primary: #your-color;
-       --bg-secondary: #your-color;
-       --text-primary: #your-color;
-       --text-secondary: #your-color;
-       --accent-primary: #your-color;
-       --accent-secondary: #your-color;
-       /* ... all required variables */
+   /* Experimental My Theme */
+   body.theme-myTheme {
+       --primary-accent: #your-color;
+       --secondary-base: #your-color;
+       --tertiary-accent: #your-color;
+       --interactive-highlight: #your-color;
+       --warning-accent: #your-color;
+       --dark-bg: #your-color;
+       --darker-bg: #your-color;
+       --text-color: #your-color;
+       --accent-dark: #your-color;
+       --success-accent: #your-color;
+       --panel-bg: rgba(your-values);
+       --panel-bg-hover: rgba(your-values);
    }
    ```
 
-2. **Register theme in theme manager:**
-   Update `/frontend/modules/themes/themeManager.js` to include your theme.
+3. **Register in backend:**
+   Add to `/backend/routes/featureFlags.js` experimental themes array:
+   ```javascript
+   {
+       id: 'myTheme',
+       name: 'My Theme Name',
+       description: '[EXPERIMENTAL] Description of your theme'
+   }
+   ```
 
-3. **Test across components:**
-   Ensure all UI components work with your theme colors.
+4. **Add to theme selector:**
+   Update `/frontend/modules/themes/themeSelector.js`:
+   ```javascript
+   // Add to getAvailableThemes() method
+   {
+       id: 'myTheme',
+       name: 'My Theme Name',
+       description: '[EXPERIMENTAL] Description of your theme'
+   }
+   ```
 
-### Theme Guidelines
+### Experimental Theme Guidelines
 
-- **Accessibility**: Ensure sufficient color contrast
-- **Consistency**: Follow the established color variable naming
-- **Compatibility**: Test with all modules and components
-- **Documentation**: Document theme inspiration and color choices
+- **Prefix**: Always prefix experimental theme files with `experimental-`
+- **Description**: Include `[EXPERIMENTAL]` in theme descriptions
+- **Testing**: Test thoroughly across all UI components
+- **Documentation**: Document the theme's inspiration and color choices
+- **Performance**: Ensure theme doesn't impact application performance
+- **Accessibility**: Maintain proper contrast ratios for readability
+
+### Promoting Experimental Themes
+
+When an experimental theme is ready for general use:
+
+1. **Move CSS file**: From `experimental-*.css` to main themes location
+2. **Update selectors**: Change from `body.theme-name` to standard theme selectors
+3. **Remove from experimental array**: Remove from backend experimental themes
+4. **Add to main themes**: Add to standard theme arrays
+5. **Update documentation**: Remove experimental labels
+6. **Archive if needed**: Move previous version to `/frontend/cssCustom/themes/legacy/`
+
+### Legacy Themes
+
+Deprecated themes are archived in `/frontend/cssCustom/themes/legacy/` for reference and potential restoration.
 
 ## Code Quality
 
@@ -246,49 +328,6 @@ npm run test:coverage # Generate coverage report
 - Use descriptive test names
 - Cover both success and error cases
 - Test API endpoints thoroughly
-
-## Pull Request Process
-
-### Before Submitting
-
-1. **Run linting:**
-   ```bash
-   cd backend && npm run lint
-   cd frontend && npm run lint
-   ```
-
-2. **Run tests:**
-   ```bash
-   cd backend && npm test
-   ```
-
-3. **Test manually:**
-   - Verify your changes work as expected
-   - Test with different themes
-   - Check mobile responsiveness
-
-### Pull Request Guidelines
-
-- **Clear Description**: Explain what your changes do and why
-- **Feature Flags**: New features should be behind feature flags
-- **Documentation**: Update relevant documentation
-- **Screenshots**: Include screenshots for UI changes
-- **Breaking Changes**: Clearly mark any breaking changes
-
-### Commit Message Format
-
-```
-type(scope): description
-
-body (optional)
-
-footer (optional)
-```
-
-Examples:
-- `feat(themes): add hologram theme`
-- `fix(playlist): resolve shuffle mode bug`
-- `docs(contributing): update module creation guide`
 
 ## Feature Development Workflow
 

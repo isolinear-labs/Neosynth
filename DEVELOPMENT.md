@@ -296,6 +296,78 @@ CORS_ORIGINS=*            # CORS allowed origins
 - Keep dependencies updated
 - Follow OWASP guidelines
 
+## Theme System
+
+NeoSynth supports multiple themes through a comprehensive CSS custom property system.
+
+### Theme Structure
+
+Themes are defined in `/frontend/cssCustom/themes/root.css` and individual theme files:
+
+```css
+:root {
+    /* Base theme variables */
+    --primary-accent: #ff00ff;
+    --secondary-base: #00ffff;
+    --tertiary-accent: #ff00ff;
+    --interactive-highlight: #00ffff;
+    --warning-accent: #ffff00;
+    --dark-bg: #1a0033;
+    --darker-bg: #0d001a;
+    --text-color: #ffffff;
+    --accent-dark: #cc00cc;
+    --success-accent: #ffff00;
+    --panel-bg: rgba(26, 0, 51, 0.85);
+    --panel-bg-hover: rgba(26, 0, 51, 0.95);
+}
+```
+
+### Theme Architecture
+
+- **Root Variables**: Defined in `/frontend/cssCustom/themes/root.css`
+- **Individual Themes**: Located in `/frontend/cssCustom/themes/`
+- **Legacy Themes**: Archived in `/frontend/cssCustom/themes/legacy/`
+- **Experimental Themes**: Located in `/frontend/cssCustom/themes/experimental-*.css`
+
+### Creating a New Theme
+
+1. **Define theme variables:**
+   ```css
+   body.theme-mytheme {
+       --primary-accent: #your-color;
+       --secondary-base: #your-color;
+       --tertiary-accent: #your-color;
+       --interactive-highlight: #your-color;
+       --warning-accent: #your-color;
+       --dark-bg: #your-color;
+       --darker-bg: #your-color;
+       --text-color: #your-color;
+       --accent-dark: #your-color;
+       --success-accent: #your-color;
+       --panel-bg: rgba(your-values);
+       --panel-bg-hover: rgba(your-values);
+   }
+   ```
+
+2. **Register theme in theme selector:**
+   Update `/frontend/modules/themes/themeSelector.js` to include your theme.
+
+3. **Test across components:**
+   Ensure all UI components work with your theme colors.
+
+### Theme Guidelines
+
+- **Accessibility**: Ensure sufficient color contrast ratios
+- **Consistency**: Follow the established CSS variable naming convention
+- **Compatibility**: Test with all modules and UI components
+- **Documentation**: Document theme inspiration and color choices
+- **Performance**: Minimize CSS specificity and redundancy
+
+### Theme API Endpoints
+
+- `GET /api/themes` - Get available themes (filtered by feature flags)
+- Theme availability is controlled via the experimental themes feature flag
+
 ## Contributing
 
 For information about contributing to the codebase, see [CONTRIBUTING.md](CONTRIBUTING.md).

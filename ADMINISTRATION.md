@@ -126,23 +126,6 @@ MONGODB_URI=<database-connection-string>
 FRONTEND_URL=<your-domain-url>
 ```
 
-### Regular Maintenance
-
-1. **Weekly:**
-   - Review feature flag usage
-   - Monitor admin activity logs
-   - Check user access patterns
-
-2. **Monthly:**
-   - Audit admin user list
-   - Review feature flag rollouts
-   - Clean up unused flags
-
-3. **Quarterly:**
-   - Security audit of admin accounts
-   - Review authentication settings
-   - Update documentation
-
 ## Troubleshooting
 
 ### Common Issues
