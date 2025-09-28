@@ -1,0 +1,173 @@
+/* Theme: Matrix Code - Green cascading code matrix theme */
+body.theme-matrix {
+	/* Primary color palette - matrix green spectrum */
+	--primary-accent: #00ff41;
+	--secondary-base: #008f11;
+	--tertiary-accent: #00ff41;
+	--interactive-highlight: #00cc33;
+	--warning-accent: #33ff33;
+	--success-accent: #00ff00;
+	--accent-dark: #004d0d;
+	
+	/* Background system - deep matrix black/green */
+	--dark-bg: #000000;
+	--darker-bg: #001100;
+	--panel-bg: rgba(0, 17, 0, 0.8);
+	--panel-bg-hover: rgba(0, 17, 0, 0.9);
+	
+	/* Matrix code background */
+	background: #000000;
+	background-image: 
+		radial-gradient(circle at 25% 25%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+		radial-gradient(circle at 75% 75%, rgba(0, 255, 65, 0.1) 0%, transparent 50%);
+	background-attachment: fixed;
+}
+
+/* Matrix digital rain - intense green cascading */
+body.theme-matrix .digit-rain {
+	color: var(--success-accent);
+	text-shadow: 0 0 10px var(--success-accent);
+	font-family: 'Courier New', monospace;
+	font-weight: bold;
+}
+
+/* Matrix title - glitching code effect */
+body.theme-matrix .glitch-title {
+	color: var(--success-accent);
+	text-shadow: 
+		0 0 5px var(--success-accent),
+		0 0 10px var(--success-accent),
+		0 0 15px var(--success-accent),
+		0 0 20px var(--success-accent);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 6px;
+	font-family: 'Courier New', monospace;
+	animation: matrix-code-glitch 4s infinite;
+}
+
+body.theme-matrix .panel-title {
+	color: var(--success-accent);
+	text-shadow: 
+		0 0 8px var(--success-accent),
+		0 0 16px var(--success-accent);
+	font-family: 'Courier New', monospace;
+}
+
+/* Matrix code glitch animation */
+@keyframes matrix-code-glitch {
+	0%, 90%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	91% {
+		transform: translate(-1px, 0) scale(1.01);
+		opacity: 0.8;
+	}
+	92% {
+		transform: translate(1px, -1px) skew(0.5deg);
+		opacity: 0.9;
+	}
+	93% {
+		transform: translate(-1px, 1px) scale(0.99);
+		opacity: 0.7;
+	}
+	94% {
+		transform: translate(1px, 0) skew(-0.3deg);
+		opacity: 1;
+	}
+	95% {
+		transform: none;
+		opacity: 0.95;
+	}
+}
+
+/* Matrix code panels */
+body.theme-matrix .panel,
+body.theme-matrix .track-item,
+body.theme-matrix .playlist-item {
+	background: rgba(0, 0, 0, 0.8);
+	border: 1px solid var(--success-accent);
+	box-shadow: 
+		0 0 10px rgba(0, 255, 0, 0.3),
+		inset 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+body.theme-matrix .panel:hover,
+body.theme-matrix .track-item:hover,
+body.theme-matrix .playlist-item:hover {
+	background: rgba(0, 17, 0, 0.9);
+	border-color: var(--warning-accent);
+	box-shadow: 
+		0 0 15px rgba(0, 255, 0, 0.5),
+		inset 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+/* Matrix buttons - terminal style */
+body.theme-matrix button {
+	background: rgba(0, 0, 0, 0.9);
+	border: 1px solid var(--success-accent);
+	color: var(--success-accent);
+	font-family: 'Courier New', monospace;
+	font-weight: bold;
+	text-shadow: 0 0 5px var(--success-accent);
+}
+
+body.theme-matrix button:hover {
+	background: rgba(0, 51, 0, 0.9);
+	box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+	text-shadow: 0 0 8px var(--success-accent);
+}
+
+body.theme-matrix button:active {
+	background: rgba(0, 85, 0, 0.9);
+	transform: scale(0.98);
+}
+
+/* Matrix input fields - terminal green */
+body.theme-matrix input,
+body.theme-matrix select {
+	background: rgba(0, 0, 0, 0.9);
+	border: 1px solid var(--success-accent);
+	color: var(--success-accent);
+	font-family: 'Courier New', monospace;
+	text-shadow: 0 0 3px var(--success-accent);
+}
+
+body.theme-matrix input:focus,
+body.theme-matrix select:focus {
+	border-color: var(--warning-accent);
+	box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+	text-shadow: 0 0 5px var(--success-accent);
+}
+
+/* Matrix scrollbars */
+body.theme-matrix ::-webkit-scrollbar {
+	width: 8px;
+}
+
+body.theme-matrix ::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.8);
+}
+
+body.theme-matrix ::-webkit-scrollbar-thumb {
+	background: var(--success-accent);
+	border-radius: 4px;
+	box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+body.theme-matrix ::-webkit-scrollbar-thumb:hover {
+	background: var(--warning-accent);
+	box-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
+}
+
+/* Matrix progress bars */
+body.theme-matrix .progress-bar {
+	background: rgba(0, 0, 0, 0.8);
+	border: 1px solid var(--success-accent);
+}
+
+body.theme-matrix .progress-fill {
+	background: linear-gradient(90deg, var(--success-accent), var(--warning-accent));
+	box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}

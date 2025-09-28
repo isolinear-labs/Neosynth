@@ -1,0 +1,166 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: neosynth
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neosynth-config
+  namespace: neosynth
+data:
+  NODE_ENV: "production"
+  FRONTEND_URL: "https://your-domain.com"
+  MONGODB_URI: "mongodb://mongodb-service:27017/neosynth"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neosynth-secrets
+  namespace: neosynth
+type: Opaque
+stringData:
+  COOKIE_SECRET: "your_super_secret_cookie_secret_here"
+  TOTP_ENCRYPTION_KEY: "your_super_secret_totp_encryption_key_here"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  namespace: neosynth
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: neosynth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:7
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-storage
+          mountPath: /data/db
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+      volumes:
+      - name: mongodb-storage
+        persistentVolumeClaim:
+          claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: neosynth
+spec:
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    targetPort: 27017
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neosynth
+  namespace: neosynth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neosynth
+  template:
+    metadata:
+      labels:
+        app: neosynth
+    spec:
+      containers:
+      - name: neosynth
+        image: ghcr.io/isolinear-labs/neosynth:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: neosynth-config
+        - secretRef:
+            name: neosynth-secrets
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neosynth-service
+  namespace: neosynth
+spec:
+  selector:
+    app: neosynth
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: neosynth-ingress
+  namespace: neosynth
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - your-domain.com
+    secretName: neosynth-tls
+  rules:
+  - host: your-domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: neosynth-service
+            port:
+              number: 5000

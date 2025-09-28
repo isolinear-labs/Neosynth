@@ -1,0 +1,1009 @@
+/* Vapor Dream - Swagger Theme (inspired by vapor aesthetic) */
+:root {
+	/* Primary color palette - inspired by Vapor theme */
+	--primary-color: #ff71ce; /* Neon pink */
+	--secondary-color: #01cdfe; /* Neon blue */
+	--accent-color: #b967ff; /* Neon purple */
+	--background-dark: #190033; /* Deep purple dark */
+	--background-medium: #2a0066; /* Medium purple */
+	--background-light: #330055; /* Light purple panels */
+	--text-primary: #ffffff;
+	--text-secondary: #d4c4ff;
+	--glow-color: #ff71ce;
+	--glass-bg: rgba(51, 0, 85, 0.85); /* Purple glass */
+	--glass-border: rgba(255, 113, 206, 0.3);
+	--glass-light: rgba(255, 255, 255, 0.05);
+	
+	/* Additional colors for variety */
+	--text-muted: #b8a4d9;
+	--schema-bg: #1f0044; /* Purple schema background */
+	--code-bg: #0f001a; /* Darker purple code background */
+	--subtle-glow: rgba(255, 113, 206, 0.4);
+}
+
+/* Reset and base styles */
+.swagger-ui * {
+	box-sizing: border-box;
+}
+
+/* Main container */
+.swagger-ui {
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+	background: linear-gradient(135deg, #190033 0%, #2a0066 25%, #1a0040 50%, #330055 75%, #1f0044 100%) !important;
+	color: var(--text-primary) !important;
+	position: relative;
+}
+
+/* Add subtle vapor glow overlay */
+.swagger-ui::after {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: 
+		radial-gradient(circle at 30% 70%, rgba(255, 113, 206, 0.03) 0%, transparent 70%),
+		radial-gradient(circle at 70% 30%, rgba(185, 103, 255, 0.02) 0%, transparent 70%);
+	pointer-events: none;
+}
+
+/* For code blocks, use monospace */
+.swagger-ui code,
+.swagger-ui pre,
+.swagger-ui .parameter__name,
+.swagger-ui .property-name,
+.swagger-ui .opblock-summary-method {
+	font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+}
+
+.swagger-ui .wrapper {
+	background: transparent !important;
+}
+
+/* Top bar */
+.swagger-ui .topbar {
+	background: rgba(25, 0, 51, 0.95) !important;
+	border-bottom: 1px solid var(--primary-color) !important;
+	padding: 12px 0 !important;
+	box-shadow: 0 2px 8px rgba(255, 113, 206, 0.2) !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+	display: none !important;
+}
+
+/* Info section */
+.swagger-ui .info {
+	background-color: transparent !important;
+}
+
+.swagger-ui .info .title {
+	color: var(--primary-color) !important;
+	text-shadow: 0 0 15px var(--subtle-glow) !important;
+	font-size: 2.2rem !important;
+	font-weight: 700 !important;
+	border-bottom: 1px solid rgba(57, 255, 20, 0.3);
+	padding-bottom: 12px;
+	position: relative;
+	overflow: hidden;
+}
+
+/* Radioactive scanning animation */
+.swagger-ui .info .title::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+	animation: titleScan 4s infinite;
+	bottom: -1px;
+	top: auto;
+}
+
+@keyframes titleScan {
+	0% { left: -100%; }
+	100% { left: 100%; }
+}
+
+/* Info section headers */
+.swagger-ui .info .description h2,
+.swagger-ui .info .description h3,
+.swagger-ui .info .description h4 {
+	color: var(--primary-color) !important;
+	text-shadow: 0 0 5px var(--subtle-glow) !important;
+	font-weight: 600 !important;
+	margin: 20px 0 10px 0 !important;
+}
+
+/* Info boxes - subtle depth */
+.swagger-ui .info .info-text h3,
+.swagger-ui .info .description {
+	color: var(--text-secondary) !important;
+	background: rgba(31, 51, 41, 0.6) !important;
+	backdrop-filter: blur(8px);
+	padding: 18px;
+	border-radius: 6px;
+	border: 1px solid rgba(57, 255, 20, 0.2);
+	margin-top: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* All text elements */
+.swagger-ui p,
+.swagger-ui div,
+.swagger-ui span,
+.swagger-ui td,
+.swagger-ui th,
+.swagger-ui li,
+.swagger-ui label {
+	color: var(--text-secondary) !important;
+	line-height: 1.5 !important;
+}
+
+/* Parameter and property names */
+.swagger-ui .parameter__name,
+.swagger-ui .property-row .property-name {
+	color: var(--primary-color) !important;
+	font-weight: 600 !important;
+	text-shadow: none !important;
+}
+
+/* Code and pre elements */
+.swagger-ui pre,
+.swagger-ui code,
+.swagger-ui .microlight {
+	color: var(--text-primary) !important;
+	background: var(--code-bg) !important;
+	border: none !important;
+	border-radius: 6px !important;
+	padding: 6.5px !important;
+	box-shadow: none !important;
+	margin: 8px 0 !important;
+	overflow: auto !important;
+	white-space: pre-wrap !important;
+	word-wrap: break-word !important;
+	font-size: 0.9rem !important;
+	line-height: 1.92 !important;
+	min-height: auto !important;
+	max-height: none !important;
+	height: auto !important;
+}
+
+/* Tags - minimal design with better contrast */
+.swagger-ui .opblock-tag {
+	color: var(--primary-color) !important;
+	font-size: 1.4rem !important;
+	font-weight: 600 !important;
+	border-bottom: 1px solid rgba(57, 255, 20, 0.3) !important;
+	margin: 20px 0 15px 0 !important;
+	padding: 12px 16px !important;
+	background: rgba(31, 51, 41, 0.5) !important;
+	text-shadow: none !important;
+	border-radius: 6px !important;
+	letter-spacing: 0.5px;
+	border: 1px solid rgba(57, 255, 20, 0.2) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Endpoints - clean cards with better visibility */
+.swagger-ui .opblock {
+	background: rgba(31, 51, 41, 0.4) !important;
+	border: 1px solid rgba(57, 255, 20, 0.2) !important;
+	border-radius: 6px !important;
+	margin: 10px 0 !important;
+	overflow: hidden;
+	backdrop-filter: blur(5px);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+	transition: all 0.2s ease;
+}
+
+.swagger-ui .opblock:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(57, 255, 20, 0.15) !important;
+	border-color: rgba(57, 255, 20, 0.4) !important;
+	background: rgba(31, 51, 41, 0.5) !important;
+}
+
+/* HTTP Method labels */
+.swagger-ui .opblock .opblock-summary-method {
+	color: #000000 !important;
+	background: var(--primary-color) !important;
+	padding: 5px 10px !important;
+	border-radius: 3px !important;
+	font-weight: 700 !important;
+	font-size: 0.7rem !important;
+	text-shadow: none !important;
+	margin-right: 10px !important;
+	box-shadow: none !important;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+	background: var(--primary-color) !important;
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+	background: var(--accent-color) !important;
+}
+
+.swagger-ui .opblock.opblock-put .opblock-summary-method {
+	background: #ff6b35 !important;
+}
+
+.swagger-ui .opblock.opblock-delete .opblock-summary-method {
+	background: var(--secondary-color) !important;
+}
+
+/* Section headers */
+.swagger-ui .opblock-section-header,
+.swagger-ui .opblock-section-header h3,
+.swagger-ui .opblock-section-header h4,
+.swagger-ui .opblock-section-header .opblock-section-header-label {
+	color: var(--primary-color) !important;
+	background: transparent !important;
+	font-weight: 600 !important;
+	text-shadow: none !important;
+	padding: 8px 0 !important;
+	border-radius: 0 !important;
+	border-bottom: 1px solid rgba(57, 255, 20, 0.15) !important;
+	font-size: 0.95rem !important;
+}
+
+/* Parameters container - minimal with better visibility */
+.swagger-ui .parameters-container {
+	background: rgba(51, 0, 85, 0.3) !important;
+	border: 1px solid rgba(255, 113, 206, 0.15) !important;
+	border-radius: 6px !important;
+	padding: 15px !important;
+	margin: 15px 0 !important;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Schema section - clean and readable */
+.swagger-ui .model-container {
+	background: var(--schema-bg) !important;
+	border: 1px solid rgba(255, 113, 206, 0.2) !important;
+	border-radius: 6px !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+	margin: 12px 0 !important;
+	overflow: hidden;
+}
+
+.swagger-ui .model {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+}
+
+.swagger-ui .model-title {
+	background: rgba(255, 113, 206, 0.05) !important;
+	border-bottom: 1px solid rgba(255, 113, 206, 0.15) !important;
+	padding: 10px 14px !important;
+	font-size: 0.95rem !important;
+	font-weight: 600 !important;
+	color: var(--primary-color) !important;
+	text-shadow: none !important;
+	margin: 0 !important;
+}
+
+/* Schema properties */
+.swagger-ui .property-row {
+	padding: 8px 14px !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+	margin: 0 !important;
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+}
+
+.swagger-ui .property-row:hover {
+	background: rgba(255, 113, 206, 0.02) !important;
+}
+
+.swagger-ui .property-name {
+	color: var(--secondary-color) !important; /* Neon blue */
+	font-weight: 500 !important;
+	font-size: 0.9rem !important;
+	text-shadow: none !important;
+	min-width: 120px;
+}
+
+.swagger-ui .property-type {
+	color: var(--accent-color) !important;
+	text-shadow: none !important;
+	font-size: 0.8rem !important;
+	font-weight: 400 !important;
+}
+
+.swagger-ui .property-description {
+	color: var(--text-muted) !important;
+	margin-left: auto !important;
+	font-size: 0.8rem !important;
+}
+
+/* Required indicator */
+.swagger-ui .property-row .property-required {
+	color: var(--secondary-color) !important;
+	text-shadow: none !important;
+	font-size: 0.7rem !important;
+	font-weight: 600 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Buttons */
+.swagger-ui .btn {
+	background: transparent !important;
+	border: 1px solid var(--primary-color) !important;
+	color: var(--primary-color) !important;
+	border-radius: 3px !important;
+	font-weight: 500 !important;
+	text-shadow: none !important;
+	transition: all 0.2s ease;
+	padding: 6px 12px !important;
+	font-size: 0.8rem !important;
+}
+
+.swagger-ui .btn:hover {
+	background: rgba(255, 113, 206, 0.1) !important;
+	transform: translateY(-1px);
+	box-shadow: 0 2px 6px rgba(255, 113, 206, 0.2) !important;
+}
+
+/* Execute button */
+.swagger-ui .execute-wrapper .btn {
+	background: transparent !important;
+	border: 1px solid var(--secondary-color) !important;
+	color: var(--secondary-color) !important;
+}
+
+.swagger-ui .execute-wrapper .btn:hover {
+	background: rgba(1, 205, 254, 0.1) !important;
+	box-shadow: 0 2px 6px rgba(1, 205, 254, 0.2) !important;
+}
+
+/* Tables */
+.swagger-ui table {
+	background: rgba(51, 0, 85, 0.2) !important;
+	border-collapse: collapse !important;
+}
+
+.swagger-ui table thead tr th {
+	background: var(--schema-bg) !important;
+	color: var(--primary-color) !important;
+	border: 1px solid rgba(255, 113, 206, 0.2) !important;
+	padding: 8px !important;
+	font-weight: 600 !important;
+	text-shadow: none !important;
+}
+
+.swagger-ui table tbody tr td {
+	border: 1px solid rgba(255, 255, 255, 0.08) !important;
+	color: var(--text-secondary) !important;
+	padding: 8px !important;
+}
+
+/* JSON syntax highlighting */
+.swagger-ui .highlight {
+	background: var(--code-bg) !important;
+}
+
+.swagger-ui .highlight .hljs-string {
+	color: var(--accent-color) !important;
+	text-shadow: none !important;
+}
+
+.swagger-ui .highlight .hljs-number {
+	color: var(--secondary-color) !important;
+	text-shadow: none !important;
+}
+
+.swagger-ui .highlight .hljs-literal {
+	color: var(--primary-color) !important;
+	text-shadow: none !important;
+}
+
+.swagger-ui .highlight .hljs-keyword {
+	color: var(--secondary-color) !important;
+	text-shadow: none !important;
+}
+
+/* Grid pattern overlay - very subtle */
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: 
+		linear-gradient(rgba(255, 113, 206, 0.01) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 113, 206, 0.01) 1px, transparent 1px);
+	background-size: 60px 60px;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+	width: 6px !important;
+	height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--background-dark) !important;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 113, 206, 0.4) !important;
+	border-radius: 3px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 113, 206, 0.6) !important;
+}
+
+/* Response sections */
+.swagger-ui .responses-wrapper {
+	background: rgba(51, 0, 85, 0.3) !important;
+	border: 1px solid rgba(255, 113, 206, 0.15) !important;
+	border-radius: 6px !important;
+	padding: 15px !important;
+	margin: 15px 0 !important;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Input fields */
+.swagger-ui input[type=text], 
+.swagger-ui textarea,
+.swagger-ui select {
+	background: var(--code-bg) !important;
+	border: 1px solid rgba(255, 113, 206, 0.3) !important;
+	color: var(--text-primary) !important;
+	border-radius: 3px !important;
+	padding: 6px 10px !important;
+	font-size: 0.85rem !important;
+}
+
+.swagger-ui input[type=text]:focus,
+.swagger-ui textarea:focus {
+	border-color: var(--primary-color) !important;
+	box-shadow: 0 0 0 2px rgba(255, 113, 206, 0.1) !important;
+	outline: none !important;
+}
+
+/* Authorization */
+.swagger-ui .auth-container {
+	background: rgba(15, 31, 23, 0.9) !important;
+	border: 1px solid var(--primary-color) !important;
+	border-radius: 6px !important;
+}
+
+.swagger-ui .auth-btn-wrapper {
+	display: none !important;
+}
+
+/* Improve overall text legibility */
+.swagger-ui {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Contact information styling */
+.swagger-ui .info .info-text .contact p {
+	color: var(--text-secondary) !important;
+}
+
+.swagger-ui .info .info-text .contact p strong {
+	color: var(--secondary-color) !important;
+	text-shadow: 0 0 5px rgba(255, 0, 153, 0.5) !important;
+}
+
+.swagger-ui .info .info-text .contact a {
+	color: var(--primary-color) !important;
+	text-shadow: 0 0 5px var(--glow-color) !important;
+}
+
+.swagger-ui .info .info-text .contact a:hover {
+	color: var(--accent-color) !important;
+}
+
+/* Servers and authentication content */
+.swagger-ui .info p strong,
+.swagger-ui .info .info-text strong {
+	color: var(--secondary-color) !important;
+	text-shadow: 0 0 5px rgba(255, 0, 153, 0.5) !important;
+}
+
+/* Server list and authentication details */
+.swagger-ui .servers > .server {
+	background: rgba(31, 51, 41, 0.5) !important;
+	border: 1px solid rgba(57, 255, 20, 0.25) !important;
+	border-radius: 6px !important;
+	padding: 10px !important;
+	margin: 8px 0 !important;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.swagger-ui .servers .server .url {
+	color: var(--primary-color) !important;
+	font-weight: bold !important;
+	text-shadow: 0 0 5px var(--glow-color) !important;
+}
+
+/* CRITICAL FIXES FOR WHITE BARS */
+/* Fix the server/scheme container white background */
+.swagger-ui .scheme-container {
+	background: transparent !important;
+	box-shadow: none !important;
+	border: none !important;
+	padding: 15px 0 !important;
+}
+
+.swagger-ui .scheme-container .schemes {
+	color: var(--text-secondary) !important;
+}
+
+.swagger-ui .scheme-container .schemes .schemes-title {
+	color: var(--primary-color) !important;
+	text-shadow: 0 0 5px var(--glow-color) !important;
+}
+
+/* Fix servers section white bar */
+.swagger-ui .servers {
+	background: transparent !important;
+	border: none !important;
+}
+
+.swagger-ui .servers-title {
+	color: var(--primary-color) !important;
+	background: transparent !important;
+}
+
+/* AGGRESSIVE WHITE BAR FIXES */
+/* Target the specific white containers */
+.swagger-ui .wrapper > .block {
+	background: transparent !important;
+}
+
+.swagger-ui .wrapper .block.col-12 {
+	background: transparent !important;
+}
+
+/* Remove all box shadows and backgrounds from scheme wrappers */
+.swagger-ui .scheme-container .schemes-server-container {
+	background: transparent !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+/* Remove white background from ALL block elements */
+.swagger-ui .block {
+	background: transparent !important;
+}
+
+/* Specific targeting for server dropdown area */
+.swagger-ui .global-server-container {
+	background: transparent !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	padding: 20px 0 !important;
+}
+
+/* Remove any default Swagger UI section styling */
+.swagger-ui section.block {
+	background: transparent !important;
+}
+
+/* SPECIFIC FIX FOR THE MODELS SECTION WITH GRADIENT */
+.swagger-ui section.models.is-open {
+	background: transparent !important;
+}
+
+.swagger-ui section.models {
+	background: transparent !important;
+}
+
+/* Override any background image/gradient on models section */
+.swagger-ui .models.is-open,
+.swagger-ui .models {
+	background: transparent !important;
+	background-image: none !important;
+	background-color: transparent !important;
+}
+
+/* Links */
+.swagger-ui a {
+	color: var(--primary-color) !important;
+}
+
+.swagger-ui a:hover {
+	color: var(--accent-color) !important;
+}
+
+/* Model expand/collapse controls */
+.swagger-ui .model-toggle {
+	color: var(--primary-color) !important;
+	text-shadow: none !important;
+}
+
+.swagger-ui .model-toggle:hover {
+	color: var(--accent-color) !important;
+}
+
+/* Media type containers and response content styling */
+.swagger-ui .response-content-type {
+	background: rgba(255, 113, 206, 0.15) !important;
+	color: var(--text-primary) !important;
+	border: 1px solid rgba(255, 113, 206, 0.3) !important;
+	border-radius: 4px !important;
+	padding: 6px 12px !important;
+	display: inline-block !important;
+	margin: 5px 0 !important;
+	font-weight: 500 !important;
+}
+
+/* Tab content and example containers */
+.swagger-ui .tab-content,
+.swagger-ui .example-content {
+	background: transparent !important;
+	border: none !important;
+	border-radius: 6px !important;
+	padding: 0 !important;
+}
+
+/* Example values in response sections */
+.swagger-ui .example {
+	background: var(--code-bg) !important;
+	border: none !important;
+	color: var(--text-primary) !important;
+	border-radius: 6px !important;
+	padding: 6.5px !important;
+	margin: 8px 0 !important;
+	overflow: auto !important;
+	white-space: pre-wrap !important;
+	word-wrap: break-word !important;
+	font-size: 0.9rem !important;
+	line-height: 1.92 !important;
+	min-height: auto !important;
+	max-height: none !important;
+	height: auto !important;
+}
+
+/* Response example code blocks */
+.swagger-ui .response .response-content .response-content-type-wrapper pre,
+.swagger-ui .response .response-content .response-content-type-wrapper code {
+	background: var(--code-bg) !important;
+	border: none !important;
+	padding: 6.5px !important;
+	margin: 8px 0 !important;
+	border-radius: 6px !important;
+	overflow: auto !important;
+	white-space: pre-wrap !important;
+	word-wrap: break-word !important;
+	font-size: 0.9rem !important;
+	line-height: 1.92 !important;
+	min-height: auto !important;
+	max-height: none !important;
+	height: auto !important;
+}
+
+/* Fix the green text that appears in content type sections */
+.swagger-ui .content-type-wrapper .content-type .content-type-description,
+.swagger-ui .response .content-type .content-type-description,
+.swagger-ui .content-description,
+.swagger-ui .response-control-media-type--accept-controller {
+	color: var(--text-secondary) !important;
+}
+
+/* Target any remaining green text elements */
+.swagger-ui * {
+	color: inherit !important;
+}
+
+.swagger-ui .response-control-media-type--accept-controller .response-control-media-type-select,
+.swagger-ui .response-control-media-type-select {
+	color: var(--text-secondary) !important;
+}
+
+/* Force fix for text clipping - target all possible containers */
+.swagger-ui .tab-content pre,
+.swagger-ui .tab-content code,
+.swagger-ui .highlight-code,
+.swagger-ui .highlight,
+.swagger-ui .microlight,
+.swagger-ui .example pre,
+.swagger-ui .response-content-type pre {
+	padding: 6.5px !important;
+	line-height: 1.92 !important;
+	font-size: 0.85rem !important;
+	overflow: visible !important;
+	height: auto !important;
+	min-height: auto !important;
+	max-height: none !important;
+	display: block !important;
+	white-space: pre-wrap !important;
+	word-break: break-word !important;
+}
+
+/* Fix syntax highlighting spans that are getting clipped */
+.swagger-ui .hljs,
+.swagger-ui .hljs *,
+.swagger-ui span.hljs-attr,
+.swagger-ui span.hljs-string,
+.swagger-ui span.hljs-number,
+.swagger-ui span.hljs-literal,
+.swagger-ui span.hljs-keyword,
+.swagger-ui .microlight span {
+	line-height: 1.92 !important;
+	display: inline !important;
+	overflow: visible !important;
+	height: auto !important;
+	vertical-align: baseline !important;
+	padding: 2px 0 !important;
+}
+
+/* Nuclear option - override ALL spans in code blocks */
+.swagger-ui pre span,
+.swagger-ui code span,
+.swagger-ui .highlight span,
+.swagger-ui .microlight span,
+.swagger-ui .example span {
+	line-height: 1.92 !important;
+	vertical-align: baseline !important;
+	padding: 2px 0 !important;
+	overflow: visible !important;
+	height: auto !important;
+	display: inline !important;
+}
+
+/* Try to fix any potential container height issues */
+.swagger-ui .tab-content,
+.swagger-ui .example-content,
+.swagger-ui .response-content,
+.swagger-ui .response-wrapper {
+	height: auto !important;
+	min-height: auto !important;
+	max-height: none !important;
+	overflow: visible !important;
+}
+
+/* Authorization Modal Styling - Vapor Theme */
+.swagger-ui .modal-ux,
+.swagger-ui .modal-ux-inner {
+	background: rgba(25, 0, 51, 0.95) !important;
+	backdrop-filter: blur(10px) !important;
+}
+
+.swagger-ui .modal-ux-header {
+	background: var(--background-light) !important;
+	border-bottom: 1px solid var(--primary-color) !important;
+	color: var(--primary-color) !important;
+	padding: 20px !important;
+}
+
+.swagger-ui .modal-ux-header h3 {
+	color: var(--primary-color) !important;
+	text-shadow: 0 0 10px var(--glow-color) !important;
+	font-size: 1.4rem !important;
+	margin: 0 !important;
+}
+
+.swagger-ui .modal-ux-content {
+	background: var(--background-medium) !important;
+	color: var(--text-secondary) !important;
+	padding: 25px !important;
+	border-radius: 0 0 12px 12px !important;
+}
+
+.swagger-ui .modal-ux .auth-container {
+	background: rgba(51, 0, 85, 0.6) !important;
+	border: 1px solid var(--primary-color) !important;
+	border-radius: 8px !important;
+	padding: 20px !important;
+	margin: 15px 0 !important;
+}
+
+.swagger-ui .modal-ux .auth-container h4 {
+	color: var(--secondary-color) !important;
+	margin-bottom: 15px !important;
+}
+
+.swagger-ui .modal-ux .auth-container label {
+	color: var(--text-secondary) !important;
+	font-weight: 500 !important;
+}
+
+.swagger-ui .modal-ux .auth-container input[type="text"],
+.swagger-ui .modal-ux .auth-container input[type="password"] {
+	background: var(--code-bg) !important;
+	border: 1px solid var(--primary-color) !important;
+	color: var(--text-primary) !important;
+	padding: 12px !important;
+	border-radius: 6px !important;
+	width: 100% !important;
+	margin-top: 5px !important;
+}
+
+.swagger-ui .modal-ux .auth-container input:focus {
+	border-color: var(--secondary-color) !important;
+	box-shadow: 0 0 10px rgba(255, 113, 206, 0.3) !important;
+	outline: none !important;
+}
+
+.swagger-ui .modal-ux .auth-btn-wrapper {
+	text-align: right !important;
+	margin-top: 20px !important;
+}
+
+.swagger-ui .modal-ux .btn {
+	background: transparent !important;
+	border: 1px solid var(--primary-color) !important;
+	color: var(--primary-color) !important;
+	padding: 10px 20px !important;
+	margin-left: 10px !important;
+	border-radius: 6px !important;
+	cursor: pointer !important;
+}
+
+.swagger-ui .modal-ux .btn:hover {
+	background: rgba(255, 113, 206, 0.1) !important;
+	box-shadow: 0 2px 8px rgba(255, 113, 206, 0.3) !important;
+}
+
+.swagger-ui .modal-ux .btn.authorize {
+	background: var(--primary-color) !important;
+	color: var(--background-dark) !important;
+}
+
+.swagger-ui .modal-ux .btn.authorize:hover {
+	background: var(--secondary-color) !important;
+}
+
+/* Close button */
+.swagger-ui .modal-ux .close-modal {
+	color: var(--text-secondary) !important;
+	font-size: 1.5rem !important;
+	cursor: pointer !important;
+}
+
+.swagger-ui .modal-ux .close-modal:hover {
+	color: var(--primary-color) !important;
+}
+
+/* Fix both version badges with more specific targeting */
+.swagger-ui .info .info-oas,
+.swagger-ui .info .version,
+.swagger-ui .version,
+.swagger-ui .version-stamp,
+.swagger-ui .spec-version,
+.swagger-ui .oas-version {
+	background: transparent !important;
+	background-color: transparent !important;
+	color: var(--text-muted) !important;
+	border: 1px solid rgba(255, 113, 206, 0.4) !important;
+	border-radius: 12px !important;
+	padding: 4px 10px !important;
+	font-weight: 400 !important;
+	text-shadow: none !important;
+	font-size: 0.75rem !important;
+	display: inline-block !important;
+	margin: 2px !important;
+	overflow: visible !important;
+	line-height: 1.2 !important;
+	vertical-align: baseline !important;
+}
+
+/* Ultra-specific targeting based on dev tools structure */
+.swagger-ui .info .title small pre,
+.swagger-ui .info .title small pre.version,
+.swagger-ui .info .title small.version-stamp,
+.swagger-ui .info .title small.version-stamp pre,
+.swagger-ui .info .title small,
+.swagger-ui .info .title .version-stamp,
+.swagger-ui .info .title .version-stamp *,
+.swagger-ui .info .title .version,
+.swagger-ui .info .title pre,
+.swagger-ui .version-stamp,
+.swagger-ui .version-stamp *,
+.swagger-ui small.version-stamp,
+.swagger-ui small.version-stamp *,
+.swagger-ui .version-stamp pre,
+.swagger-ui .version-stamp .version {
+	background: none !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	background-clip: unset !important;
+	color: var(--text-muted) !important;
+	border: 1px solid rgba(255, 113, 206, 0.4) !important;
+	border-radius: 12px !important;
+	padding: 4px 10px !important;
+	margin: 0 !important;
+	font-family: inherit !important;
+	font-size: 0.75rem !important;
+	font-weight: 400 !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+}
+
+/* Extra specific override for the exact path shown in dev tools */
+.swagger-ui .info .title small pre.version {
+	all: unset !important;
+	color: var(--text-primary) !important;
+	background: rgba(255, 113, 206, 0.12) !important;
+	border: 1px solid rgba(255, 113, 206, 0.5) !important;
+	border-radius: 16px !important;
+	padding: 5px 14px !important;
+	font-size: 0.72rem !important;
+	font-weight: 500 !important;
+	display: inline-block !important;
+	vertical-align: middle !important;
+	margin: 0 10px !important;
+	line-height: 1.1 !important;
+	height: auto !important;
+	position: relative !important;
+	top: -1px !important;
+	text-align: center !important;
+	box-shadow: 0 1px 3px rgba(255, 113, 206, 0.2) !important;
+	transition: all 0.2s ease !important;
+}
+
+/* Fix the small container too */
+.swagger-ui .info .title small {
+	display: inline-block !important;
+	vertical-align: middle !important;
+	margin: 0 10px !important;
+	position: relative !important;
+	top: -1px !important;
+}
+
+/* Fix the OAS badge alignment too */
+.swagger-ui .info .info-oas {
+	color: var(--text-primary) !important;
+	background: rgba(1, 205, 254, 0.12) !important;
+	border: 1px solid rgba(1, 205, 254, 0.5) !important;
+	border-radius: 16px !important;
+	padding: 5px 14px !important;
+	font-size: 0.72rem !important;
+	font-weight: 500 !important;
+	vertical-align: middle !important;
+	margin: 0 10px !important;
+	line-height: 1.1 !important;
+	height: auto !important;
+	display: inline-block !important;
+	position: relative !important;
+	top: -1px !important;
+	text-align: center !important;
+	box-shadow: 0 1px 3px rgba(1, 205, 254, 0.2) !important;
+	transition: all 0.2s ease !important;
+}
+
+/* Add subtle hover effects */
+.swagger-ui .info .title small pre.version:hover {
+	background: rgba(255, 113, 206, 0.18) !important;
+	border-color: rgba(255, 113, 206, 0.7) !important;
+	transform: translateY(-1px) !important;
+}
+
+.swagger-ui .info .info-oas:hover {
+	background: rgba(1, 205, 254, 0.18) !important;
+	border-color: rgba(1, 205, 254, 0.7) !important;
+	transform: translateY(-1px) !important;
+}
+
+/* Ensure proper container overflow handling */
+.swagger-ui .info {
+	overflow: visible !important;
+}
+
+.swagger-ui .info .title {
+	overflow: visible !important;
+}

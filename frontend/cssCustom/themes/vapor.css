@@ -1,0 +1,68 @@
+/* Theme: Vapor Dream - Soft purple/pink aesthetic with dreamy vibes */
+body.theme-vapor {
+	/* Primary color palette */
+	--primary-accent: #ff71ce;
+	--secondary-base: #01cdfe;
+	--tertiary-accent: #b967ff;
+	--interactive-highlight: #ff71ce;
+	--warning-accent: #01cdfe;
+	--success-accent: #b967ff;
+	--accent-dark: #8a4fff;
+	
+	/* Background system - layered depth */
+	--dark-bg: #190033;
+	--darker-bg: #0f001a;
+	--panel-bg: rgba(25, 0, 51, 0.85);
+	--panel-bg-hover: rgba(25, 0, 51, 0.95);
+	
+	/* Gradient backgrounds for cohesion */
+	background: linear-gradient(135deg, 
+		#190033 0%, 
+		#2a0066 25%, 
+		#1a0040 50%, 
+		#330055 75%, 
+		#1f0044 100%);
+	background-attachment: fixed;
+}
+
+/* Enhanced digital rain that adapts to themes */
+body.theme-vapor .digit-rain {
+	color: var(--primary-accent);
+	text-shadow: 0 0 10px var(--primary-accent);
+}
+
+/* Vapor Dream - dreamy, soft glow effects */
+body.theme-vapor .glitch-title {
+	color: var(--primary-accent);
+	text-shadow:
+		0 0 20px var(--primary-accent),
+		0 0 40px var(--primary-accent),
+		0 0 60px var(--primary-accent);
+	filter: blur(0.5px);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+	animation: glitch 5s infinite;
+}
+
+body.theme-vapor .panel-title {
+	text-shadow: 
+		0 0 15px var(--secondary-base),
+		0 0 30px var(--secondary-base);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

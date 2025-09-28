@@ -1,114 +1,80 @@
+<div align="center">
+
 # NeoSynth
+
+*A cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!*
 
 ![Demo](demo.png)
 
-NeoSynth is a cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with a modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!
+---
+
+</div>
 
 ## Features
 
-- Play audio and video files from network locations / storage
+- Stream audio and video files from your local network
 - Create and manage multiple playlists
 - Shuffle mode with intelligent track selection
 - Responsive design for both desktop and mobile
 - Multiple themes ready to use
-- Modular design to allow easy implementation of features and themes
+- Feature flag administration system
+- Modular features and CSS design allowing easy contributions
+- TOTP support 
 
-## Getting Started
+---
 
-### Prerequisites
+## Quick Start
 
-- Node.js (v16 or higher)
-- MongoDB (v4.4 or higher)
-- npm or yarn
+### Production Deployment
 
-### Generate Production Secrets
+For production deployments using Docker Compose or Kubernetes, see our comprehensive [Deployment Guide](deployments/README.md).
 
-```bash
-# Generate TOTP encryption key (32 bytes = 64 hex chars)
-node -e "console.log('TOTP_ENCRYPTION_KEY=' + require('crypto').randomBytes(32).toString('hex'))"
+### Development Setup
 
-# Generate cookie secret (32+ characters)
-node -e "console.log('COOKIE_SECRET=' + require('crypto').randomBytes(32).toString('base64'))"
-```
+For local development:
 
-### Set Up Environment Variables
-```bash
-NODE_ENV=production                    # You can set NODE_ENV=development instad to lower security 
-                                       # protocols for local testing
-FRONTEND_URL=http://myNeoSythURL:5000  # Default is http://localhost:5000
-MONGODB_URI="mongodb://myMongoURI:27017/neosynth"
-COOKIE_SECRET=mySuperSecretCookieSecretGeneratedAbove
-TOTP_ENCRYPTION_KEY="mySuperSecretTOTPEnncryptionKeyGeneratedAbove"
-```
+1. **Prerequisites:**
+   - Node.js (v16 or higher)
+   - MongoDB (v7 or higher)
+   - npm or yarn
 
-
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone gh repo clone isolinear-labs/Neosynth
+2. **Clone and install:**
+   ```bash
+   git clone https://github.com/isolinear-labs/Neosynth
    cd Neosynth
+   cd backend && npm install
    ```
 
-2. Install dependencies:
-   ```
-   cd backend
-   npm install
+3. **Set up environment variables:**
+   ```bash
+   NODE_ENV=development
+   FRONTEND_URL=http://localhost:5000
+   MONGODB_URI="mongodb://localhost:27017/neosynth"
+   COOKIE_SECRET=$(openssl rand -base64 32)
+   TOTP_ENCRYPTION_KEY=$(openssl rand -hex 32)
    ```
 
-3. Start the application:
-   ```
-   cd backend
+4. **Start the application:**
+   ```bash
    npm start
    ```
 
-4. Access the application at `http://localhost:5000` (Or what was set in the FRONTEND_URL env variable)
+5. **Access:** http://localhost:5000
 
-### Docker Compose
+---
 
-```docker
-version: '3.8'
+## Documentation
 
-services:
-  neosynth:
-    build: .
-    ports:
-      - "5000:5000"
-    environment:
-      - NODE_ENV=production
-      - FRONTEND_URL=http://localhost:5000
-      - MONGODB_URI=mongodb://mongodb:27017/neosynth
-      - COOKIE_SECRET=your_super_secret_cookie_secret_here
-      - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
-    depends_on:
-      - mongodb
-    networks:
-      - neosynth-network
-
-  mongodb:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - neosynth-network
-
-volumes:
-  mongodb_data:
-
-networks:
-  neosynth-network:
-    driver: bridge
-```
-
-### Kubernetes Deployment
-
-Docs coming soon...
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute, module system, themes, and development workflow
+- **[Administration Guide](ADMINISTRATION.md)** - Feature flag management and user administration
+- **[Development Guide](DEVELOPMENT.md)** - API documentation, authentication, and technical details
+- **[Deployment Guide](deployments/README.md)** - Docker Compose and Kubernetes deployment instructions
 
 ## Contributing
 
-Docs coming soon...
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+
+---
 
 ## License
 

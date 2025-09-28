@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoSynth System</title>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
+    <meta name="msapplication-TileImage" content="assets/favicon.png">
+    <meta name="msapplication-TileColor" content="#1a0d33">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="digitalRain"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="glitch-title">NeoSynth</h1>
+            <div class="subtitle" id="systemVersion">$systemVersion</div>
+        </header>
+
+        <div class="music-panel" id="dropZone">
+            <div class="cyberpunk-border border-top"></div>
+            <div class="cyberpunk-border border-right"></div>
+            <div class="cyberpunk-border border-bottom"></div>
+            <div class="cyberpunk-border border-left"></div>
+            
+            <div class="panel-header">
+                <div class="panel-title">// CONTENT CONTROL</div>
+                <div id="dropIndicator" class="status-indicator">Ready</div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+            
+            <div class="input-container">
+                <input type="text" id="urlInput" class="url-input" placeholder="Paste music file URL here or drag & drop links / directory URLs (mp3, mp4, webm, Github...etc.)">
+                <button id="addBtn" class="btn btn-add">ADD TO PLAYLIST</button>
+            </div>
+            
+            <div class="playlist-items" id="playlistItems">
+                <div class="no-items-message">No tracks added yet. Paste a URL above or drag & drop links to get started.</div>
+            </div>
+            
+            <div id="nowPlayingContainer" class="now-playing-container hide">
+                <div class="cyberpunk-border border-top"></div>
+                <div class="cyberpunk-border border-right"></div>
+                <div class="cyberpunk-border border-bottom"></div>
+                <div class="cyberpunk-border border-left"></div>
+                
+                <div class="now-playing-header">
+                    <div class="now-playing-title">// Now Playing</div>
+                    <div class="time-display">
+                        <div id="currentTime">0:00</div>
+                        <div>/</div>
+                        <div id="duration">0:00</div>
+                    </div>
+                </div>
+                
+                <div class="now-playing">
+                    <div class="now-playing-icon">♫</div>
+                    <div class="now-playing-info">
+                        <div id="nowPlayingName" class="now-playing-name">Track Name</div>
+                    </div>
+                </div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div id="progressBar" class="progress-bar">
+                        <div class="progress-pulse"></div>
+                    </div>
+                </div>
+                
+                <div class="player-footer">
+                    <div class="player-controls">
+                        <button id="prevBtn" class="control-btn">⏮</button>
+                        <button id="playPauseBtn" class="control-btn main">▶</button>
+                        <button id="nextBtn" class="control-btn">⏭</button>
+                    </div>
+
+                    <div class="volume-control">
+                        <div class="volume-multiplier-container">
+                            <input type="number" id="volumeMultiplier" class="volume-multiplier-input" min="0.5" max="3" step="0.1" value="1" placeholder="1x">
+                            <label for="volumeMultiplier" class="volume-multiplier-label">x</label>
+                        </div>
+                        <button id="muteBtn" class="control-btn small">🔊</button>
+                        <div class="volume-slider-container">
+                            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-advanced-controls">
+                    <div class="advanced-buttons">
+                      <button id="shuffleBtn" class="advanced-btn">
+                        <span class="btn-icon">⟲</span> SHUFFLE
+                      </button>
+                      <!-- Room for additional controls in the future -->
+                    </div>
+                
+                    <!-- Status message container -->
+                    <div id="playerStatusIndicator" class="player-status-indicator hide">
+                        <span class="status-dot"></span>
+                        <span class="status-text">RANDOM MODE</span>
+                    </div>
+                </div>
+
+                <div id="videoContainer" class="video-container hide">
+                    <video id="videoPlayer" controls width="100%"></video>
+                </div>
+                
+                <audio id="audioPlayer" style="display: none;"></audio>
+            </div>
+        </div>
+        
+        <div class="playlist-panel">
+            <div class="cyberpunk-border border-top"></div>
+            <div class="cyberpunk-border border-right"></div>
+            <div class="cyberpunk-border border-bottom"></div>
+            <div class="cyberpunk-border border-left"></div>
+            
+            <div class="panel-header">
+                <div class="panel-title">// PLAYLIST MANAGER</div>
+                <div id="trackCounter" class="status-indicator">0 Tracks</div>
+            </div>
+            
+            <div class="playlist-manager">
+                <input type="text" id="playlistNameInput" class="playlist-name-input" placeholder="Enter playlist name">
+                <div class="playlist-buttons">
+                    <button id="clearBtn" class="btn btn-clear">CLEAR PLAYLIST</button>
+                    <button id="saveBtn" class="btn btn-save">SAVE</button>
+                </div>
+            </div>
+            
+            <div class="playlist-manager" style="margin-top: 15px;">
+                <select id="playlistSelect" class="playlist-select">
+                    <option value="">-- Saved Playlists --</option>
+                </select>
+                <div class="playlist-buttons">
+                    <button id="loadBtn" class="btn btn-play">LOAD</button>
+                    <button id="deleteBtn" class="btn btn-delete">DELETE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <a href="/api/swagger" class="api-link" target="_blank" rel="noopener noreferrer">API DOCS</a>
+        <a href="https://github.com/isolinear-labs/Neosynth" class="github-link" target="_blank" rel="noopener noreferrer">
+            <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+        </a>
+        <button id="techSocketBtn" class="tech-socket-btn">
+            <div class="socket-ring"></div>
+            <div class="socket-core">
+                <div class="socket-center"></div>
+            </div>
+        </button>
+        <!-- Settings button will be added here by the settings integration -->
+    </footer>
+
+    <!-- Terminal Modal -->
+    <div id="terminalModal" class="terminal-modal hide">
+        <div class="terminal-container">
+            <div class="loading-overlay">
+                <div class="loading-text">Opening root Socket...</div>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+            
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <span>👾</span>
+                    <span>Socket Opened - Remote Key Management</span>
+                </div>
+            </div>
+            
+            <div class="terminal-body">
+                <div class="terminal-prompt">
+                    root@neosynth:~# ./keyGen.sh<span id="runningIndicator" class="running-indicator"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+                </div>
+                
+                <div class="terminal-menu">
+                    <div class="menu-option" data-action="create">
+                        <div class="menu-option-title">CREATE API KEY</div>
+                        <div class="menu-option-desc">Generate new API key for external access</div>
+                    </div>
+                    
+                    <div class="menu-option menu-option-disabled" data-action="permissions">
+                        <div class="menu-option-title">PERMISSIONS</div>
+                        <div class="menu-option-desc">Configure key access levels</div>
+                    </div>
+                </div>
+                
+                <div class="terminal-input">
+                    <span class="input-prompt">$</span>
+                    <input type="text" id="terminalInput" class="terminal-field" placeholder="Enter API key name...">
+                    <button id="executeBtn" class="execute-btn">EXECUTE</button>
+                </div>
+                
+                <div class="api-key-list" id="apiKeyList">
+                    <!-- API keys will be populated here -->
+                </div>
+                
+                <div id="statusLine" class="status-line hide">
+                    <!-- Status messages will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

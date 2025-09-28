@@ -1,0 +1,79 @@
+/* Add these styles to your existing CSS in index.html */
+
+.playlist-item {
+    transition: all 0.1s ease;
+}
+
+/* Enhanced styling for drag states */
+.playlist-item.dragging {
+    opacity: 0.6;
+    border: 2px dashed var(--secondary-base) !important;
+    background-color: rgba(5, 217, 232, 0.2) !important;
+    box-shadow: 0 0 15px rgba(5, 217, 232, 0.4);
+    position: relative;
+    z-index: 100;
+}
+
+/* Style for potential drop targets */
+.playlist-item.potential-drop-target {
+    transition: padding 0.2s ease, background 0.2s ease;
+}
+
+/* Clear indicator for dropping above */
+.playlist-item.drag-over-top {
+    border-top: 2px dashed var(--warning-accent) !important;
+    padding-top: 15px !important;
+    background: linear-gradient(to bottom, 
+                rgba(255, 230, 0, 0.2),
+                rgba(13, 2, 33, 0.8) 70%) !important;
+    position: relative;
+    /* Quick transition to prevent ghosting */
+    transition: border-top 0.1s, padding-top 0.1s, background 0.1s;
+}
+
+/* Clear indicator for dropping below */
+.playlist-item.drag-over-bottom {
+    border-bottom: 2px dashed var(--warning-accent) !important;
+    padding-bottom: 15px !important;
+    background: linear-gradient(to top, 
+                rgba(255, 230, 0, 0.2),
+                rgba(13, 2, 33, 0.8) 70%) !important;
+    position: relative;
+    /* Quick transition to prevent ghosting */
+    transition: border-bottom 0.1s, padding-bottom 0.1s, background 0.1s;
+}
+
+/* Add hover effects for the drag handles to make them more noticeable */
+.btn-move-item {
+    color: var(--warning-accent);
+    cursor: grab;
+    transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.playlist-item:hover .btn-move-item {
+    display: inline-block;
+    transform: scale(1.3);
+    color: var(--warning-accent);
+    text-shadow: 0 0 8px var(--warning-accent);
+}
+
+.btn-move-item:hover {
+    color: var(--interactive-highlight) !important;
+    transform: scale(1.4) !important;
+    text-shadow: 0 0 12px var(--interactive-highlight) !important;
+}
+
+/* Pulse animation for the drag indicator during dragging */
+@keyframes dragPulse {
+    0%, 100% {
+        text-shadow: 0 0 5px var(--warning-accent);
+    }
+    50% {
+        text-shadow: 0 0 15px var(--warning-accent), 0 0 20px var(--warning-accent);
+    }
+}
+
+.dragging .btn-move-item {
+    display: inline-block !important;
+    animation: dragPulse 1s infinite;
+}
