@@ -45,7 +45,20 @@ app.set('trust proxy', 1);
 
 // Security headers middleware
 app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP to avoid breaking frontend
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-hashes'"], // Allow inline scripts and event handlers
+            scriptSrcAttr: ["'unsafe-inline'"],       // Allow inline event handlers (onclick, etc.)
+            styleSrc: ["'self'", "'unsafe-inline'"],  // Allow inline styles for frontend compatibility
+            imgSrc: ["'self'", "data:", "https:"],    // Allow images from any HTTPS source
+            connectSrc: ["'self'", "https:", "http:"], // Allow API calls to external streaming sources
+            fontSrc: ["'self'", "data:"],             // Allow fonts from same origin and data URLs
+            objectSrc: ["'none'"],                    // Block object/embed tags
+            mediaSrc: ["'self'", "https:"],           // Allow audio/video from HTTPS sources
+            frameSrc: ["'none'"]                      // Block iframes
+        }
+    },
     crossOriginEmbedderPolicy: false // Disable COEP for compatibility
 }));
 

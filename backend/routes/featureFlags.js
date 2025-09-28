@@ -67,6 +67,12 @@ function scanFrontendModules() {
         
         const frontendPath = path.resolve(__dirname, '../../frontend');
         const modulesPath = path.join(frontendPath, 'modules');
+
+        // Validate path to prevent traversal attacks
+        const resolvedModulesPath = path.resolve(modulesPath);
+        if (!resolvedModulesPath.startsWith(frontendPath)) {
+            throw new Error('Path traversal detected in modules path');
+        }
         
         if (!fs.existsSync(modulesPath)) {
             console.warn('Frontend modules directory not found:', modulesPath);
@@ -215,6 +221,12 @@ function discoverThemes() {
         
         const frontendPath = path.resolve(__dirname, '../../frontend');
         const themesPath = path.join(frontendPath, 'cssCustom/themes');
+
+        // Validate path to prevent traversal attacks
+        const resolvedThemesPath = path.resolve(themesPath);
+        if (!resolvedThemesPath.startsWith(frontendPath)) {
+            throw new Error('Path traversal detected in themes path');
+        }
         
         if (!fs.existsSync(themesPath)) {
             console.warn('Themes directory not found:', themesPath);
