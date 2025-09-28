@@ -12,13 +12,14 @@
 
 ## Features
 
-- Play audio and video files from network locations / storage
+- Stream audio and video files from your local network
 - Create and manage multiple playlists
 - Shuffle mode with intelligent track selection
 - Responsive design for both desktop and mobile
 - Multiple themes ready to use
-- Feature flag system
+- Feature flag administration system
 - Modular features and CSS design allowing easy contributions
+- TOTP support 
 
 ---
 
@@ -41,8 +42,7 @@ For local development:
    ```bash
    git clone https://github.com/isolinear-labs/Neosynth
    cd Neosynth
-   cd backend
-   npm install
+   cd backend && npm install
    ```
 
 3. **Set up environment variables:**
@@ -50,8 +50,8 @@ For local development:
    NODE_ENV=development
    FRONTEND_URL=http://localhost:5000
    MONGODB_URI="mongodb://localhost:27017/neosynth"
-   COOKIE_SECRET="dev_cookie_secret"
-   TOTP_ENCRYPTION_KEY="dev_totp_key"
+   COOKIE_SECRET=$(openssl rand -base64 32)
+   TOTP_ENCRYPTION_KEY=$(openssl rand -hex 32)
    ```
 
 4. **Start the application:**
@@ -63,9 +63,16 @@ For local development:
 
 ---
 
+## Documentation
+
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute, module system, themes, and development workflow
+- **[Administration Guide](ADMINISTRATION.md)** - Feature flag management and user administration
+- **[Development Guide](DEVELOPMENT.md)** - API documentation, authentication, and technical details
+- **[Deployment Guide](deployments/README.md)** - Docker Compose and Kubernetes deployment instructions
+
 ## Contributing
 
-Docs coming soon...
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
 
 ---
 

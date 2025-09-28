@@ -193,12 +193,6 @@
 	);
 }
 
-.theme-option[data-theme="synthwave"]:hover:not(.active) {
-	background: linear-gradient(90deg, 
-		rgba(255, 0, 255, 0.1), 
-		rgba(0, 255, 255, 0.1)
-	);
-}
 
 .theme-option[data-theme="quantum"]:hover:not(.active) {
 	background: linear-gradient(90deg, 

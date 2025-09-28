@@ -96,12 +96,6 @@ export class SettingsSystem {
 											<div class="theme-desc">Soft purple/pink aesthetic with dreamy vibes</div>
 										</div>
 									</div>
-									<div class="theme-card" data-theme="synthwave">
-										<div class="theme-info">
-											<div class="theme-name">Synthwave</div>
-											<div class="theme-desc">Classic 80s magenta/cyan contrast</div>
-										</div>
-									</div>
 									<div class="theme-card" data-theme="quantum">
 										<div class="theme-info">
 											<div class="theme-name">Quantum Flux</div>
@@ -259,7 +253,7 @@ export class SettingsSystem {
 				padding: 15px 20px;
 				background: rgba(0, 0, 0, 0.6);
 				backdrop-filter: blur(10px);
-				border: 2px solid var(--neon-cyan);
+				border: 2px solid var(--interactive-highlight);
 				border-radius: 8px;
 				cursor: pointer;
 				transition: all 0.3s ease;
@@ -269,7 +263,7 @@ export class SettingsSystem {
 			
 			.theme-current:hover {
 				background: rgba(0, 0, 0, 0.8);
-				border-color: var(--neon-purple);
+				border-color: var(--primary-accent);
 				box-shadow: 0 0 20px rgba(5, 217, 232, 0.4);
 				transform: translateY(-2px);
 			}
@@ -290,38 +284,38 @@ export class SettingsSystem {
 			}
 			
 			.theme-current-label {
-				color: var(--neon-cyan);
+				color: var(--interactive-highlight);
 				font-size: 0.7rem;
 				text-transform: uppercase;
 				letter-spacing: 2px;
 				font-weight: bold;
-				text-shadow: 0 0 8px var(--neon-cyan);
+				text-shadow: 0 0 8px var(--interactive-highlight);
 				line-height: 1;
 			}
 			
 			.theme-current-name {
-				color: var(--neon-yellow);
+				color: var(--warning-accent);
 				font-weight: bold;
 				font-size: 1.1rem;
 				line-height: 1.2;
-				text-shadow: 0 0 10px var(--neon-yellow);
+				text-shadow: 0 0 10px var(--warning-accent);
 				text-transform: uppercase;
 				letter-spacing: 1px;
 				transition: all 0.3s ease;
 			}
 			
 			.theme-dropdown-arrow {
-				color: var(--neon-cyan);
+				color: var(--interactive-highlight);
 				font-size: 1rem;
 				transition: transform 0.3s ease, color 0.3s ease;
 				margin-left: 15px;
-				text-shadow: 0 0 8px var(--neon-cyan);
+				text-shadow: 0 0 8px var(--interactive-highlight);
 			}
 			
 			.theme-current.open .theme-dropdown-arrow {
 				transform: rotate(180deg);
-				color: var(--neon-purple);
-				text-shadow: 0 0 8px var(--neon-purple);
+				color: var(--primary-accent);
+				text-shadow: 0 0 8px var(--primary-accent);
 			}
 			
 			.theme-options-container {
@@ -331,7 +325,7 @@ export class SettingsSystem {
 				right: 0;
 				background: rgba(0, 0, 0, 0.95);
 				backdrop-filter: blur(15px);
-				border: 2px solid var(--neon-cyan);
+				border: 2px solid var(--interactive-highlight);
 				border-top: none;
 				border-radius: 0 0 8px 8px;
 				z-index: 1000;
@@ -358,7 +352,7 @@ export class SettingsSystem {
 				overflow-y: auto;
 				padding: 8px;
 				scrollbar-width: thin;
-				scrollbar-color: var(--neon-cyan) rgba(13, 2, 33, 0.4);
+				scrollbar-color: var(--interactive-highlight) rgba(13, 2, 33, 0.4);
 			}
 			
 			.theme-grid::-webkit-scrollbar {
@@ -370,20 +364,20 @@ export class SettingsSystem {
 			}
 			
 			.theme-grid::-webkit-scrollbar-thumb {
-				background: var(--neon-cyan);
+				background: var(--interactive-highlight);
 				border-radius: 3px;
 			}
 			
 			.theme-grid::-webkit-scrollbar-thumb:hover {
-				background: var(--neon-purple);
+				background: var(--primary-accent);
 			}
 			
 			.theme-card {
 				display: flex;
 				align-items: center;
 				padding: 12px 15px;
-				background: rgba(0, 0, 0, 0.3);
-				border: 1px solid rgba(255, 255, 255, 0.1);
+				background: rgba(26, 0, 51, 0.6);
+				border: 1px solid rgba(0, 255, 255, 0.3);
 				border-radius: 6px;
 				cursor: pointer;
 				transition: all 0.3s ease;
@@ -397,16 +391,16 @@ export class SettingsSystem {
 			}
 			
 			.theme-card:hover {
-				border-color: var(--neon-cyan);
-				background: rgba(0, 0, 0, 0.6);
+				border-color: var(--interactive-highlight);
+				background: rgba(26, 0, 51, 0.8);
 				transform: translateX(5px);
-				box-shadow: 0 4px 15px rgba(5, 217, 232, 0.3);
+				box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
 			}
 			
 			.theme-card.active {
-				border-color: var(--neon-yellow);
-				background: rgba(255, 230, 0, 0.1);
-				box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+				border-color: var(--warning-accent);
+				background: rgba(255, 255, 0, 0.15);
+				box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
 			}
 			
 			.theme-card.active::before {
@@ -415,10 +409,10 @@ export class SettingsSystem {
 				top: 50%;
 				right: 15px;
 				transform: translateY(-50%);
-				color: var(--neon-yellow);
+				color: var(--warning-accent);
 				font-weight: bold;
 				font-size: 14px;
-				text-shadow: 0 0 10px var(--neon-yellow);
+				text-shadow: 0 0 10px var(--warning-accent);
 			}
 			
 			.theme-info {
@@ -429,27 +423,24 @@ export class SettingsSystem {
 			.theme-name {
 				font-weight: bold;
 				font-size: 0.9rem;
-				color: var(--text-color);
+				color: #ffffff;
 				margin-bottom: 4px;
 				text-transform: uppercase;
 				letter-spacing: 0.5px;
+				text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
 			}
 			
 			.theme-desc {
 				font-size: 0.75rem;
-				color: rgba(255, 255, 255, 0.7);
+				color: rgba(255, 255, 255, 0.9);
 				line-height: 1.3;
+				text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
 			}
 			
 			/* Theme-specific hover effects */
 			.theme-card[data-theme="vapor"]:hover:not(.active) {
 				border-color: #ff71ce;
 				box-shadow: 0 4px 15px rgba(255, 113, 206, 0.3);
-			}
-			
-			.theme-card[data-theme="synthwave"]:hover:not(.active) {
-				border-color: #ff00ff;
-				box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
 			}
 			
 			.theme-card[data-theme="quantum"]:hover:not(.active) {
@@ -526,10 +517,10 @@ export class SettingsSystem {
 			}
 
 			.status-text.enabled {
-				color: var(--neon-yellow);
-				border-color: var(--neon-yellow);
+				color: var(--warning-accent);
+				border-color: var(--warning-accent);
 				background: rgba(255, 230, 0, 0.1);
-				text-shadow: 0 0 8px var(--neon-yellow);
+				text-shadow: 0 0 8px var(--warning-accent);
 			}
 
 			.status-text.disabled {

@@ -206,9 +206,8 @@ export class ThemeSelector {
 	 */
     isValidTheme(themeName) {
         const validThemes = [
-            'default', 
-            'vapor', 
-            'synthwave', 
+            'default',
+            'vapor',
             'quantum',
             'noir',
             'mint',
@@ -227,7 +226,6 @@ export class ThemeSelector {
         const displayNames = {
             'default': 'Default',
             'vapor': 'Vapor Dream',
-            'synthwave': 'Synthwave',
             'quantum': 'Quantum Flux',
             'noir': 'Neon Noir',
             'mint': 'Vapor Mint',
@@ -252,11 +250,6 @@ export class ThemeSelector {
                 id: 'vapor', 
                 name: 'Vapor Dream',
                 description: 'Soft purple/pink aesthetic with dreamy vibes'
-            },
-            { 
-                id: 'synthwave', 
-                name: 'Synthwave',
-                description: 'Classic 80s magenta/cyan contrast'
             },
             { 
                 id: 'quantum', 
