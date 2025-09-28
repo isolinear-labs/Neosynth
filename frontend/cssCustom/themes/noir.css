@@ -1,0 +1,118 @@
+/* Theme: Neon Noir - High contrast white/red/black with film noir aesthetics */
+body.theme-noir {
+	/* Primary color palette */
+	--primary-accent: #ff0055;
+	--secondary-base: #ffffff;
+	--tertiary-accent: #ff0055;
+	--interactive-highlight: #ffffff;
+	--warning-accent: #ffaa00;
+	--success-accent: #ffaa00;
+	--accent-dark: #cc0044;
+	
+	/* Background system */
+	--dark-bg: #0a0a0a !important;
+	--darker-bg: #000000;
+	--panel-bg: rgba(10, 10, 10, 0.9);
+	--panel-bg-hover: rgba(15, 15, 15, 0.95);
+	
+	/* Film noir gradient with dramatic lighting */
+	background: linear-gradient(135deg, 
+		#000000 0%, 
+		#1a1a1a 25%, 
+		#0a0a0a 50%, 
+		#2a2a2a 75%, 
+		#0f0f0f 100%) !important;
+	background-attachment: fixed;
+	
+	/* Add subtle film grain effect */
+	background-image: 
+		radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+		radial-gradient(circle at 80% 20%, rgba(255, 0, 85, 0.03) 0%, transparent 50%);
+}
+
+body.theme-noir .digit-rain {
+	color: var(--secondary-base);
+	text-shadow: 0 0 15px var(--secondary-base), 0 0 30px var(--primary-accent);
+	opacity: 0.6;
+}
+
+/* Neon Noir - Film noir cinematography effects */
+body.theme-noir .glitch-title {
+	color: var(--secondary-base);
+	text-shadow: 
+		3px 3px 0px var(--primary-accent),
+		6px 6px 0px #000000,
+		0 0 30px var(--secondary-base);
+	filter: contrast(1.3);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+	animation: glitch 5s infinite;
+}
+
+body.theme-noir .panel-title {
+	text-shadow: 
+		2px 2px 0px var(--primary-accent),
+		0 0 20px var(--secondary-base);
+	letter-spacing: 2px;
+}
+
+/* Add film noir scanlines effect */
+body.theme-noir::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		transparent 50%,
+		rgba(255, 255, 255, 0.01) 51%,
+		transparent 52%
+	);
+	background-size: 100% 4px;
+	pointer-events: none;
+	z-index: 1000;
+	animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+	0% { transform: translateY(0); }
+	100% { transform: translateY(4px); }
+}
+
+/* Noir theme panels get dramatic shadows */
+body.theme-noir .music-panel,
+body.theme-noir .playlist-panel,
+body.theme-noir .now-playing-container {
+	box-shadow: 
+		0 15px 50px rgba(0, 0, 0, 0.8),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		0 0 30px rgba(255, 0, 85, 0.1);
+}
+
+/* Enhanced progress bars for noir theme */
+body.theme-noir .progress-bar {
+	background: linear-gradient(90deg, 
+		var(--secondary-base), 
+		var(--primary-accent),
+		var(--warning-accent)
+	);
+	box-shadow: 0 0 15px var(--secondary-base);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

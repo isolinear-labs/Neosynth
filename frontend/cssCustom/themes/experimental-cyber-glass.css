@@ -1,0 +1,225 @@
+/* Theme: Cyber Glass - Transparent glass-like cyberpunk interface */
+body.theme-cyber-glass {
+	/* Primary color palette - electric blues and glass transparencies */
+	--primary-accent: #00d4ff;
+	--secondary-base: #0099ff;
+	--tertiary-accent: #4d79ff;
+	--interactive-highlight: #00ffff;
+	--warning-accent: #80ffff;
+	--success-accent: #b3ffff;
+	--accent-dark: #1a4d80;
+	
+	/* Background system - ultra-transparent glass */
+	--dark-bg: #000a1a;
+	--darker-bg: #000510;
+	--panel-bg: rgba(0, 26, 51, 0.15);
+	--panel-bg-hover: rgba(0, 26, 51, 0.25);
+	
+	/* Cyber glass gradient background */
+	background: linear-gradient(135deg, 
+		rgba(0, 10, 26, 0.9) 0%, 
+		rgba(0, 40, 80, 0.7) 20%, 
+		rgba(0, 60, 120, 0.5) 40%, 
+		rgba(0, 80, 160, 0.3) 60%, 
+		rgba(0, 100, 200, 0.4) 80%, 
+		rgba(0, 10, 26, 0.9) 100%),
+		repeating-linear-gradient(
+			45deg,
+			transparent 0px,
+			rgba(0, 255, 255, 0.02) 1px,
+			transparent 2px
+		);
+	background-attachment: fixed;
+}
+
+/* Enhanced digital rain - glass effect */
+body.theme-cyber-glass .digit-rain {
+	color: var(--interactive-highlight);
+	text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+	opacity: 0.6;
+}
+
+/* Cyber glass title - crystalline glow */
+body.theme-cyber-glass .glitch-title {
+	color: var(--interactive-highlight);
+	text-shadow: 
+		0 0 5px rgba(0, 255, 255, 0.8),
+		0 0 10px rgba(0, 212, 255, 0.6),
+		0 0 20px rgba(0, 153, 255, 0.4),
+		0 0 30px rgba(77, 121, 255, 0.3);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+	opacity: 0.95;
+	animation: glass-shimmer 4s infinite;
+}
+
+body.theme-cyber-glass .panel-title {
+	text-shadow:
+		0 0 8px rgba(0, 255, 255, 0.7),
+		0 0 15px rgba(0, 212, 255, 0.5);
+	opacity: 0.9;
+}
+
+/* Glass shimmer animation */
+@keyframes glass-shimmer {
+	0%, 100% {
+		opacity: 0.95;
+		filter: brightness(1);
+	}
+	25% {
+		opacity: 0.85;
+		filter: brightness(1.1);
+	}
+	50% {
+		opacity: 1;
+		filter: brightness(1.2);
+	}
+	75% {
+		opacity: 0.9;
+		filter: brightness(1.05);
+	}
+}
+
+/* Cyber glass panel effects - maximum transparency */
+body.theme-cyber-glass .panel,
+body.theme-cyber-glass .track-item,
+body.theme-cyber-glass .playlist-item {
+	background: rgba(0, 26, 51, 0.08);
+	border: 1px solid rgba(0, 255, 255, 0.2);
+	backdrop-filter: blur(8px) saturate(1.2);
+	-webkit-backdrop-filter: blur(8px) saturate(1.2);
+	box-shadow: 
+		0 0 15px rgba(0, 255, 255, 0.1),
+		inset 0 0 30px rgba(0, 212, 255, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+}
+
+body.theme-cyber-glass .panel:hover,
+body.theme-cyber-glass .track-item:hover,
+body.theme-cyber-glass .playlist-item:hover {
+	background: rgba(0, 26, 51, 0.15);
+	border-color: rgba(0, 255, 255, 0.4);
+	backdrop-filter: blur(12px) saturate(1.5);
+	-webkit-backdrop-filter: blur(12px) saturate(1.5);
+	box-shadow: 
+		0 0 25px rgba(0, 255, 255, 0.2),
+		inset 0 0 40px rgba(0, 212, 255, 0.08),
+		inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	transform: translateY(-2px);
+}
+
+/* Cyber glass buttons - crystalline appearance */
+body.theme-cyber-glass button {
+	background: rgba(0, 153, 255, 0.1);
+	border: 1px solid rgba(0, 255, 255, 0.3);
+	color: var(--interactive-highlight);
+	backdrop-filter: blur(6px) brightness(1.1);
+	-webkit-backdrop-filter: blur(6px) brightness(1.1);
+	text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+	border-radius: 6px;
+	box-shadow: 
+		0 0 10px rgba(0, 255, 255, 0.1),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.theme-cyber-glass button:hover {
+	background: rgba(0, 153, 255, 0.2);
+	border-color: rgba(0, 255, 255, 0.5);
+	backdrop-filter: blur(8px) brightness(1.2);
+	-webkit-backdrop-filter: blur(8px) brightness(1.2);
+	box-shadow: 
+		0 0 20px rgba(0, 255, 255, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	transform: translateY(-1px);
+}
+
+body.theme-cyber-glass button:active {
+	transform: translateY(0);
+	box-shadow: 
+		0 0 15px rgba(0, 255, 255, 0.2),
+		inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Cyber glass input fields - frosted glass effect */
+body.theme-cyber-glass input,
+body.theme-cyber-glass select,
+body.theme-cyber-glass textarea {
+	background: rgba(0, 10, 26, 0.3);
+	border: 1px solid rgba(0, 255, 255, 0.25);
+	color: var(--interactive-highlight);
+	backdrop-filter: blur(4px) saturate(1.1);
+	-webkit-backdrop-filter: blur(4px) saturate(1.1);
+	border-radius: 4px;
+	box-shadow: 
+		inset 0 2px 4px rgba(0, 0, 0, 0.1),
+		0 0 8px rgba(0, 255, 255, 0.05);
+}
+
+body.theme-cyber-glass input:focus,
+body.theme-cyber-glass select:focus,
+body.theme-cyber-glass textarea:focus {
+	border-color: rgba(0, 255, 255, 0.5);
+	background: rgba(0, 10, 26, 0.4);
+	backdrop-filter: blur(6px) saturate(1.3);
+	-webkit-backdrop-filter: blur(6px) saturate(1.3);
+	box-shadow: 
+		0 0 15px rgba(0, 255, 255, 0.2),
+		inset 0 2px 4px rgba(0, 0, 0, 0.1);
+	outline: none;
+}
+
+/* Glass progress bar */
+body.theme-cyber-glass .progress-bar {
+	background: rgba(0, 26, 51, 0.2);
+	border: 1px solid rgba(0, 255, 255, 0.2);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+}
+
+body.theme-cyber-glass .progress-fill {
+	background: linear-gradient(90deg, 
+		rgba(0, 255, 255, 0.6) 0%, 
+		rgba(0, 212, 255, 0.7) 50%, 
+		rgba(0, 153, 255, 0.8) 100%);
+	box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+/* Glass scrollbar */
+body.theme-cyber-glass ::-webkit-scrollbar-thumb {
+	background: rgba(0, 255, 255, 0.3);
+	border: 1px solid rgba(0, 255, 255, 0.1);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+}
+
+body.theme-cyber-glass ::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 255, 255, 0.5);
+	box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+/* Glass modal/overlay effects */
+body.theme-cyber-glass .modal,
+body.theme-cyber-glass .overlay {
+	background: rgba(0, 10, 26, 0.1);
+	backdrop-filter: blur(20px) saturate(1.4);
+	-webkit-backdrop-filter: blur(20px) saturate(1.4);
+	border: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+/* Special glass reflection effect for key elements */
+body.theme-cyber-glass .panel::before,
+body.theme-cyber-glass button::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50%;
+	background: linear-gradient(180deg, 
+		rgba(255, 255, 255, 0.1) 0%, 
+		transparent 100%);
+	border-radius: inherit;
+	pointer-events: none;
+}

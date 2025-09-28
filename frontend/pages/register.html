@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Profile Creation | NeoSynth</title>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon.png">
+    <meta name="msapplication-TileImage" content="../assets/favicon.png">
+    <meta name="msapplication-TileColor" content="#1a0d33">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: #000;
+            color: #00ffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            
+            /* Synthwave theme variables */
+            --primary-accent: #ff00ff;
+            --secondary-base: #00ffff;
+            --tertiary-accent: #ff00ff;
+            --interactive-highlight: #00ffff;
+            --warning-accent: #ffff00;
+            --success-accent: #ffff00;
+            --dark-bg: #1a0033;
+            --darker-bg: #0d001a;
+            --text-color: #ffffff;
+            --accent-dark: #cc00cc;
+            --panel-bg: rgba(26, 0, 51, 0.85);
+            --panel-bg-hover: rgba(26, 0, 51, 0.95);
+            --deep-purple: #8a4fff;
+        }
+        
+        /* Digital Rain Background */
+        #digitalRain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .digit-rain {
+            position: absolute;
+            color: var(--primary-accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            opacity: 1.0;
+            text-align: center;
+            animation: rain linear infinite;
+            overflow: hidden;
+            max-width: 20px;
+            text-shadow: 0 0 10px var(--primary-accent), 0 0 20px var(--primary-accent);
+        }
+        
+        @keyframes rain {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        /* Main Container */
+        .registration-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .registration-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--interactive-highlight);
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 
+                0 0 20px var(--interactive-highlight),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            animation: panelPulse 3s infinite alternate;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes panelPulse {
+            0% { border-color: var(--interactive-highlight); box-shadow: 0 0 20px var(--interactive-highlight), inset 0 0 20px rgba(0, 255, 255, 0.1); }
+            100% { border-color: var(--primary-accent); box-shadow: 0 0 30px var(--primary-accent), inset 0 0 30px rgba(255, 0, 255, 0.1); }
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: glitch 2s infinite;
+            color: var(--primary-accent);
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: var(--secondary-base);
+            opacity: 0.8;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px var(--primary-accent); }
+            25% { text-shadow: -2px 0 var(--secondary-base), 2px 0 var(--primary-accent); }
+            50% { text-shadow: 2px 0 var(--secondary-base), -2px 0 var(--primary-accent); }
+            75% { text-shadow: 0 0 20px var(--success-accent); }
+        }
+        
+        .step {
+            display: none;
+            text-align: center;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--interactive-highlight);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--interactive-highlight);
+            border-radius: 5px;
+            color: var(--interactive-highlight);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 15px var(--primary-accent);
+            text-shadow: 0 0 5px var(--interactive-highlight);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(0, 255, 255, 0.5);
+        }
+        
+        .neural-button {
+            background: transparent;
+            border: 2px solid var(--interactive-highlight);
+            color: var(--interactive-highlight);
+            padding: 15px 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        
+        .neural-button:hover {
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 15px var(--interactive-highlight);
+            transform: translateY(-2px);
+        }
+        
+        .neural-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .neural-button.secondary {
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
+        }
+        
+        .neural-button.secondary:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 15px var(--primary-accent);
+        }
+        
+        .qr-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--success-accent);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .qr-code {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .backup-codes {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--warning-accent);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .backup-code {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid var(--warning-accent);
+            border-radius: 3px;
+            padding: 8px;
+            margin: 5px;
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--warning-accent);
+            letter-spacing: 1px;
+        }
+        
+        .instruction {
+            color: #888;
+            font-size: 0.9em;
+            margin: 15px 0;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .warning {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid var(--warning-accent);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            color: var(--warning-accent);
+        }
+        
+        .success {
+            background: rgba(1, 255, 195, 0.15);
+            border: 1px solid rgba(1, 255, 195, 0.6);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #ffffff;
+            text-align: center;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: blink 1s infinite;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-accent);
+            box-shadow: 0 0 10px var(--success-accent);
+        }
+        
+        .status-indicator.waiting {
+            background: var(--warning-accent);
+            box-shadow: 0 0 10px var(--warning-accent);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--interactive-highlight);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-accent);
+            text-shadow: 0 0 5px var(--primary-accent);
+        }
+        
+        .device-info {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--interactive-highlight);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="digitalRain"></div>
+    <a href="/login" class="back-link">← Back to Login</a>
+    
+    <div class="registration-container">
+        <div class="registration-panel">
+            <h1 class="title">Neural Profile</h1>
+            <div class="subtitle">System Registration</div>
+            
+            <!-- Step 1: Basic Registration -->
+            <div class="step active" id="step1">
+                <h2><span class="status-indicator waiting"></span>Create Neural Identity</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="neural_user_001" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter secure password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm password" required>
+                </div>
+                
+                <button class="neural-button" onclick="validateBasicInfo()">Initialize Neural Profile</button>
+            </div>
+            
+            <!-- Step 2: TOTP Setup -->
+            <div class="step" id="step2">
+                <h2><span class="status-indicator waiting"></span>Neural Security Protocol</h2>
+                <div class="instruction">Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.)</div>
+                
+                <div class="qr-container">
+                    <div id="qrCode" class="qr-code">
+                        <!-- QR code will be generated here -->
+                    </div>
+                    <div class="instruction">
+                        <strong>Secret Key (manual entry):</strong><br>
+                        <code id="secretKey" style="color: var(--success-accent); letter-spacing: 2px;"></code>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Enter 6-digit verification code</label>
+                    <input type="text" id="totpCode" class="form-input" placeholder="123456" maxlength="6" required>
+                </div>
+                
+                <button class="neural-button" onclick="validateTOTP()">Verify Neural Authentication</button>
+            </div>
+            
+            <!-- Step 3: Backup Codes -->
+            <div class="step" id="step3">
+                <h2><span class="status-indicator active"></span>Emergency Neural Access Codes</h2>
+                
+                <div class="warning">
+                    <strong>CRITICAL:</strong> Save these backup codes in a secure location. You'll need them if you lose access to your authenticator app.
+                </div>
+                
+                <div class="backup-codes" id="backupCodes">
+                    <!-- Backup codes will be generated here -->
+                </div>
+                
+                <div class="instruction">
+                    Each code can only be used once. Store them safely - we cannot recover them for you.
+                </div>
+                
+                <button class="neural-button" onclick="downloadBackupCodes()">Download Backup Codes</button>
+                <button class="neural-button secondary" id="completeRegistrationBtn" onclick="completeRegistration()" disabled>Complete Neural Registration</button>
+            </div>
+            
+            <!-- Step 4: Success -->
+            <div class="step" id="step4">
+                <h2><span class="status-indicator active"></span>Neural Link Established</h2>
+                
+                <div class="success">
+                    <p style="font-size: 1.3em; margin-bottom: 15px; color: var(--interactive-highlight);">
+                        <span style="margin-right: 10px;">🧠</span>Neural Profile Created Successfully
+                    </p>
+                    <p style="color: #cccccc;">Your secure neural connection has been established.</p>
+                </div>
+                
+                <div class="device-info">
+                    <strong>Trusted Neural Node:</strong><br>
+                    <span id="deviceInfo"></span>
+                </div>
+                
+                <div class="instruction">
+                    You can now access the NeoSynth system with your enhanced security profile.
+                </div>
+                
+                <button class="neural-button" onclick="redirectToLogin()">Access Neural Interface</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/register.js"></script>
+</body>
+</html>

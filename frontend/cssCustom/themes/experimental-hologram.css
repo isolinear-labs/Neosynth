@@ -1,0 +1,136 @@
+/* Theme: Hologram - Translucent blue/green holographic interface */
+body.theme-hologram {
+	/* Primary color palette - holographic blues and greens */
+	--primary-accent: #00b3ff;
+	--secondary-base: #0099ff;
+	--tertiary-accent: #6699ff;
+	--interactive-highlight: #00ffcc;
+	--warning-accent: #00ff99;
+	--success-accent: #66ff99;
+	--accent-dark: #3366ff;
+	
+	/* Background system - translucent depths */
+	--dark-bg: #001122;
+	--darker-bg: #000811;
+	--panel-bg: rgba(0, 17, 34, 0.7);
+	--panel-bg-hover: rgba(0, 17, 34, 0.85);
+	
+	/* Holographic gradient background */
+	background: linear-gradient(135deg, 
+		rgba(0, 17, 34, 0.9) 0%, 
+		rgba(0, 51, 85, 0.8) 25%, 
+		rgba(0, 85, 136, 0.7) 50%, 
+		rgba(0, 136, 204, 0.6) 75%, 
+		rgba(0, 17, 34, 0.9) 100%),
+		repeating-linear-gradient(
+			90deg,
+			transparent 0px,
+			rgba(0, 255, 204, 0.03) 2px,
+			transparent 4px
+		);
+	background-attachment: fixed;
+}
+
+/* Enhanced digital rain - holographic effect */
+body.theme-hologram .digit-rain {
+	color: var(--interactive-highlight);
+	text-shadow: 0 0 15px var(--interactive-highlight);
+	opacity: 0.7;
+}
+
+/* Hologram title - flickering translucent effect */
+body.theme-hologram .glitch-title {
+	color: var(--interactive-highlight);
+	text-shadow: 
+		0 0 10px var(--interactive-highlight),
+		0 0 20px var(--secondary-base),
+		0 0 30px var(--interactive-highlight);
+	font-size: 3rem;
+	font-weight: bold;            
+	letter-spacing: 4px;
+	opacity: 0.9;
+	animation: hologram-flicker 3s infinite;
+}
+
+body.theme-hologram .panel-title {
+	text-shadow:
+		0 0 10px var(--secondary-base),
+		0 0 20px var(--interactive-highlight);
+	opacity: 0.85;
+}
+
+/* Holographic flicker animation */
+@keyframes hologram-flicker {
+	0%, 85%, 100% {
+		opacity: 0.9;
+		transform: none;
+	}
+	87% {
+		opacity: 0.6;
+		transform: skew(0.1deg, 0.05deg);
+	}
+	89% {
+		opacity: 0.95;
+		transform: skew(-0.05deg, 0.02deg);
+	}
+	91% {
+		opacity: 0.7;
+		transform: none;
+	}
+	93% {
+		opacity: 0.9;
+		transform: skew(0.02deg, -0.01deg);
+	}
+}
+
+/* Holographic panel effects */
+body.theme-hologram .panel,
+body.theme-hologram .track-item,
+body.theme-hologram .playlist-item {
+	background: rgba(0, 51, 85, 0.4);
+	border: 1px solid rgba(0, 255, 204, 0.3);
+	backdrop-filter: blur(2px);
+	box-shadow: 
+		0 0 10px rgba(0, 255, 204, 0.2),
+		inset 0 0 20px rgba(0, 153, 255, 0.1);
+}
+
+body.theme-hologram .panel:hover,
+body.theme-hologram .track-item:hover,
+body.theme-hologram .playlist-item:hover {
+	background: rgba(0, 51, 85, 0.6);
+	border-color: rgba(0, 255, 204, 0.5);
+	box-shadow: 
+		0 0 15px rgba(0, 255, 204, 0.3),
+		inset 0 0 25px rgba(0, 153, 255, 0.15);
+}
+
+/* Holographic buttons */
+body.theme-hologram button {
+	background: rgba(0, 153, 255, 0.2);
+	border: 1px solid var(--secondary-base);
+	color: var(--interactive-highlight);
+	backdrop-filter: blur(1px);
+	text-shadow: 0 0 5px var(--interactive-highlight);
+}
+
+body.theme-hologram button:hover {
+	background: rgba(0, 153, 255, 0.3);
+	box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+	transform: translateY(-1px);
+}
+
+/* Holographic input fields */
+body.theme-hologram input,
+body.theme-hologram select {
+	background: rgba(0, 17, 34, 0.6);
+	border: 1px solid rgba(0, 255, 204, 0.4);
+	color: var(--interactive-highlight);
+	backdrop-filter: blur(1px);
+}
+
+body.theme-hologram input:focus,
+body.theme-hologram select:focus {
+	border-color: var(--interactive-highlight);
+	box-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+}

@@ -1,0 +1,336 @@
+name: Security Scanning
+
+on:
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1' # Run weekly on Mondays at 2 AM
+
+jobs:
+  npm-audit:
+    name: NPM Security Audit (Backend)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm install
+    
+    - name: Run npm audit
+      working-directory: ./backend
+      run: |
+        echo "## NPM Security Audit Report (Backend)" >> $GITHUB_STEP_SUMMARY
+        echo "Generated on: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Run audit and capture output
+        if npm audit --audit-level=moderate --json > audit-results.json 2>&1; then
+          echo "✅ **No moderate or higher vulnerabilities found**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Summary:" >> $GITHUB_STEP_SUMMARY
+          npm audit --audit-level=low | head -20 >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ **Vulnerabilities detected in backend**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Audit Results:" >> $GITHUB_STEP_SUMMARY
+          npm audit | head -50 >> $GITHUB_STEP_SUMMARY
+
+          # Extract vulnerability counts
+          if [ -f audit-results.json ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Vulnerability Summary:" >> $GITHUB_STEP_SUMMARY
+            # Install jq if not available
+            if ! command -v jq &> /dev/null; then
+              sudo apt-get update && sudo apt-get install -y jq
+            fi
+
+            CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-results.json 2>/dev/null || echo "0")
+            HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-results.json 2>/dev/null || echo "0")
+            MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit-results.json 2>/dev/null || echo "0")
+            echo "- Critical: $CRITICAL" >> $GITHUB_STEP_SUMMARY
+            echo "- High: $HIGH" >> $GITHUB_STEP_SUMMARY
+            echo "- Moderate: $MODERATE" >> $GITHUB_STEP_SUMMARY
+          fi
+          exit 1
+        fi
+    
+    - name: Upload audit results
+      uses: actions/upload-artifact@v4
+      with:
+        name: npm-audit-backend
+        path: backend/audit-results.json
+
+  dependency-check:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'neosynth'
+        path: '.'
+        format: 'ALL'
+        args: >
+          --enableRetired
+          --enableExperimental
+          --disableOssIndex
+          --exclude "**/node_modules/**"
+          --exclude "**/test/**"
+          --exclude "**/tests/**"
+    
+    - name: Upload OWASP results
+      uses: actions/upload-artifact@v4
+      with:
+        name: owasp-dependency-check
+        path: reports/
+
+
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Run TruffleHog OSS
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        extra_args: --debug --only-verified
+
+  docker-build:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Build Docker image
+      run: |
+        echo "Building Docker image to check for warnings..."
+        docker build -t neosynth-build-test . 2>&1 | tee docker-build.log
+        
+        # Check for warnings in build output
+        if grep -i "warning" docker-build.log; then
+          echo "⚠️ Docker build completed with warnings (see above)"
+        else
+          echo "✅ Docker build completed without warnings"
+        fi
+    
+    - name: Upload build log
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: docker-build-log
+        path: docker-build.log
+
+  semgrep:
+    name: Static Analysis with Semgrep
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Semgrep
+      uses: semgrep/semgrep-action@v1
+      env:
+        SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+      with:
+        config: >-
+          p/security-audit
+          p/secrets
+          p/owasp-top-ten
+          p/javascript
+    
+    - name: Upload Semgrep results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always() && github.repository_owner == 'RC-Projects'
+      with:
+        sarif_file: semgrep.sarif
+      continue-on-error: true
+
+  license-check:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install license checker
+      run: npm install -g license-checker
+    
+    - name: Check backend licenses
+      run: |
+        cd backend
+        npm install
+        license-checker --production --json > ../backend-licenses.json
+    
+    - name: Check for prohibited licenses
+      run: |
+        # Check for GPL and other copyleft licenses
+        if grep -q '"licenses": "GPL"' backend-licenses.json; then
+          echo "ERROR: GPL license found in dependencies"
+          exit 1
+        fi
+        if grep -q '"licenses": "AGPL"' backend-licenses.json; then
+          echo "ERROR: AGPL license found in dependencies"
+          exit 1
+        fi
+        echo "License check passed"
+    
+    - name: Upload license report
+      uses: actions/upload-artifact@v4
+      with:
+        name: license-report
+        path: backend-licenses.json
+
+  security-headers-check:
+    name: Security Headers Validation
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm install
+
+    - name: Start server for testing
+      working-directory: ./backend
+      run: |
+        # Start server in background
+        node server.js &
+        SERVER_PID=$!
+        echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+
+        # Wait for server to start
+        sleep 5
+
+    - name: Test security headers
+      run: |
+        echo "## Security Headers Check" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Test if server is responding
+        if curl -s -I http://localhost:5000/health > /dev/null; then
+          echo "✅ Server is running" >> $GITHUB_STEP_SUMMARY
+
+          # Check for required security headers
+          headers_response=$(curl -s -I http://localhost:5000/health)
+
+          # Required security headers
+          if echo "$headers_response" | grep -q "Strict-Transport-Security"; then
+            echo "✅ HSTS header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ HSTS header missing" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          if echo "$headers_response" | grep -q "X-Frame-Options"; then
+            echo "✅ X-Frame-Options header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ X-Frame-Options header missing" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          if echo "$headers_response" | grep -q "X-Content-Type-Options"; then
+            echo "✅ X-Content-Type-Options header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ X-Content-Type-Options header missing" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          if echo "$headers_response" | grep -q "Referrer-Policy"; then
+            echo "✅ Referrer-Policy header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Referrer-Policy header missing" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Full Headers Response:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "$headers_response" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Server failed to start or respond" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+
+    - name: Cleanup
+      if: always()
+      run: |
+        if [ ! -z "$SERVER_PID" ]; then
+          kill $SERVER_PID || true
+        fi
+
+  security-summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs: [npm-audit, dependency-check, secret-scan, semgrep, license-check, security-headers-check]
+    if: always()
+    
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Generate security summary
+      run: |
+        echo "# Security Scan Summary" > security-summary.md
+        echo "" >> security-summary.md
+        echo "## Scan Results" >> security-summary.md
+        echo "" >> security-summary.md
+        
+        # Check npm audit results
+        if [ -f npm-audit-backend/audit-results.json ]; then
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit-backend/audit-results.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit-backend/audit-results.json)
+          echo "- **NPM Audit (Backend)**: $CRITICAL critical, $HIGH high vulnerabilities" >> security-summary.md
+        fi
+        
+        # Add status for other scans
+        echo "- **Secret Scanning**: ${{ needs.secret-scan.result }}" >> security-summary.md
+        echo "- **OWASP Dependency Check**: ${{ needs.dependency-check.result }}" >> security-summary.md
+        echo "- **Semgrep Static Analysis**: ${{ needs.semgrep.result }}" >> security-summary.md
+        echo "- **License Check**: ${{ needs.license-check.result }}" >> security-summary.md
+        echo "- **Security Headers Check**: ${{ needs.security-headers-check.result }}" >> security-summary.md
+        
+        echo "" >> security-summary.md
+        echo "Scan completed at: $(date)" >> security-summary.md
+    
+    - name: Upload security summary
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-summary
+        path: security-summary.md

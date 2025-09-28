@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoSynth - Synth Login Terminal</title>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon.png">
+    <meta name="msapplication-TileImage" content="../assets/favicon.png">
+    <meta name="msapplication-TileColor" content="#1a0d33">
+    <!-- Theme and Custom Styles -->
+    <link rel="stylesheet" href="../cssCustom/themes/root.css">
+    <link rel="stylesheet" href="../cssCustom/login.css">
+    
+    <style>
+        /* Page-specific overrides only */
+
+        /* Legacy support fallbacks - will be overridden by theme system */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* High contrast mode improvements */
+        @media (prefers-contrast: high) {
+            .auth-option:focus {
+                outline: 3px solid;
+                outline-offset: 2px;
+            }
+            
+            button:focus {
+                outline: 3px solid;
+                outline-offset: 2px;
+            }
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div id="digitalRain"></div>
+    
+    
+    <div class="login-container">
+        <header class="login-header">
+            <h1 class="glitch-title">NeoSynth</h1>
+            <div class="login-subtitle">Neural Access Terminal</div>
+        </header>
+
+        <div class="login-panel">
+            <div class="panel-header">
+                <div class="panel-title">// NEURAL AUTHENTICATION</div>
+                <div id="statusIndicator" class="status-indicator">READY</div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+            
+            <!-- Step 1: Username/Password -->
+            <div class="step active" id="step1">
+                <div class="form-group">
+                    <label class="form-label">Neural Identity</label>
+                    <input type="text" id="username" class="form-input" placeholder="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Access Key</label>
+                    <input type="password" id="password" class="form-input" placeholder="password" required>
+                </div>
+                
+                <div class="button-group">
+                    <button class="neural-button" onclick="validateCredentials()">Initiate Neural Link</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Device Check & Auth Method Selection -->
+            <div class="step" id="step2">
+                <div id="deviceTrustedSection">
+                    <!-- For trusted devices -->
+                    <div class="form-group">
+                        <label class="form-label">Neural Authentication Code</label>
+                        <input type="text" id="totpCode" class="form-input" placeholder="123456" maxlength="6">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="neural-button" onclick="authenticateWithTOTP()">Complete Neural Sync</button>
+                        <button class="neural-button secondary" onclick="showAuthOptions()">Other Options</button>
+                    </div>
+                </div>
+                
+                <div id="deviceNotTrustedSection" style="display: none;">
+                    <!-- For new devices -->
+                    <div class="device-warning">
+                        <h3>⚠ Unknown Neural Node Detected</h3>
+                        <p>This device is not recognized. Additional verification required.</p>
+                    </div>
+
+                    <div class="auth-options">
+                        <div class="auth-option" onclick="selectAuthMethod('totp')">
+                            <strong>📱 Neural Authentication Code</strong><br>
+                            <small>Enter 6-digit code from your authenticator app</small>
+                        </div>
+                        <div class="auth-option" onclick="selectAuthMethod('tempCode')" style="display: none;">
+                            <strong>💻 Trusted Device Authorization</strong><br>
+                            <small>Get authorization code from a trusted device</small>
+                        </div>
+                        <div class="auth-option" onclick="selectAuthMethod('backup')">
+                            <strong>🔑 Emergency Access Code</strong><br>
+                            <small>Use one of your backup recovery codes</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="authMethodForm" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" id="authMethodLabel">Enter Code</label>
+                        <input type="text" id="authCode" class="form-input" placeholder="Enter code">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="neural-button" onclick="authenticateWithCode()">Verify Access</button>
+                        <button class="neural-button secondary" onclick="backToAuthOptions()">Back</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Temp Code Display (for generating codes on trusted devices) -->
+            <div class="step" id="step3">
+                <div class="instruction">A new device is requesting access to your neural profile.</div>
+                
+                <div class="temp-code-display">
+                    <div>Authorization Code:</div>
+                    <div class="temp-code" id="tempCodeDisplay">------</div>
+                    <div class="instruction">Valid for 10 minutes</div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="neural-button" onclick="generateTempCode()">Generate New Code</button>
+                    <button class="neural-button secondary" onclick="backToLogin()">Cancel</button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Success -->
+            <div class="step" id="step4" role="tabpanel" aria-labelledby="step4-title">
+                <h2 id="step4-title" class="sr-only">Login Successful</h2>
+                <div class="status-success" role="status" aria-live="polite">
+                    <p style="font-size: 1.3em; margin-bottom: 15px; color: var(--accent-tertiary, #01ffc3);">
+                        <span aria-hidden="true" style="margin-right: 10px;">🧠</span>Node Link Established
+                    </p>
+                    <p style="color: var(--text-secondary, #cccccc);">Access granted. Redirecting to NeoSynth...</p>
+                </div>
+            </div>
+            
+            <footer class="register-link">
+                <p>=> <a href="/register" aria-label="Go to registration page">Provision New Account</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/login.js"></script>
+    <script type="module">
+        // Initialize theme system integration
+        import { ThemeSystem } from '../modules/themes/index.js';
+        
+        // Simple theme integration for login page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Initialize theme system without user ID (guest mode)
+                await ThemeSystem.init(null, null);
+                console.log('Theme system initialized for login page');
+            } catch (error) {
+                console.warn('Theme system not available, using fallback styles:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* Base theme variables and global styles */
+
+:root {
+	--primary-accent: #ff00ff;
+	--secondary-base: #00ffff;
+	--tertiary-accent: #ff00ff;
+	--interactive-highlight: #00ffff;
+	--warning-accent: #ffff00;
+	--dark-bg: #1a0033;
+	--darker-bg: #0d001a;
+	--text-color: #ffffff;
+	--accent-dark: #cc00cc;
+	--success-accent: #ffff00;
+	--panel-bg: rgba(26, 0, 51, 0.85);
+	--panel-bg-hover: rgba(26, 0, 51, 0.95);
+}
+
+/* Global styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Courier New', monospace;
+	color: var(--text-color);
+}
+
+body {
+	background: linear-gradient(135deg,
+		#1a0033 0%,
+		#330066 25%,
+		#660099 50%,
+		#330066 75%,
+		#1a0033 100%);
+	background-attachment: fixed;
+	min-height: 100vh;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+/* Status message styles */
+.status-message {
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	display: none;
+}
+
+.status-success {
+	display: block;
+	background-color: rgba(1, 255, 195, 0.2);
+	border: 1px solid var(--interactive-highlight);
+	color: var(--interactive-highlight);
+}
+
+.status-error {
+	display: block;
+	background-color: rgba(255, 42, 109, 0.2);
+	border: 1px solid var(--primary-accent);
+	color: var(--primary-accent);
+}
+
+.hide {
+	display: none;
+}
+
+/* Input containers */
+.input-container {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+/* Playlist items container */
+.playlist-items {
+	max-height: 650px;
+	overflow-y: auto;
+	margin-bottom: 5px;
+	scrollbar-width: thin;
+	scrollbar-color: #05d9e8 rgba(13, 2, 33, 0.4);
+}
+
+/* Empty playlist message */
+.no-items-message {
+	text-align: center;
+	padding: 20px;
+	color: rgba(255, 255, 255, 0.5);
+	font-style: italic;
+}
+
+/* Add bottom padding to body to prevent content from being hidden behind footer */
+body {
+	padding-bottom: 60px;
+}
+
+/* Synthwave styling enhancements */
+.digit-rain {
+	color: var(--interactive-highlight);
+	text-shadow: 0 0 10px var(--interactive-highlight);
+}
+
+.glitch-title {
+	color: var(--primary-accent);
+	text-shadow:
+		2px 2px 0px var(--interactive-highlight),
+		4px 4px 0px var(--tertiary-accent),
+		0 0 20px var(--primary-accent);
+	font-size: 3rem;
+	font-weight: bold;
+	letter-spacing: 4px;
+	animation: glitch 5s infinite;
+}
+
+.panel-title {
+	text-shadow:
+		1px 1px 0px var(--interactive-highlight),
+		0 0 15px var(--secondary-base);
+}
+
+/* Base glitch animation for titles */
+@keyframes glitch {
+	0%, 95%, 100% {
+		transform: none;
+		opacity: 1;
+	}
+	92.5% {
+		transform: translate(-2px, 0);
+		opacity: 0.8;
+	}
+	97.5% {
+		transform: translate(2px, 0);
+		opacity: 0.8;
+	}
+}

@@ -1,0 +1,25 @@
+/* Session Management Styles */
+
+/* Session Warning Styles */
+.session-warning {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.8em;
+    opacity: 0.7;
+    color: var(--warning-color, #ff9500);
+    width: 100%;
+    display: block;
+}
+
+.session-warning.expiring-soon {
+    animation: blink 1.5s infinite;
+    color: var(--danger-color, #ff4444);
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Future session-related styles can be added here */

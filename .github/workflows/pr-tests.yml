@@ -1,0 +1,98 @@
+name: PR Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Code Quality & Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm install
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm install
+    
+    - name: Lint backend
+      run: |
+        cd backend
+        npm run lint
+    
+    - name: Lint frontend
+      run: |
+        cd frontend
+        npm run lint
+    
+    - name: Security audit backend
+      run: |
+        cd backend
+        npm audit --audit-level=moderate
+      continue-on-error: true
+
+  backend-tests:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm install
+    
+    - name: Run backend unit tests
+      run: |
+        cd backend
+        npm test
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm install
+    
+    - name: Run npm audit
+      run: |
+        cd backend
+        npm audit --audit-level=high || echo "Audit completed with warnings"
+      continue-on-error: true
+
+  changelog:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dangoslen/changelog-enforcer@v3

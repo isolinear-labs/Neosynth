@@ -1,0 +1,69 @@
+/* Mobile responsive styles for all themes */
+
+/* Media queries */
+@media (max-width: 768px) {
+	/* Disable some heavy effects on mobile for performance */
+	body.theme-noir::before,
+	body.theme-toxic::after,
+	body.theme-laser::after {
+		display: none;
+	}
+	
+	/* Reduce animation intensity on mobile */
+	body.theme-laser .glitch-title,
+	body.theme-toxic .glitch-title,
+	body.theme-mint .glitch-title,
+	body.theme-noir .glitch-title,
+	body.theme-vapor .glitch-title,
+	body.theme-synthwave .glitch-title,
+	body.theme-quantum .glitch-title {
+		animation-duration: 3s;
+	}
+	
+	/* Ensure all themes work well on mobile */
+	body.theme-vapor,
+	body.theme-synthwave,
+	body.theme-quantum,
+	body.theme-noir,
+	body.theme-mint,
+	body.theme-laser,
+	body.theme-toxic {
+		background-attachment: scroll;
+	}
+	
+	.input-container, .playlist-manager {
+		flex-direction: column;
+	}
+	
+	.url-input, .playlist-name-input, .playlist-select {
+		margin-right: 0;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+	
+	.glitch-title {
+		font-size: 2rem;
+	}
+	
+	.playlist-buttons {
+		flex-direction: column;
+	}
+	
+	.btn-clear,
+	.btn-save {
+		margin-right: 0;
+		margin-bottom: 5px;
+	}
+	
+	/* Mobile responsive for both playlist managers */
+	.playlist-manager:last-of-type {
+		flex-direction: column;
+	}
+	
+	.playlist-manager:last-of-type .playlist-select {
+		margin-right: 0;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+	
+}

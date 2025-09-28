@@ -1,0 +1,89 @@
+/* Base theme variables and global styles */
+
+:root {
+	--primary-accent: #ff2a6d;
+	--secondary-base: #05d9e8;
+	--tertiary-accent: #d800ff;
+	--interactive-highlight: #01ffc3;
+	--warning-accent: #ffe600;
+	--dark-bg: #0d0221;
+	--darker-bg: #080215;
+	--text-color: #ffffff;
+	--accent-dark: #6a00ff;
+	--success-accent: #c0ff00;
+}
+
+/* Global styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Courier New', monospace;
+	color: var(--text-color);
+}
+
+body {
+	background-color: var(--dark-bg);
+	min-height: 100vh;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+/* Status message styles */
+.status-message {
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	display: none;
+}
+
+.status-success {
+	display: block;
+	background-color: rgba(1, 255, 195, 0.2);
+	border: 1px solid var(--interactive-highlight);
+	color: var(--interactive-highlight);
+}
+
+.status-error {
+	display: block;
+	background-color: rgba(255, 42, 109, 0.2);
+	border: 1px solid var(--primary-accent);
+	color: var(--primary-accent);
+}
+
+.hide {
+	display: none;
+}
+
+/* Input containers */
+.input-container {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+/* Playlist items container */
+.playlist-items {
+	max-height: 650px;
+	overflow-y: auto;
+	margin-bottom: 5px;
+	scrollbar-width: thin;
+	scrollbar-color: #05d9e8 rgba(13, 2, 33, 0.4);
+}
+
+/* Empty playlist message */
+.no-items-message {
+	text-align: center;
+	padding: 20px;
+	color: rgba(255, 255, 255, 0.5);
+	font-style: italic;
+}
+
+/* Add bottom padding to body to prevent content from being hidden behind footer */
+body {
+	padding-bottom: 60px;
+}
