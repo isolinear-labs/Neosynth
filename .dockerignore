@@ -11,6 +11,8 @@ docs/
 .env
 .env.*
 *.env.*
+**/.env
+**/.env.*
 
 # Docker files (to prevent recursion)
 Dockerfile.*
