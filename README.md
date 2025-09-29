@@ -2,7 +2,7 @@
 
 # NeoSynth
 
-*A cyberpunk themed music and video streaming web application that allows users to create, save, and manage playlists. Built with modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!*
+*A synthwave themed music and video streaming web application that allows users to create, save, and manage playlists. Built with modern features and designed with a neon-infused aesthetic, it provides a unique way to organize and play your media!*
 
 ![Demo](demo.png)
 
