@@ -19,7 +19,9 @@
 - Multiple themes ready to use
 - Feature flag administration system
 - Modular features and CSS design allowing easy contributions
-- TOTP support 
+- API integration ready
+- TOTP support
+
 
 ---
 
