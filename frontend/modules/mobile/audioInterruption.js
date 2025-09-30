@@ -62,7 +62,7 @@ export class AudioInterruptionManager {
 
         // Handle native audio interruption events
         if (audioPlayer) {
-            audioPlayer.addEventListener('pause', (e) => {
+            audioPlayer.addEventListener('pause', (_e) => {
                 // Check if this pause was programmatic or due to interruption
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
                     console.log('Audio paused unexpectedly - possible interruption');
@@ -91,7 +91,7 @@ export class AudioInterruptionManager {
 
         if (videoPlayer) {
             // Similar handlers for video player
-            videoPlayer.addEventListener('pause', (e) => {
+            videoPlayer.addEventListener('pause', (_e) => {
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
                     console.log('Video paused unexpectedly - possible interruption');
                     this.handleAudioInterruption();
@@ -104,7 +104,7 @@ export class AudioInterruptionManager {
     setupAudioContextHandling() {
         // Create a global audio context monitor
         if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
-            const AudioContextClass = AudioContext || webkitAudioContext;
+            const _AudioContextClass = AudioContext || webkitAudioContext;
 			
             // Create a monitor that checks audio context state
             setInterval(() => {

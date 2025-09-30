@@ -45,7 +45,7 @@ export class MobileOptimizations {
         if (!this.isIOS) return;
 
         // Override the native play function with interruption recovery
-        const originalTogglePlayPause = this.appElements.togglePlayPause;
+        const _originalTogglePlayPause = this.appElements.togglePlayPause;
         this.appElements.togglePlayPause = async () => {
             if (this.appElements.isPlaying) {
                 // Just pause normally

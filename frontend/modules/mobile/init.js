@@ -1,7 +1,7 @@
 import { StatePersistence } from './statePersistence.js';
 import { MediaSessionManager } from './mediaSession.js';
 import { MobileOptimizations } from './mobileOptimizations.js';
-import { createAppElements, createAppScopeProxy } from './appElementsFactory.js';
+import { createAppElements } from './appElementsFactory.js';
 
 /**
  * Initialize all mobile-related features with a simplified API

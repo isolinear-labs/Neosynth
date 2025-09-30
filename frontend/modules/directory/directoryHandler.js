@@ -106,10 +106,10 @@ async function handleGitHubDirectory(githubUrl) {
 
 /**
  * Handle Google Drive folder (requires public sharing)
- * @param {string} driveUrl - Google Drive folder URL
+ * @param {string} _driveUrl - Google Drive folder URL
  * @returns {Promise<string[]>} - Array of media file URLs
  */
-async function handleGoogleDriveDirectory(driveUrl) {
+async function handleGoogleDriveDirectory(_driveUrl) {
     // Note: This is a simplified implementation
     // Google Drive API access typically requires authentication
     throw new Error('Google Drive directory support requires API access. Please use individual file URLs.');
@@ -161,7 +161,7 @@ async function handleGenericDirectory(directoryUrl) {
                     // Resolve relative URLs
                     const absoluteUrl = new URL(href, directoryUrl).href;
                     mediaUrls.push(absoluteUrl);
-                } catch (urlError) {
+                } catch (_urlError) {
                     console.warn('Invalid URL found:', href);
                 }
             }
