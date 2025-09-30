@@ -284,7 +284,7 @@ class PasswordResetDropdown {
             });
 
             if (response && response.ok) {
-                const result = await response.json();
+                const _result = await response.json();
                 this.showStatus('Password changed successfully!', 'success');
 
                 // Clear form and close modal after success

@@ -47,16 +47,16 @@ app.set('trust proxy', 1);
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-hashes'"], // Allow inline scripts and event handlers
-            scriptSrcAttr: ["'unsafe-inline'"],       // Allow inline event handlers (onclick, etc.)
-            styleSrc: ["'self'", "'unsafe-inline'"],  // Allow inline styles for frontend compatibility
-            imgSrc: ["'self'", "data:", "https:"],    // Allow images from any HTTPS source
-            connectSrc: ["'self'", "https:", "http:"], // Allow API calls to external streaming sources
-            fontSrc: ["'self'", "data:"],             // Allow fonts from same origin and data URLs
-            objectSrc: ["'none'"],                    // Block object/embed tags
-            mediaSrc: ["'self'", "https:"],           // Allow audio/video from HTTPS sources
-            frameSrc: ["'none'"]                      // Block iframes
+            defaultSrc: ['\'self\''],
+            scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-hashes\''], // Allow inline scripts and event handlers
+            scriptSrcAttr: ['\'unsafe-inline\''],       // Allow inline event handlers (onclick, etc.)
+            styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],  // Allow inline styles and Google Fonts
+            imgSrc: ['\'self\'', 'data:', 'https:'],    // Allow images from any HTTPS source
+            connectSrc: ['\'self\'', 'https:', 'http:'], // Allow API calls to external streaming sources
+            fontSrc: ['\'self\'', 'data:', 'https://fonts.gstatic.com'],  // Allow fonts from same origin, data URLs, and Google Fonts
+            objectSrc: ['\'none\''],                    // Block object/embed tags
+            mediaSrc: ['\'self\'', 'https:'],           // Allow audio/video from HTTPS sources
+            frameSrc: ['\'none\'']                      // Block iframes
         }
     },
     crossOriginEmbedderPolicy: false // Disable COEP for compatibility
@@ -207,7 +207,7 @@ app.use('/api', featureFlagRoutes);
 app.use(express.static(frontendPath, {
     index: false,
     maxAge: '24h', // Cache for 24 hours
-    setHeaders: (res, path) => {
+    setHeaders: (res, _path) => {
         // Override any cache-control headers set by helmet
         res.set('Cache-Control', 'public, max-age=86400');
     }
@@ -266,16 +266,16 @@ const webAuth = async (req, res, next) => {
         
         if (debugAuthLogging) {
             console.log('==== WEB AUTH DEBUG ====');
-            console.log('🔐 [AUTH-DEBUG] Path:', req.path);
-            console.log('🔐 [AUTH-DEBUG] Request timestamp:', new Date().toISOString());
-            console.log('🔐 [AUTH-DEBUG] Cookie header present:', !!req.headers.cookie);
+            console.log(' [AUTH-DEBUG] Path:', req.path);
+            console.log(' [AUTH-DEBUG] Request timestamp:', new Date().toISOString());
+            console.log(' [AUTH-DEBUG] Cookie header present:', !!req.headers.cookie);
             if (req.signedCookies?.sessionToken === false) {
-                console.log('🔐 [AUTH-DEBUG] COOKIE SIGNATURE FAILED');
+                console.log(' [AUTH-DEBUG] COOKIE SIGNATURE FAILED');
             } else if (!sessionToken) {
-                console.log('🔐 [AUTH-DEBUG] No session token found');
-                console.log('🔐 [AUTH-DEBUG] Raw cookies:', req.headers.cookie ? 'Present' : 'Missing');
+                console.log(' [AUTH-DEBUG] No session token found');
+                console.log(' [AUTH-DEBUG] Raw cookies:', req.headers.cookie ? 'Present' : 'Missing');
             } else {
-                console.log('🔐 [AUTH-DEBUG] Session token found:', sessionToken.substring(0, 20) + '...');
+                console.log(' [AUTH-DEBUG] Session token found:', sessionToken.substring(0, 20) + '...');
             }
         }
         
@@ -288,18 +288,18 @@ const webAuth = async (req, res, next) => {
             
             if (debugAuthLogging) {
                 const dbLookupTime = Date.now();
-                console.log('🔐 [AUTH-DEBUG] DB lookup completed in:', dbLookupTime - startTime, 'ms');
+                console.log(' [AUTH-DEBUG] DB lookup completed in:', dbLookupTime - startTime, 'ms');
                 if (session) {
-                    console.log('🔐 [AUTH-DEBUG] Session found in DB, checking validity...');
+                    console.log(' [AUTH-DEBUG] Session found in DB, checking validity...');
                 } else {
-                    console.log('🔐 [AUTH-DEBUG] Session NOT found in DB');
+                    console.log(' [AUTH-DEBUG] Session NOT found in DB');
                     console.log('========================');
                 }
             }
             
             if (session && session.isValid()) {
                 if (debugAuthLogging) {
-                    console.log('🔐 [AUTH-DEBUG] ✅ Session valid, proceeding');
+                    console.log(' [AUTH-DEBUG] Session valid, proceeding');
                     console.log('========================');
                 }
                 // Valid session found
@@ -310,11 +310,11 @@ const webAuth = async (req, res, next) => {
                 req.authType = 'session';
                 return next();
             } else if (debugAuthLogging) {
-                console.log('🔐 [AUTH-DEBUG] ❌ Redirecting to login - invalid session');
+                console.log(' [AUTH-DEBUG] ❌ Redirecting to login - invalid session');
                 console.log('========================');
             }
         } else if (debugAuthLogging) {
-            console.log('🔐 [AUTH-DEBUG] Redirecting to login for', req.path, '- no token');
+            console.log(' [AUTH-DEBUG] Redirecting to login for', req.path, '- no token');
             console.log('========================');
         }
         return res.redirect('/login');

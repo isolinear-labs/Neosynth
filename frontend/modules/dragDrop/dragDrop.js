@@ -16,14 +16,14 @@ const DragDrop = (function() {
     let placeholder = null;
     let playlistContainer = null;
     let autoScrollInterval = null;
-    let touchStartScrollTop = 0;
+    let _touchStartScrollTop = 0;
 	
     // Private methods
 	
     /**
 	 * Create visual elements for drag feedback
 	 */
-    function createDragVisuals(item, y) {
+    function createDragVisuals(item, _y) {
         // Get original dimensions and position
         const rect = item.getBoundingClientRect();
 		
@@ -219,7 +219,7 @@ const DragDrop = (function() {
         const touch = e.touches[0];
         touchStartY = touch.clientY;
         touchStartX = touch.clientX;
-        touchStartScrollTop = playlistContainer.scrollTop;
+        _touchStartScrollTop = playlistContainer.scrollTop;
 		
         // Add dragging class
         draggedItem.classList.add('dragging');
@@ -367,7 +367,7 @@ const DragDrop = (function() {
     /**
 	 * Handle mouse up - finalize drag
 	 */
-    function handleMouseUp(e) {
+    function handleMouseUp(_e) {
         // Remove global mouse events
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);

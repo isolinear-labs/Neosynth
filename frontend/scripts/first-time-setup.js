@@ -156,10 +156,8 @@ class FirstTimeSetup {
     }
 
     initializeDigitalRain() {
-        // Initialize digital rain effect if the script is available
-        if (typeof initDigitalRain === 'function') {
-            initDigitalRain();
-        }
+        // Digital rain will be initialized by the DOMContentLoaded listener
+        // in the fallback implementation below
     }
 }
 
@@ -169,56 +167,54 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Fallback digital rain if module not available
-if (typeof initDigitalRain === 'undefined') {
-    function initDigitalRain() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('digitalRain');
+function initDigitalRain() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('digitalRain');
 
-        if (!container) return;
+    if (!container) return;
 
-        container.appendChild(canvas);
+    container.appendChild(canvas);
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
-        const characters = matrix.split("");
+    const matrix = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}';
+    const characters = matrix.split('');
 
-        const fontSize = 10;
-        const columns = canvas.width / fontSize;
-        const drops = [];
+    const fontSize = 10;
+    const columns = canvas.width / fontSize;
+    const drops = [];
 
-        for (let x = 0; x < columns; x++) {
-            drops[x] = 1;
-        }
-
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#05d9e8';
-            ctx.font = fontSize + 'px Courier New';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = characters[Math.floor(Math.random() * characters.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 35);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
     }
 
-    // Initialize digital rain
-    document.addEventListener('DOMContentLoaded', initDigitalRain);
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#05d9e8';
+        ctx.font = fontSize + 'px Courier New';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 35);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 }
+
+// Initialize digital rain
+document.addEventListener('DOMContentLoaded', initDigitalRain);

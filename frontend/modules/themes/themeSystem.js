@@ -4,7 +4,7 @@
 import { ThemeManager } from './themeManager.js';
 import { ThemeSelector } from './themeSelector.js';
 import { saveThemePreference } from '../settings/userPreferences.js';
-import { featureManager } from '../features/index.js';
+import { featureManager as _featureManager } from '../features/index.js';
 
 export class ThemeSystem {
     constructor() {

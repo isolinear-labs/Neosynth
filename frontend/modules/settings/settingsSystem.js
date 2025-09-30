@@ -3,7 +3,7 @@
  * Handles the full-screen settings panel with various user preferences
  */
 
-import { digitalRainManager } from '../effects/index.js';
+import { digitalRainManager as _digitalRainManager } from '../effects/index.js';
 import { featureManager } from '../features/index.js';
 
 export class SettingsSystem {
@@ -949,9 +949,9 @@ export class SettingsSystem {
         
         // Get current theme to mark as active
         const currentTheme = this.themeSystem?.getCurrentTheme() || this.preferences.theme || 'default';
-        
+
         // Create theme cards
-        themes.forEach((theme, index) => {
+        themes.forEach((theme, _index) => {
             const themeCard = document.createElement('div');
             themeCard.className = `theme-card${theme.id === currentTheme ? ' active' : ''}`;
             themeCard.dataset.theme = theme.id;

@@ -13,7 +13,7 @@ export class StatePersistence {
     }
 
     // Save current app state to localStorage (disabled)
-    saveState(appElements) {
+    saveState(_appElements) {
         // Mobile playlist restore feature removed - resume button handles this now
         return;
     }
