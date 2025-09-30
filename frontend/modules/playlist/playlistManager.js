@@ -142,10 +142,10 @@ export class PlaylistManager {
                     };
                     this.showStatus(`Playlist "${playlistName}" saved locally (API unavailable)`);
                 }
-				
+
                 localStorage.setItem('neosynthPlaylists', JSON.stringify(savedPlaylists));
                 this.loadSavedPlaylists();
-            } catch (localError) {
+            } catch (_localError) {
                 this.showStatus(`Error saving playlist: ${error.message}`, true);
             }
         }
@@ -376,7 +376,7 @@ export class PlaylistManager {
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then(_data => {
                     this.loadSavedPlaylists();
                     this.showStatus(`Deleted playlist "${playlistName}"`);
                 })

@@ -292,15 +292,15 @@ class TerminalManager {
         }
     }
 
-    showScriptExecution(keyName) {
+    showScriptExecution(_keyName) {
         // Animation is always running, no need to start/stop
     }
 
     hideScriptExecution() {
-        // Animation is always running, no need to start/stop  
+        // Animation is always running, no need to start/stop
     }
 
-    showNewApiKey(apiKey, keyName) {
+    showNewApiKey(apiKey, _keyName) {
         const statusLine = document.getElementById('statusLine');
         if (!statusLine) return;
 
@@ -398,7 +398,7 @@ class TerminalManager {
             await navigator.clipboard.writeText(text);
             // Show temporary feedback without replacing the API key display
             this.showTemporaryMessage('API key copied to clipboard!', 'success');
-        } catch (error) {
+        } catch (_error) {
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
             textArea.value = text;

@@ -148,9 +148,9 @@ export class ThemeManager {
     /**
 	 * Apply theme with smooth transition
 	 * @param {string} newTheme - New theme to apply
-	 * @param {string} oldTheme - Previous theme
+	 * @param {string} _oldTheme - Previous theme
 	 */
-    applyThemeWithTransition(newTheme, oldTheme) {
+    applyThemeWithTransition(newTheme, _oldTheme) {
         // Add transition class
         document.body.classList.add('theme-transitioning');
 		
