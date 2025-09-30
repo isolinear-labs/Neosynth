@@ -9,10 +9,10 @@ import { initPreferences } from './modules/preferences/init.js';
 import { restoreTrackManager } from './modules/restoreTrack/index.js';
 import settingsIntegration from './modules/settings/index.js';
 import { shuffleManager } from './modules/shuffle/index.js';
-import { terminalManager } from './modules/terminal/index.js';
+import { terminalManager as _terminalManager } from './modules/terminal/index.js';
 import { themeSystem } from './modules/themes/themeSystem.js';
 import { sessionCheck } from './modules/sessionCheck/index.js';
-import { volumeMultiplierManager } from './modules/volumeMultiplier/index.js';
+import { volumeMultiplierManager as _volumeMultiplierManager } from './modules/volumeMultiplier/index.js';
 import { PasswordResetDropdown } from './modules/passwordReset/index.js';
 import { SYSTEM_VERSION_DISPLAY } from './constants.js';
 
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const videoContainer = document.getElementById('videoContainer');
     const videoPlayer = document.getElementById('videoPlayer');
     const volumeSlider = document.getElementById('volumeSlider');
-    const volumeMultiplier = document.getElementById('volumeMultiplier');
+    const _volumeMultiplier = document.getElementById('volumeMultiplier');
 	
     // Manager instances
     const nowPlayingManager = new NowPlaying();
@@ -1020,27 +1020,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         playlistManager.clearPlaylistName();
 		
         showStatus('Playlist cleared successfully');
-    }
-
-    // Helper function to select an item based on weights
-    function weightedRandomSelection(items, weights) {
-        // Calculate sum of all weights
-        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-		
-        // Get a random value between 0 and the sum of weights
-        const randomValue = Math.random() * totalWeight;
-        let weightSum = 0;
-		
-        // Find the item that corresponds to this random value
-        for (let i = 0; i < items.length; i++) {
-            weightSum += weights[i];
-            if (randomValue <= weightSum) {
-                return items[i];
-            }
-        }
-		
-        // Fallback (should rarely happen)
-        return items[Math.floor(Math.random() * items.length)];
     }
 
     // Play next track

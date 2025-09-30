@@ -126,6 +126,17 @@ module.exports = [
         }
     },
     {
+        // Register.js uses inline HTML onclick handlers
+        files: ['scripts/register.js'],
+        rules: {
+            'no-unused-vars': ['warn', {
+                'argsIgnorePattern': '^_',
+                'varsIgnorePattern': '^_|validateBasicInfo|validateTOTP|downloadBackupCodes|completeRegistration|redirectToLogin',
+                'caughtErrorsIgnorePattern': '^_'
+            }]
+        }
+    },
+    {
         ignores: ['node_modules/**', 'cssCustom/**']
     }
 ];

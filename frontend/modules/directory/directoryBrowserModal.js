@@ -806,7 +806,7 @@ class DirectoryBrowserModal {
             filename = filename.split('?')[0];
             filename = decodeURIComponent(filename);
             return filename || 'Unknown File';
-        } catch (error) {
+        } catch (_error) {
             return 'Unknown File';
         }
     }
