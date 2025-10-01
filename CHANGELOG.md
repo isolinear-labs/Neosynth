@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Bug Fixes
 
+- (mobile/footer) corrected the mobile footer alignment to compensate for newly added Github button  ([#9](https://github.com/isolinear-labs/Neosynth/pull/9))
+
 ### Dependencies
 
 ## [v1.0.0] - 2025-09-28
