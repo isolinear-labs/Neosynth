@@ -136,17 +136,31 @@ body {
 	.footer {
 		padding: 12px 15px;
 		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 15px;
+		flex-wrap: nowrap;
+		gap: 10px;
 		height: auto;
 		min-height: 60px;
 	}
 	.api-link {
-		font-size: 0.8rem;
-		padding: 8px 12px;
-		flex: 1;
+		font-size: 0.75rem;
+		padding: 8px 10px;
 		text-align: center;
-		min-width: 120px;
+		flex-shrink: 1;
+		min-width: 0;
+		white-space: nowrap;
+	}
+	.github-link {
+		width: 36px;
+		height: 36px;
+		margin-right: 0;
+		flex-shrink: 0;
+	}
+	.github-icon {
+		width: 16px;
+		height: 16px;
+	}
+	.tech-socket-btn {
+		flex-shrink: 0;
 	}
 	.theme-select {
 		font-size: 0.8rem;
