@@ -6,21 +6,24 @@
 
 ![Demo](demo.png)
 
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-neosynth-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/isolinearlabs/neosynth/tags) [![GitHub Package](https://img.shields.io/badge/GitHub%20Packages-neosynth-2088FF?logo=github&logoColor=white)](https://github.com/isolinear-labs/Neosynth/pkgs/container/neosynth)
+
 ---
 
 </div>
 
 ## Features
 
+- Resume playback from where you left off on any device
 - Stream audio and video files from your local network
 - Create and manage multiple playlists
 - Shuffle mode with intelligent track selection
-- Responsive design for both desktop and mobile
-- Multiple themes ready to use
+- Responsive design for desktop and mobile
+- Multiple customizable themes
+- Modular architecture for easy feature contributions
 - Feature flag administration system
-- Modular features and CSS design allowing easy contributions
 - API integration ready
-- TOTP support
+- TOTP authentication support
 
 
 ---
