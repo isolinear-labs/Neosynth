@@ -92,7 +92,7 @@ jobs:
       continue-on-error: true
 
   changelog:
-    if: github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
     runs-on: ubuntu-latest
     steps:
     - uses: dangoslen/changelog-enforcer@v3
