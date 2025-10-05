@@ -30,15 +30,19 @@ const app = express();
 // Global setup completion flag - loaded once at startup
 let isSetupComplete = false;
 
+// Global database ready flag - blocks requests until migrations complete
+let isDatabaseReady = false;
+
 // Function to update setup status (called when setup completes)
 function markSetupComplete() {
     isSetupComplete = true;
-    console.log('✅ Setup status updated: System setup completed');
+    console.log('[INFO] Setup status updated: System setup completed');
 }
 
 // Make setup functions globally available
 global.markSetupComplete = markSetupComplete;
 global.isSetupComplete = () => isSetupComplete;
+global.isDatabaseReady = () => isDatabaseReady;
 
 // Trust proxy - trust only the immediate proxy
 app.set('trust proxy', 1);
@@ -70,25 +74,90 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
+// Database readiness middleware - blocks all requests until migrations complete
+app.use((req, res, next) => {
+    // Allow health check endpoint even when database is not ready
+    if (req.path === '/health') {
+        return next();
+    }
+
+    // Block all other requests if database is not ready
+    if (!isDatabaseReady) {
+        return res.status(503).json({
+            status: 'Service Unavailable',
+            message: 'Database migrations in progress. Please wait...',
+            code: 'DATABASE_NOT_READY'
+        });
+    }
+
+    next();
+});
+
 // Connect to MongoDB and initialize setup status
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {
         console.log('MongoDB connected');
 
+        // Run database migrations before marking database as ready
+        const bypassMigrations = process.env.BYPASS_MIGRATIONS === 'true';
+
+        if (bypassMigrations) {
+            console.log('[WARN] ╔════════════════════════════════════════════════════════════════╗');
+            console.log('[WARN] ║         BYPASSING MIGRATIONS - UNSAFE MODE ENABLED             ║');
+            console.log('[WARN] ╚════════════════════════════════════════════════════════════════╝');
+            console.log('[WARN] BYPASS_MIGRATIONS=true detected');
+            console.log('[WARN] Database marked ready WITHOUT running migrations');
+            console.log('[WARN] This should only be used for emergency recovery');
+            isDatabaseReady = true;
+        } else {
+            try {
+                const { runMigrations } = require('./migrations/migrationRunner');
+                const migrationResult = await runMigrations();
+
+                if (!migrationResult.success) {
+                    console.error('[CRITICAL] Migrations failed - database is NOT ready');
+                    console.error('[CRITICAL] Server will NOT accept requests until migrations succeed');
+                    console.error('[CRITICAL] Please fix migration errors and restart the server');
+                    console.error('[CRITICAL] Or set BYPASS_MIGRATIONS=true to force startup (unsafe)');
+                    // Keep isDatabaseReady = false, blocking all requests
+                    return;
+                }
+
+                // Mark database as ready only after successful migrations
+                isDatabaseReady = true;
+
+                if (migrationResult.migrationsRun > 0) {
+                    console.log(`[OK] Database ready - ${migrationResult.migrationsRun} migration(s) completed successfully`);
+                } else {
+                    console.log('[OK] Database ready');
+                }
+
+            } catch (error) {
+                console.error('[CRITICAL] Migration runner error:', error);
+                console.error('[CRITICAL] Database is NOT ready - server will reject requests');
+                console.error('[CRITICAL] Set BYPASS_MIGRATIONS=true to force startup (unsafe)');
+                // Keep isDatabaseReady = false, blocking all requests
+                return;
+            }
+        }
+
         // Load setup completion status at startup
         try {
             const SystemSettings = require('./models/SystemSettings');
             const settings = await SystemSettings.getSystemSettings();
             isSetupComplete = settings.firstTimeSetupCompleted;
-            console.log(`🔧 Setup status loaded: ${isSetupComplete ? 'Completed' : 'Required'}`);
+            console.log(`[INFO] Setup status loaded: ${isSetupComplete ? 'Completed' : 'Required'}`);
         } catch (error) {
-            console.error('⚠️  Error loading setup status:', error);
+            console.error('[ERROR] Error loading setup status:', error);
             // Default to incomplete on error to be safe
             isSetupComplete = false;
         }
     })
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        isDatabaseReady = false;
+    });
 
 // Determine frontend path based on current working directory
 let frontendPath;
@@ -105,9 +174,22 @@ if (!fs.existsSync(frontendPath)) {
     console.error(`Frontend directory not found at: ${frontendPath}`);
 }
 
-// Health check endpoint for liveness probe
+// Health check endpoint for liveness probe (always responds, even during migrations)
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok' });
+    const healthStatus = {
+        status: isDatabaseReady ? 'healthy' : 'degraded',
+        database: {
+            connected: mongoose.connection.readyState === 1,
+            ready: isDatabaseReady,
+            message: isDatabaseReady ? 'Ready' : 'Migrations in progress'
+        },
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+    };
+
+    // Return 200 for liveness (server is running)
+    // Use status field to indicate readiness
+    res.status(200).json(healthStatus);
 });
 
 
@@ -121,14 +203,6 @@ app.get('/login', (req, res) => {
     }
 });
 
-// Health check endpoint (public, no auth required)
-app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime()
-    });
-});
 
 // Register endpoint
 app.get('/register', (req, res) => {
