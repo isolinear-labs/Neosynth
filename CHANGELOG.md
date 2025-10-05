@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Enhancements
 - (admin/ff) removed the already released themes from the admin feature flag systemm  ([#12](https://github.com/isolinear-labs/Neosynth/pull/12))
+- (admin/ff) removed the verbose console logging and moved it behind feature flag 'console_debug_logging'
 
 ### Bug Fixes
 
