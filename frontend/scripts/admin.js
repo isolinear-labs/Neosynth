@@ -547,55 +547,6 @@ class AdminPanel {
 
     getTemplateData() {
         return {
-            'theme-vapor': {
-                name: 'theme_vapor',
-                description: 'Controls access to the Vapor Dream theme with its soft purple/pink aesthetic and dreamy vibes',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-synthwave': {
-                name: 'theme_synthwave',
-                description: 'Controls access to the classic 80s Synthwave theme with magenta/cyan contrast',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-quantum': {
-                name: 'theme_quantum',
-                description: 'Controls access to the high-tech Quantum Flux theme with purple/cyan/lime energy',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-noir': {
-                name: 'theme_noir',
-                description: 'Controls access to the high contrast Neon Noir theme with white/red/black film noir aesthetic',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-mint': {
-                name: 'theme_mint',
-                description: 'Controls access to the fresh Vapor Mint theme with mint/pink/purple retro-futuristic styling',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-laser': {
-                name: 'theme_laser',
-                description: 'Controls access to the hot pink/electric blue Laser Grid theme with retro gaming aesthetics',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
-            'theme-toxic': {
-                name: 'theme_toxic',
-                description: 'Controls access to the radioactive green/yellow Toxic Waste theme with hazardous energy styling',
-                enabled: false,
-                rolloutPercentage: 0,
-                adminOnly: false
-            },
             'experimental-themes': {
                 name: 'experimental_themes',
                 description: 'Enables access to experimental and beta themes including hologram and matrix themes',

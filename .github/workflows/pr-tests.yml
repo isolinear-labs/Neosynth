@@ -91,6 +91,45 @@ jobs:
         npm audit --audit-level=high || echo "Audit completed with warnings"
       continue-on-error: true
 
+  version-check:
+    name: Version Increment Check
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-version-check')
+
+    steps:
+    - name: Checkout PR branch
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Check version increment
+      run: |
+        # Get the version from the PR branch
+        PR_VERSION=$(grep -oP "export const VERSION = '\K[^']+" frontend/constants.js)
+
+        # Get the version from master branch
+        git fetch origin master:master
+        MASTER_VERSION=$(git show master:frontend/constants.js | grep -oP "export const VERSION = '\K[^']+")
+
+        echo "Master version: $MASTER_VERSION"
+        echo "PR version: $PR_VERSION"
+
+        # Convert versions to comparable integers (remove dots)
+        # Example: 1.0.0 -> 100, 1.0.1 -> 101, 1.1.0 -> 110
+        pr_ver_num=$(echo $PR_VERSION | awk -F. '{printf "%d%02d%02d", $1, $2, $3}')
+        master_ver_num=$(echo $MASTER_VERSION | awk -F. '{printf "%d%02d%02d", $1, $2, $3}')
+
+        # Compare versions numerically
+        if [ "$pr_ver_num" -le "$master_ver_num" ]; then
+          echo "ERROR: Version in frontend/constants.js has not been incremented!"
+          echo "Current master version: $MASTER_VERSION"
+          echo "PR version: $PR_VERSION"
+          echo "Please update the VERSION constant in frontend/constants.js to be greater than $MASTER_VERSION"
+          exit 1
+        else
+          echo "Version has been incremented from $MASTER_VERSION to $PR_VERSION"
+        fi
+
   changelog:
     if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
     runs-on: ubuntu-latest

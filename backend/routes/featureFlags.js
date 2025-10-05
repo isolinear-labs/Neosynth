@@ -595,7 +595,6 @@ router.get('/admin/discovery/categories', UnifiedAuth.authenticate, UnifiedAuth.
                 icon: '🎨',
                 description: 'Control access to visual themes',
                 templates: [
-                    ...discoveredThemes,
                     {
                         id: 'experimental_themes',
                         name: 'Experimental Themes',
