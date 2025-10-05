@@ -9,8 +9,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Breaking Changes
 
 ### Enhancements
-- (node/package-lock) added package-lock.json to version control  ([#8](https://github.com/isolinear-labs/Neosynth/pull/8))
+- (admin/ff) removed the already released themes from the admin feature flag systemm  ([#](https://github.com/isolinear-labs/Neosynth/pull/#))
 
+### Bug Fixes
+
+### Dependencies
+
+
+## [v1.0.1] - 2025-9-30
+
+
+### Enhancements
+
+- (node/package-lock) added package-lock.json to version control  ([#8](https://github.com/isolinear-labs/Neosynth/pull/8))
 
 ### Bug Fixes
 
