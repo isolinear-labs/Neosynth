@@ -8,8 +8,10 @@
 - [ ] Documentation update
 - [ ] Refactoring
 
+<!-- You may remove the following options if deemed unessary -->
+
 ## Changes Made
-<!-- List the main changes -->
+<!-- List the main changes if  multiple changes were made -->
 -
 
 ## Screenshots (if applicable)
@@ -20,4 +22,4 @@
 <!-- Or just reference: Related to #123, See #456 -->
 
 ## Breaking change?
-[ ] Yes
+- [ ] Yes
