@@ -8,11 +8,13 @@
 - [ ] Documentation update
 - [ ] Refactoring
 
-<!-- You may remove the following options if deemed unessary -->
+## Breaking change?
+- [ ] Yes
 
-## Changes Made
-<!-- List the main changes if  multiple changes were made -->
--
+## User Impact & Considerations
+<!-- Describe any potential user impact or items that other should be aware of -->
+
+<!-- You may remove the below options if deemed unessary -->
 
 ## Screenshots (if applicable)
 <!-- Add screenshots to help explain your changes -->
@@ -21,5 +23,3 @@
 <!-- Use keywords to auto-close: Closes #123, Fixes #456, Resolves #789 -->
 <!-- Or just reference: Related to #123, See #456 -->
 
-## Breaking change?
-- [ ] Yes
