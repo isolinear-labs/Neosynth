@@ -1,3 +1,5 @@
+import debug from '../debugLogger/debugLogger.js';
+
 // Default preferences
 const DEFAULT_PREFERENCES = {
     volume: 100,

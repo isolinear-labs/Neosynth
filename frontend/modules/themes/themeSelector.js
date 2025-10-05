@@ -2,6 +2,8 @@
  * Custom Theme Selector Component
  * Handles the interactive dropdown UI for theme selection
  */
+import debug from '../debugLogger/debugLogger.js';
+
 export class ThemeSelector {
     constructor() {
         this.themeCurrentBtn = null;
@@ -27,8 +29,8 @@ export class ThemeSelector {
 		
         // Setup outside click handler
         this.setupOutsideClickHandler();
-		
-        console.log('Theme selector initialized');
+
+        debug.log('Theme selector initialized');
     }
 
     /**

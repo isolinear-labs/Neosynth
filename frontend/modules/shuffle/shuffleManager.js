@@ -5,6 +5,8 @@
  * Handles intelligent shuffle logic with backend API integration
  * Designed for hour-long tracks and large playlists
  */
+import debug from '../debugLogger/debugLogger.js';
+
 export class ShuffleManager {
     constructor() {
         this.API_URL = '/api';
@@ -21,7 +23,7 @@ export class ShuffleManager {
     init(options = {}) {
         this.userId = options.userId;
         this.showStatus = options.showStatus || (() => {});
-        console.log('Shuffle manager initialized with backend API');
+        debug.log('Shuffle manager initialized with backend API');
     }
 
     /**
@@ -227,7 +229,7 @@ export class ShuffleManager {
             });
 
             if (response && response.ok) {
-                console.log('Shuffle session reset successfully');
+                debug.log('Shuffle session reset successfully');
                 return true;
             } else {
                 console.error('Failed to reset shuffle session:', response?.status);
@@ -306,7 +308,7 @@ export class ShuffleManager {
     enable() {
         this.isEnabled = true;
         this.resetCurrentSession(); // Fresh start when enabling
-        console.log('Shuffle enabled');
+        debug.log('Shuffle enabled');
     }
 
     /**
@@ -314,7 +316,7 @@ export class ShuffleManager {
      */
     disable() {
         this.isEnabled = false;
-        console.log('Shuffle disabled');
+        debug.log('Shuffle disabled');
     }
 
     /**

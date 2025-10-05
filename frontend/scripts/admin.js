@@ -1,3 +1,6 @@
+// Use global debugLogger since this isn't an ES6 module
+const debug = window.debugLogger || { log: () => {}, info: () => {} };
+
 class AdminPanel {
     constructor() {
         this.featureFlagsContainer = document.getElementById('featureFlagsContainer');
@@ -521,7 +524,7 @@ class AdminPanel {
 
     renderStaticTemplates() {
         // Fallback to original static templates
-        console.log('Using static template fallback');
+        debug.log('Using static template fallback');
     }
 
     handleDynamicTemplateClick(e, template) {

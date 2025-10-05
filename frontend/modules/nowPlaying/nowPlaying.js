@@ -2,6 +2,8 @@
  * NowPlaying handles saving and loading the current playback state
  * to/from the server
  */
+import debug from '../debugLogger/debugLogger.js';
+
 export class NowPlaying {
     constructor() {
         this.userId = localStorage.getItem('neosynthUserId');
@@ -47,7 +49,7 @@ export class NowPlaying {
 	 * Save current track state to the server
 	 */
     async saveNowPlaying() {
-    //console.log("saveNowPlaying called");
+    //debug.log("saveNowPlaying called");
     
         // Skip if no user ID or no current track
         if (!this.userId || this.appElements.currentTrackIndex < 0) {
@@ -85,7 +87,7 @@ export class NowPlaying {
         };
 		
         try {
-            //console.log("Sending nowplaying fetch request to:", `/api/nowplaying/${this.userId}`);
+            //debug.log("Sending nowplaying fetch request to:", `/api/nowplaying/${this.userId}`);
             const response = await window.apiCall(`/api/nowplaying/${this.userId}`, {
                 method: 'PUT',
                 body: JSON.stringify(state)
@@ -93,7 +95,7 @@ export class NowPlaying {
 			
             if (response && response.ok) {
                 this.lastSaveTime = now;
-                //console.log('Now playing state saved');
+                //debug.log('Now playing state saved');
                 
                 // Notify restore track manager of updated data
                 if (window.restoreTrackManager) {
@@ -115,7 +117,7 @@ export class NowPlaying {
 	 * Trigger now playing save on track change
 	 */
     onTrackChange() {
-        //console.log("onTrackChange called");
+        //debug.log("onTrackChange called");
         this.saveNowPlaying();
     }
 
@@ -123,7 +125,7 @@ export class NowPlaying {
 	 * Trigger now playing save on play/pause
 	 */
     onPlayPauseToggle() {
-        //console.log("onPlayPauseToggle called");
+        //debug.log("onPlayPauseToggle called");
         this.saveNowPlaying();
     }
 

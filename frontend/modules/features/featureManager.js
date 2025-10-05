@@ -3,6 +3,8 @@
  * Manages feature flags and provides easy access to feature status
  */
 
+import debug from '../debugLogger/debugLogger.js';
+
 export class FeatureManager {
     constructor() {
         this.flags = new Map();
@@ -31,7 +33,7 @@ export class FeatureManager {
         }
         
         this.isInitialized = true;
-        console.log('Feature manager initialized');
+        debug.log('Feature manager initialized');
     }
 
     /**
@@ -41,10 +43,10 @@ export class FeatureManager {
      */
     isEnabled(flagName) {
         if (!this.isInitialized) {
-            console.warn('Feature manager not initialized');
+            // Silently return false if not initialized (normal during app startup)
             return false;
         }
-        
+
         return this.flags.get(flagName) === true;
     }
 
@@ -81,7 +83,7 @@ export class FeatureManager {
             // Check cache first
             const now = Date.now();
             if (now - this.lastFetch < this.cacheDuration && this.flags.size > 0) {
-                console.log('Using cached feature flags');
+                debug.log('Using cached feature flags');
                 return;
             }
 
@@ -103,7 +105,7 @@ export class FeatureManager {
                 
                 this.lastFetch = now;
                 this.saveToCache();
-                console.log('Feature flags loaded from server:', flags);
+                debug.log('Feature flags loaded from server:', flags);
             } else {
                 console.warn('Failed to load feature flags from server');
                 this.loadFromCache();
@@ -146,7 +148,7 @@ export class FeatureManager {
                         this.flags.set(name, enabled);
                     });
                     this.lastFetch = cacheData.timestamp;
-                    console.log('Loaded feature flags from cache');
+                    debug.log('Loaded feature flags from cache');
                 }
             }
         } catch (error) {
@@ -194,7 +196,7 @@ export class FeatureManager {
             });
             
             this.eventSource.onopen = () => {
-                console.log('Feature flag SSE connected');
+                debug.log('Feature flag SSE connected');
                 this.reconnectAttempts = 0;
             };
             
@@ -203,7 +205,7 @@ export class FeatureManager {
                     const data = JSON.parse(event.data);
                     
                     if (data.type === 'refresh') {
-                        console.log('Feature flags changed, refreshing...');
+                        debug.log('Feature flags changed, refreshing...');
                         this.refresh();
                     } else if (data.type === 'connected') {
                         console.log('SSE connection established');

@@ -1,4 +1,6 @@
 // Restore Track Manager - Expandable button for resuming last played track
+const debug = window.debugLogger || { log: () => {}, info: () => {} };
+
 class RestoreTrackManager {
     constructor() {
         this.container = null;
@@ -174,7 +176,7 @@ class RestoreTrackManager {
                                         if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                             window.volumeMultiplierManager.onTrackChange();
                                         }
-                                        player.play().catch(e => console.log('Play interrupted:', e));
+                                        player.play().catch(e => debug.log('Play interrupted:', e));
                                     } else {
                                         // Wait for loadeddata event
                                         const onLoadedData = () => {
@@ -185,7 +187,7 @@ class RestoreTrackManager {
                                             if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                                 window.volumeMultiplierManager.onTrackChange();
                                             }
-                                            player.play().catch(e => console.log('Play interrupted:', e));
+                                            player.play().catch(e => debug.log('Play interrupted:', e));
                                             player.removeEventListener('loadeddata', onLoadedData);
                                         };
                                         player.addEventListener('loadeddata', onLoadedData);
@@ -243,7 +245,7 @@ class RestoreTrackManager {
                             if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                 window.volumeMultiplierManager.onTrackChange();
                             }
-                            player.play().catch(e => console.log('Play interrupted:', e));
+                            player.play().catch(e => debug.log('Play interrupted:', e));
                         } else {
                             // Wait for loadeddata event
                             const onLoadedData = () => {
@@ -254,7 +256,7 @@ class RestoreTrackManager {
                                 if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                     window.volumeMultiplierManager.onTrackChange();
                                 }
-                                player.play().catch(e => console.log('Play interrupted:', e));
+                                player.play().catch(e => debug.log('Play interrupted:', e));
                                 player.removeEventListener('loadeddata', onLoadedData);
                             };
                             player.addEventListener('loadeddata', onLoadedData);

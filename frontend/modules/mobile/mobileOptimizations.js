@@ -1,3 +1,4 @@
+import debug from '../debugLogger/debugLogger.js';
 import { AudioInterruptionManager } from './audioInterruption.js';
 
 export class MobileOptimizations {
@@ -18,14 +19,14 @@ export class MobileOptimizations {
     // Initialize mobile optimizations
     init(appElements, statePersistence) {
         if (!this.isMobile) {
-            console.log('Not on mobile device - skipping mobile optimizations');
+            debug.log('Not on mobile device - skipping mobile optimizations');
             return;
         }
 
         this.appElements = appElements;
         this.statePersistence = statePersistence;
 
-        console.log('Initializing mobile optimizations...');
+        debug.log('Initializing mobile optimizations...');
 		
         // Initialize audio interruption handling
         this.audioInterruption.init(appElements);
@@ -73,7 +74,7 @@ export class MobileOptimizations {
                 const AudioContextClass = AudioContext || webkitAudioContext;
                 const audioContext = new AudioContextClass();
                 if (audioContext.state === 'suspended') {
-                    audioContext.resume().catch(err => console.log('Failed to resume audio context:', err));
+                    audioContext.resume().catch(err => debug.log('Failed to resume audio context:', err));
                 }
             }
         };
@@ -84,7 +85,7 @@ export class MobileOptimizations {
         // Periodically check if audio is actually playing on iOS
         setInterval(() => {
             if (this.appElements.isPlaying && !this.audioInterruption.isAudioActuallyPlaying()) {
-                console.log('iOS: Detected audio stopped playing unexpectedly');
+                debug.log('iOS: Detected audio stopped playing unexpectedly');
                 this.audioInterruption.handleAudioInterruption();
             }
         }, 2000);
@@ -123,10 +124,10 @@ export class MobileOptimizations {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
                 .then(registration => {
-                    console.log('Service worker registered:', registration);
+                    debug.log('Service worker registered:', registration);
                 })
                 .catch(error => {
-                    console.log('Service worker registration failed:', error);
+                    debug.log('Service worker registration failed:', error);
                 });
         }
     }
