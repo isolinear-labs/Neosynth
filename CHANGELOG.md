@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Breaking Changes
 
 ### Enhancements
-- (admin/ff) removed the already released themes from the admin feature flag systemm  ([#](https://github.com/isolinear-labs/Neosynth/pull/#))
+- (admin/ff) removed the already released themes from the admin feature flag systemm  ([#12](https://github.com/isolinear-labs/Neosynth/pull/12))
 
 ### Bug Fixes
 
