@@ -1,5 +1,8 @@
 // Enhanced NeoSynth Neural Authentication System
 
+// Use global debugLogger since this isn't an ES6 module
+const debug = window.debugLogger || { log: () => {}, info: () => {} };
+
 class LoginManager {
     constructor() {
         this.API_URL = '/api';
@@ -67,7 +70,7 @@ class LoginManager {
                 return;
             }
         } catch (_error) {
-            console.log('Digital rain module not available, using fallback');
+            debug.log('Digital rain module not available, using fallback');
         }
 
         // Fallback implementation
@@ -659,7 +662,7 @@ class LoginManager {
             if (data.user && data.user.userId) {
                 const sanitizedUserId = this.sanitizeInput(data.user.userId);
                 localStorage.setItem('neosynthUserId', sanitizedUserId);
-                console.log('Stored userId in localStorage:', sanitizedUserId);
+                debug.log('Stored userId in localStorage:', sanitizedUserId);
             } else {
                 console.error('No userId in login response data:', data);
                 this.showStatus('Neural link authentication failed. Please try again.', 'error');
@@ -668,7 +671,7 @@ class LoginManager {
 
             if (data.deviceToken) {
                 localStorage.setItem('neosynthDeviceToken', data.deviceToken);
-                console.log('Stored deviceToken in localStorage');
+                debug.log('Stored deviceToken in localStorage');
             }
             // Session token is now stored in httpOnly cookie by the server
 
@@ -737,7 +740,7 @@ class LoginManager {
                 return;
             }
 
-            console.log('Redirecting with userId:', userId);
+            debug.log('Redirecting with userId:', userId);
 
             // Force a small delay to ensure all localStorage operations complete
             setTimeout(() => {

@@ -1,6 +1,7 @@
 // Theme System Integration
 // This file coordinates the ThemeManager and ThemeSelector
 
+import debug from '../debugLogger/debugLogger.js';
 import { ThemeManager } from './themeManager.js';
 import { ThemeSelector } from './themeSelector.js';
 import { saveThemePreference } from '../settings/userPreferences.js';
@@ -46,16 +47,16 @@ export class ThemeSystem {
                 // Sync selector with current theme
                 this.themeSelector.setCurrentTheme(currentTheme);
                 this.hasThemeSelector = true;
-				
-                console.log('Theme system initialized with selector');
+
+                debug.log('Theme system initialized with selector');
             } else {
                 // Elements don't exist, theme selector disabled
-                console.log('Theme selector elements not found - using settings panel only');
+                debug.log('Theme selector elements not found - using settings panel only');
                 this.hasThemeSelector = false;
             }
-			
+
             this.isInitialized = true;
-            console.log('Theme system initialized successfully');
+            debug.log('Theme system initialized successfully');
 			
         } catch (error) {
             console.error('Error initializing theme system:', error);
@@ -169,7 +170,7 @@ export class ThemeSystem {
 
             if (response.ok) {
                 const themes = await response.json();
-                console.log('Loaded themes from API:', themes);
+                debug.log('Loaded themes from API:', themes);
                 return themes;
             } else {
                 console.warn('Failed to load themes from API, using fallback');
@@ -241,7 +242,7 @@ export class ThemeSystem {
         this.hasThemeSelector = false;
         this.userId = null;
         this.showStatus = null;
-        console.log('Theme system destroyed');
+        debug.log('Theme system destroyed');
     }
 }
 

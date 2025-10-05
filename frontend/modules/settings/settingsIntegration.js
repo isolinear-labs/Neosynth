@@ -1,6 +1,7 @@
 // Updated Settings Integration Module
 // Connects the settings system with existing NeoSynth functionality
 
+import debug from '../debugLogger/debugLogger.js';
 import { SettingsSystem } from './settingsSystem.js';
 
 export class SettingsIntegration {
@@ -35,7 +36,7 @@ export class SettingsIntegration {
         this.syncExistingPreferences();
 
         this.isInitialized = true;
-        console.log('Settings integration initialized');
+        debug.log('Settings integration initialized');
     }
 
     /**

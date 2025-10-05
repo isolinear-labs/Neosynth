@@ -1,3 +1,4 @@
+import debug from './modules/debugLogger/debugLogger.js';
 import { digitalRainManager } from './modules/effects/index.js';
 import { featureManager } from './modules/features/index.js';
 import { isDirectoryUrl, processDirectoryWithModal } from './modules/directory/index.js';
@@ -261,20 +262,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initialize admin panel button (feature flag controlled)
     import('./modules/admin-panel/adminPanelButton.js').then(module => {
         // Module auto-initializes when imported
-        console.log('Admin panel button module loaded');
-        
+        debug.log('Admin panel button module loaded');
+
         // Make admin panel button available globally for debugging
         window.adminPanelButton = module.adminPanelButton;
     }).catch(error => {
-        console.log('Admin panel button module not available:', error.message);
+        debug.log('Admin panel button module not available:', error.message);
     });
 
-    // Initialize volume multiplier module (feature flag controlled)  
+    // Initialize volume multiplier module (feature flag controlled)
     import('./modules/volumeMultiplier/index.js').then(module => {
-        console.log('Volume multiplier module loaded');
+        debug.log('Volume multiplier module loaded');
         window.volumeMultiplierManager = module.volumeMultiplierManager;
     }).catch(error => {
-        console.log('Volume multiplier module not available:', error.message);
+        debug.log('Volume multiplier module not available:', error.message);
     });
 
     // Initialize settings integration
@@ -313,7 +314,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
 		
         if (success) {
-            console.log('Digital rain effect loaded successfully');
+            debug.log('Digital rain effect loaded successfully');
         } else {
             console.warn('Failed to initialize digital rain effect');
         }
@@ -408,7 +409,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Wrap playTrack function to save now playing state
     const originalPlayTrack = playTrack;
     playTrack = function(index) {
-        console.log('Wrapped playTrack called with index:', index);
+        debug.log('Wrapped playTrack called with index:', index);
         const result = originalPlayTrack.apply(this, arguments);
         //console.log("Calling nowPlayingManager.onTrackChange()");
         nowPlayingManager.onTrackChange();
@@ -424,7 +425,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Wrap togglePlayPause function to save now playing state
     const originalTogglePlayPause = togglePlayPause;
     togglePlayPause = function() {
-        console.log('Wrapped togglePlayPause called');
+        debug.log('Wrapped togglePlayPause called');
         const result = originalTogglePlayPause.apply(this, arguments);
         //console.log("Calling nowPlayingManager.onPlayPauseToggle()");
         nowPlayingManager.onPlayPauseToggle();

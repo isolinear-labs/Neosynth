@@ -1,11 +1,13 @@
 /**
  * Session Check Module
  * Handles session expiration warnings and notifications
- * 
+ *
  * @feature-flag: session_expiration_warning
  * @description: Shows session expiration warning when less than 1 hour remaining
  * @category: session
  */
+import debug from '../debugLogger/debugLogger.js';
+
 export class SessionCheck {
     constructor() {
         this.updateInterval = null;
@@ -76,7 +78,7 @@ export class SessionCheck {
         
         // No polling - session validation happens on API requests via UnifiedAuth
         
-        console.log('SessionCheck: Enabled');
+        debug.log('SessionCheck: Enabled');
     }
 
     /**
@@ -98,7 +100,7 @@ export class SessionCheck {
             this.sessionWarning.classList.remove('expiring-soon');
         }
         
-        console.log('SessionCheck: Disabled');
+        debug.log('SessionCheck: Disabled');
     }
 
     /**

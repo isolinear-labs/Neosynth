@@ -6,6 +6,7 @@
  * @admin-only
  */
 
+import debug from '../debugLogger/debugLogger.js';
 import { featureManager } from '../features/featureManager.js';
 
 export class AdminPanelButton {
@@ -37,18 +38,18 @@ export class AdminPanelButton {
             // @category: admin
             // @admin-only
             const isEnabled = featureManager.isEnabled('admin_panel_button');
-            console.log('Admin panel button feature flag check:', isEnabled);
-            console.log('All feature flags:', featureManager.getAllFlags());
+            debug.log('Admin panel button feature flag check:', isEnabled);
+            debug.log('All feature flags:', featureManager.getAllFlags());
             
             if (isEnabled) {
-                console.log('Rendering admin panel button...');
+                debug.log('Rendering admin panel button...');
                 this.render();
             } else {
-                console.log('Admin panel button disabled or not available');
+                debug.log('Admin panel button disabled or not available');
             }
 
             this.isInitialized = true;
-            console.log('Admin panel button module initialized');
+            debug.log('Admin panel button module initialized');
         } catch (error) {
             console.error('Error initializing admin panel button:', error);
         }
@@ -108,7 +109,7 @@ export class AdminPanelButton {
             userStatus.appendChild(this.buttonElement);
         }
 
-        console.log('Admin panel button rendered');
+        debug.log('Admin panel button rendered');
     }
 
     /**
@@ -117,7 +118,7 @@ export class AdminPanelButton {
     remove() {
         if (this.buttonElement && document.contains(this.buttonElement)) {
             this.buttonElement.remove();
-            console.log('Admin panel button removed');
+            debug.log('Admin panel button removed');
         }
         this.buttonElement = null;
     }

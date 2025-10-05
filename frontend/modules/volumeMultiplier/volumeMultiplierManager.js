@@ -7,6 +7,7 @@
  * @category: ui
  */
 
+import debug from '../debugLogger/debugLogger.js';
 import { featureManager } from '../features/featureManager.js';
 export class VolumeMultiplierManager {
     constructor() {
@@ -64,7 +65,7 @@ export class VolumeMultiplierManager {
             } else {
                 this.hideControls();
                 if (isMobile) {
-                    console.log('Volume multiplier disabled on mobile devices');
+                    debug.log('Volume multiplier disabled on mobile devices');
                 }
             }
 
@@ -213,8 +214,8 @@ export class VolumeMultiplierManager {
         }
 
         const finalVolume = Math.min(baseVolume * volumeMultiplier, 1.0);
-        console.log('Volume calculation - base:', baseVolume, 'multiplier:', volumeMultiplier, 'final:', finalVolume);
-        
+        debug.log('Volume calculation - base:', baseVolume, 'multiplier:', volumeMultiplier, 'final:', finalVolume);
+
         // Apply volume multiplier, cap at 1.0 to prevent distortion
         appElements.currentPlayer.volume = finalVolume;
     }

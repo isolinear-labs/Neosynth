@@ -635,6 +635,14 @@ router.get('/admin/discovery/categories', UnifiedAuth.authenticate, UnifiedAuth.
                 templates: [
                     ...(appFeatureCategories['developer'] || []),
                     {
+                        id: 'console_debug_logging',
+                        name: 'Console Debug Logging',
+                        description: 'Enable verbose console logging for debugging frontend modules',
+                        category: 'developer',
+                        adminOnly: false,
+                        metadata: { frontend: true, location: 'All frontend modules via debugLogger' }
+                    },
+                    {
                         id: 'debug_authentication_logging',
                         name: 'Authentication Debug Logging',
                         description: 'Debug logging for authentication flow to troubleshoot login redirects',

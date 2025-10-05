@@ -1,3 +1,5 @@
+import debug from '../debugLogger/debugLogger.js';
+
 export class AudioInterruptionManager {
     constructor() {
         this.isInterrupted = false;
@@ -38,7 +40,7 @@ export class AudioInterruptionManager {
             const resumeAudioContext = () => {
                 if (audioContext.state === 'suspended') {
                     audioContext.resume().catch(err => {
-                        console.log('Failed to resume audio context:', err);
+                        debug.log('Failed to resume audio context:', err);
                     });
                 }
             };
@@ -52,7 +54,7 @@ export class AudioInterruptionManager {
         if ('mediaSession' in navigator) {
             // These events help detect when another app takes control
             navigator.mediaSession.setActionHandler('pause', () => {
-                console.log('Media session pause detected');
+                debug.log('Media session pause detected');
                 this.handleAudioInterruption();
                 if (this.appElements.togglePlayPause) {
                     this.appElements.togglePlayPause();
@@ -65,25 +67,25 @@ export class AudioInterruptionManager {
             audioPlayer.addEventListener('pause', (_e) => {
                 // Check if this pause was programmatic or due to interruption
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
-                    console.log('Audio paused unexpectedly - possible interruption');
+                    debug.log('Audio paused unexpectedly - possible interruption');
                     this.handleAudioInterruption();
                 }
             });
 
             audioPlayer.addEventListener('stalled', () => {
-                console.log('Audio stalled - possible interruption');
+                debug.log('Audio stalled - possible interruption');
                 this.handleAudioInterruption();
             });
 
             audioPlayer.addEventListener('suspend', () => {
-                console.log('Audio suspended - possible interruption');
+                debug.log('Audio suspended - possible interruption');
                 this.handleAudioInterruption();
             });
 
             audioPlayer.addEventListener('waiting', () => {
                 // Only treat as interruption if we were playing
                 if (this.appElements.isPlaying && !this.isInterrupted) {
-                    console.log('Audio waiting - possible interruption');
+                    debug.log('Audio waiting - possible interruption');
                     this.handleAudioInterruption();
                 }
             });
@@ -93,7 +95,7 @@ export class AudioInterruptionManager {
             // Similar handlers for video player
             videoPlayer.addEventListener('pause', (_e) => {
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
-                    console.log('Video paused unexpectedly - possible interruption');
+                    debug.log('Video paused unexpectedly - possible interruption');
                     this.handleAudioInterruption();
                 }
             });
@@ -111,7 +113,7 @@ export class AudioInterruptionManager {
                 if (this.appElements.currentPlayer && this.appElements.isPlaying) {
                     // Check if audio is actually playing
                     if (this.appElements.currentPlayer.paused && !this.isInterrupted) {
-                        console.log('Detected audio is paused while state says playing');
+                        debug.log('Detected audio is paused while state says playing');
                         this.handleAudioInterruption();
                     }
                 }
@@ -124,7 +126,7 @@ export class AudioInterruptionManager {
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden && this.isInterrupted) {
                 // Page became visible again - check if we need to refresh audio
-                console.log('Page visible again after interruption');
+                debug.log('Page visible again after interruption');
                 setTimeout(() => {
                     this.checkAndRefreshAudio();
                 }, 500);
@@ -136,7 +138,7 @@ export class AudioInterruptionManager {
     handleAudioInterruption() {
         if (this.isInterrupted) return; // Already handling
 
-        console.log('Handling audio interruption');
+        debug.log('Handling audio interruption');
         this.isInterrupted = true;
         this.wasPlayingBeforeInterruption = this.appElements.isPlaying;
 		
@@ -161,7 +163,7 @@ export class AudioInterruptionManager {
     handleAudioResumption() {
         if (!this.isInterrupted) return;
 
-        console.log('Handling audio resumption');
+        debug.log('Handling audio resumption');
         this.isInterrupted = false;
 
         // If we were playing before interruption, show resume hint
@@ -184,7 +186,7 @@ export class AudioInterruptionManager {
     async checkAndRefreshAudio() {
         if (!this.appElements.currentPlayer || !this.currentTrackUrl) return;
 
-        console.log('Checking audio source validity');
+        debug.log('Checking audio source validity');
 		
         // Try to refresh the audio source
         try {
@@ -218,7 +220,7 @@ export class AudioInterruptionManager {
                         this.appElements.currentPlayer.currentTime = savedTime;
                     }
 					
-                    console.log('Audio source refreshed successfully');
+                    debug.log('Audio source refreshed successfully');
 					
                     // If we were playing, show hint to resume
                     if (wasPlaying && this.appElements.showStatus) {

@@ -1,3 +1,4 @@
+import debug from '../debugLogger/debugLogger.js';
 import { StatePersistence } from './statePersistence.js';
 import { MediaSessionManager } from './mediaSession.js';
 import { MobileOptimizations } from './mobileOptimizations.js';
@@ -9,7 +10,7 @@ import { createAppElements } from './appElementsFactory.js';
  * @param {Function} showStatus - Function to show status messages
  */
 export async function initMobile(appScope, showStatus) {
-    console.log('Initializing mobile features...');
+    debug.log('Initializing mobile features...');
 	
     // Create appElements using the factory
     const appElements = createAppElements(appScope);

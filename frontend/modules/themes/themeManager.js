@@ -1,5 +1,6 @@
 // frontend/modules/themes/themeManager.js
 
+import debug from '../debugLogger/debugLogger.js';
 import { digitalRainManager } from '../effects/index.js';
 
 class MintPixelEffect {
@@ -112,7 +113,7 @@ export class ThemeManager {
 		
         // Setup dynamic effects
         this.setupDynamicEffects();
-		
+
         console.log(`Theme manager initialized with theme: ${this.currentTheme}`);
     }
 
@@ -236,7 +237,7 @@ export class ThemeManager {
         if (footer) {
             this.mintPixels = new MintPixelEffect(footer); // Changed from mintCrystals
             this.mintPixels.init();
-            console.log('Mint pixel effect initialized');
+            debug.log('Mint pixel effect initialized');
         }
     }
 
@@ -244,7 +245,7 @@ export class ThemeManager {
         if (this.mintPixels) { // Changed from mintCrystals
             this.mintPixels.destroy();
             this.mintPixels = null;
-            console.log('Mint pixel effect cleaned up');
+            debug.log('Mint pixel effect cleaned up');
         }
     }
 
