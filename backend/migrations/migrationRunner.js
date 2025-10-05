@@ -104,9 +104,9 @@ async function runMigrations() {
         // Run each pending migration in order
         for (const migration of pendingMigrations) {
             try {
-                console.log(`┌─────────────────────────────────────────────────────────────┐`);
+                console.log('┌─────────────────────────────────────────────────────────────┐');
                 console.log(`│ Migration ${migration.version}: ${migration.description.padEnd(42, ' ')}│`);
-                console.log(`└─────────────────────────────────────────────────────────────┘`);
+                console.log('└─────────────────────────────────────────────────────────────┘');
 
                 // Run the migration
                 const result = await migration.up();
@@ -120,9 +120,9 @@ async function runMigrations() {
                     migrationsRun++;
 
                     if (result.skipped) {
-                        console.log(`  [SKIP] Migration already applied\n`);
+                        console.log('  [SKIP] Migration already applied\n');
                     } else {
-                        console.log(`  [OK] Migration completed successfully\n`);
+                        console.log('  [OK] Migration completed successfully\n');
                     }
                 } else {
                     throw new Error('Migration returned unsuccessful result');
@@ -134,7 +134,7 @@ async function runMigrations() {
                 console.log('╚════════════════════════════════════════════════════════════════╝');
                 console.error(`[ERROR] Migration ${migration.version} failed:`, error.message);
                 console.error(`[WARN] System version remains at: ${lastSuccessfulVersion}`);
-                console.error(`[WARN] Please fix the issue and restart the server\n`);
+                console.error('[WARN] Please fix the issue and restart the server\n');
 
                 return {
                     success: false,
@@ -195,13 +195,13 @@ async function rollbackTo(targetVersion) {
         console.log(`[INFO] Rolling back ${migrationsToRollback.length} migration(s)...\n`);
 
         for (const migration of migrationsToRollback) {
-            console.log(`┌─────────────────────────────────────────────────────────────┐`);
+            console.log('┌─────────────────────────────────────────────────────────────┐');
             console.log(`│ Rollback ${migration.version}: ${migration.description.padEnd(40, ' ')}│`);
-            console.log(`└─────────────────────────────────────────────────────────────┘`);
+            console.log('└─────────────────────────────────────────────────────────────┘');
 
             await migration.down();
 
-            console.log(`  [OK] Rollback completed\n`);
+            console.log('  [OK] Rollback completed\n');
         }
 
         // Update system version
