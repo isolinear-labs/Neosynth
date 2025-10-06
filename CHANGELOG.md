@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - (backend/migration) added support for database migration mechanism  ([#13](https://github.com/isolinear-labs/Neosynth/pull/13))
 
 ### Bug Fixes
+- (mobile/resume) fixed race condition when resuming a track ([#16](https://github.com/isolinear-labs/Neosynth/pull/16))
 
 ### Dependencies
 
