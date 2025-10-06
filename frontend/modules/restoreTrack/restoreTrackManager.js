@@ -153,47 +153,60 @@ class RestoreTrackManager {
                     if (trackIndex >= 0 && this.appCallbacks.playTrack) {
                         // Wait a moment for stopPlayback() to complete, then play the track
                         setTimeout(() => {
+                            // Play the track - it will auto-start
                             this.appCallbacks.playTrack(trackIndex);
-                            
-                            // Immediately pause to prevent playing from beginning
-                            setTimeout(() => {
+
+                            // Wait for player to initialize and start playing
+                            const waitForPlayerAndSeek = () => {
                                 const player = this.appCallbacks.getCurrentPlayer();
-                                if (player) {
-                                    player.pause();
+                                if (!player) {
+                                    setTimeout(waitForPlayerAndSeek, 50);
+                                    return;
                                 }
-                            }, 100);
-                            
-                            // Seek to saved position after track loads
-                            setTimeout(() => {
-                                const player = this.appCallbacks.getCurrentPlayer();
-                                if (player) {
-                                    // Wait for the media to be ready before seeking
+
+                                // Wait for the media to be ready before seeking
+                                const seekToPosition = () => {
                                     if (player.readyState >= 2) { // HAVE_CURRENT_DATA or higher
+                                        // Pause first to avoid the "operation aborted" error
+                                        player.pause();
+
+                                        // Then seek to saved position
                                         if (typeof this.resumeData.position === 'number') {
                                             player.currentTime = this.resumeData.position;
                                         }
+
                                         // Apply volume multiplier after resuming
                                         if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                             window.volumeMultiplierManager.onTrackChange();
                                         }
+
+                                        // Resume playback
                                         player.play().catch(e => debug.log('Play interrupted:', e));
                                     } else {
                                         // Wait for loadeddata event
                                         const onLoadedData = () => {
+                                            player.pause();
+
                                             if (typeof this.resumeData.position === 'number') {
                                                 player.currentTime = this.resumeData.position;
                                             }
+
                                             // Apply volume multiplier after resuming
                                             if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                                 window.volumeMultiplierManager.onTrackChange();
                                             }
+
                                             player.play().catch(e => debug.log('Play interrupted:', e));
                                             player.removeEventListener('loadeddata', onLoadedData);
                                         };
                                         player.addEventListener('loadeddata', onLoadedData);
                                     }
-                                }
-                            }, 800);
+                                };
+
+                                seekToPosition();
+                            };
+
+                            waitForPlayerAndSeek();
                         }, 300);
                     } else {
                         // Track not found in playlist, fall back to single track
@@ -222,47 +235,59 @@ class RestoreTrackManager {
         // Fallback: just add the single track
         if (this.appCallbacks.addTrack) {
             const success = await this.appCallbacks.addTrack(this.resumeData.trackUrl);
-            
+
             if (success && this.appCallbacks.getCurrentPlayer) {
-                // Immediately pause to prevent playing from beginning
-                setTimeout(() => {
+                // Wait for player to initialize and start playing
+                const waitForPlayerAndSeek = () => {
                     const player = this.appCallbacks.getCurrentPlayer();
-                    if (player) {
-                        player.pause();
+                    if (!player) {
+                        setTimeout(waitForPlayerAndSeek, 50);
+                        return;
                     }
-                }, 100);
-                
-                // Wait longer for the track to load and player to stabilize, then seek to position
-                setTimeout(() => {
-                    const player = this.appCallbacks.getCurrentPlayer();
-                    if (player) {
-                        // Wait for the media to be ready before seeking
+
+                    // Wait for the media to be ready before seeking
+                    const seekToPosition = () => {
                         if (player.readyState >= 2) { // HAVE_CURRENT_DATA or higher
+                            // Pause first to avoid the "operation aborted" error
+                            player.pause();
+
+                            // Then seek to saved position
                             if (typeof this.resumeData.position === 'number') {
                                 player.currentTime = this.resumeData.position;
                             }
+
                             // Apply volume multiplier after resuming
                             if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                 window.volumeMultiplierManager.onTrackChange();
                             }
+
+                            // Resume playback
                             player.play().catch(e => debug.log('Play interrupted:', e));
                         } else {
                             // Wait for loadeddata event
                             const onLoadedData = () => {
+                                player.pause();
+
                                 if (typeof this.resumeData.position === 'number') {
                                     player.currentTime = this.resumeData.position;
                                 }
+
                                 // Apply volume multiplier after resuming
                                 if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
                                     window.volumeMultiplierManager.onTrackChange();
                                 }
+
                                 player.play().catch(e => debug.log('Play interrupted:', e));
                                 player.removeEventListener('loadeddata', onLoadedData);
                             };
                             player.addEventListener('loadeddata', onLoadedData);
                         }
-                    }
-                }, 800);
+                    };
+
+                    seekToPosition();
+                };
+
+                waitForPlayerAndSeek();
             }
         }
     }
