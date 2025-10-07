@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - (backend/migration) added support for database migration mechanism  ([#13](https://github.com/isolinear-labs/Neosynth/pull/13))
 - (frontend/links) added a link to our new subreddit ([#17](https://github.com/isolinear-labs/Neosynth/pull/17))
 - (admin/ff) cleaned up feature flag logging to be more concise ([#17](https://github.com/isolinear-labs/Neosynth/pull/17))
+- (backend/caching) implemented composite hash-based cache busting for CSS and JS assets
+- (backend/caching) reduced static asset cache TTL from 24 hours to 1 hour for faster update propagation
 
 ### Bug Fixes
 - (mobile/resume) fixed race condition when resuming a track ([#16](https://github.com/isolinear-labs/Neosynth/pull/16))

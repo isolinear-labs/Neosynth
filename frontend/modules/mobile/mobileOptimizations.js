@@ -119,28 +119,16 @@ export class MobileOptimizations {
         };
     }
 
-    // Service worker cleanup - unregister all service workers
-    // SW was causing cache issues and is not needed (query string cache busting handles updates)
-    // Media Session API (lockscreen controls) works without service workers
+    // Service worker registration for mobile optimizations
     setupServiceWorker() {
         if ('serviceWorker' in navigator) {
-            // Listen for messages from SW (like unregister confirmation)
-            navigator.serviceWorker.addEventListener('message', (event) => {
-                if (event.data && event.data.type === 'SW_REMOVED') {
-                    debug.log('Service worker removed, reloading page for clean state...');
-                    // Reload page after SW unregisters to clear any cached state
-                    setTimeout(() => window.location.reload(), 500);
-                }
-            });
-
-            // Unregister all existing service workers
-            debug.log('Unregistering all service workers for cache busting...');
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-                registrations.forEach(reg => {
-                    debug.log('Unregistering service worker:', reg.active ? reg.active.scriptURL : 'pending');
-                    reg.unregister();
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    debug.log('Service worker registered:', registration);
+                })
+                .catch(error => {
+                    debug.log('Service worker registration failed:', error);
                 });
-            });
         }
     }
 

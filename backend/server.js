@@ -178,44 +178,27 @@ if (!fs.existsSync(frontendPath)) {
 // Generate asset hashes at startup for cache busting
 const assetHashes = generateAssetHashes(frontendPath);
 
+console.log('\n╔════════════════════════════════════════════════════════════════╗');
+console.log('║              ASSET HASHING & CACHE BUSTING                     ║');
+console.log('╚════════════════════════════════════════════════════════════════╝');
+console.log(`[INFO] CSS Hash: ${assetHashes.mainCss}`);
+console.log(`[INFO] JS Hash:  ${assetHashes.appJs}\n`);
+
 // Cache index.html with injected asset hashes (generated once at startup)
 let cachedIndexHtml = null;
 const indexPath = path.join(frontendPath, 'index.html');
 if (fs.existsSync(indexPath)) {
     let html = fs.readFileSync(indexPath, 'utf8');
 
-    // Verify placeholders exist before replacement
-    const cssPlaceholderCount = (html.match(/\{\{CSS_HASH\}\}/g) || []).length;
-    const jsPlaceholderCount = (html.match(/\{\{JS_HASH\}\}/g) || []).length;
-    console.log(`[DEBUG] Found ${cssPlaceholderCount} CSS_HASH placeholders and ${jsPlaceholderCount} JS_HASH placeholders in index.html`);
-
     cachedIndexHtml = html
         .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
         .replace(/\{\{JS_HASH\}\}/g, assetHashes.appJs);
 
-    // Verify replacement succeeded
-    const cssHashInHtml = cachedIndexHtml.match(/main\.css\?v=([a-f0-9]+)/);
-    const jsHashInHtml = cachedIndexHtml.match(/app\.js\?v=([a-f0-9]+)/);
-    console.log('[INFO] Index.html cached with asset hashes injected');
-    console.log(`[DEBUG] CSS URL in cached HTML: main.css?v=${cssHashInHtml ? cssHashInHtml[1] : 'NOT FOUND'}`);
-    console.log(`[DEBUG] JS URL in cached HTML: app.js?v=${jsHashInHtml ? jsHashInHtml[1] : 'NOT FOUND'}`);
+    console.log('[OK] Index.html cached with asset hashes injected');
 } else {
     console.error('[ERROR] index.html not found at startup');
 }
 
-// Cache sw-v2.js with injected asset hash (migrated from sw.js for optimized cache busting)
-let cachedServiceWorker = null;
-const swPath = path.join(frontendPath, 'sw-v2.js');
-if (fs.existsSync(swPath)) {
-    let swContent = fs.readFileSync(swPath, 'utf8');
-
-    // Use CSS hash as the service worker version (since SW mainly affects CSS/asset loading)
-    cachedServiceWorker = swContent.replace(/\{\{SW_HASH\}\}/g, assetHashes.mainCss);
-
-    console.log(`[INFO] Service worker cached with version: ${assetHashes.mainCss}`);
-} else {
-    console.warn('[WARN] sw-v2.js not found at startup - service worker will not be available');
-}
 
 // Health check endpoint for liveness probe (always responds, even during migrations)
 app.get('/health', (req, res) => {
@@ -306,54 +289,6 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
     }
 });
 
-// Serve old sw.js endpoint with unregister script (migration helper)
-app.get('/sw.js', (req, res) => {
-    res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Expires', '0');
-    console.log(`[DEBUG] Old sw.js requested - sending unregister script`);
-
-    // Return a minimal script that immediately unregisters
-    // This will cause the browser to check again and the JS code will register sw-v2.js
-    res.send(`
-// Deprecated service worker - immediately unregister
-self.addEventListener('install', () => {
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(cacheNames.map(c => caches.delete(c)));
-        }).then(() => {
-            return self.registration.unregister();
-        }).then(() => {
-            return self.clients.matchAll();
-        }).then((clients) => {
-            // Force reload all clients to get new service worker
-            clients.forEach(client => {
-                if (client.url.includes(self.location.origin)) {
-                    client.postMessage({ type: 'RELOAD' });
-                }
-            });
-        })
-    );
-});
-    `.trim());
-});
-
-// Serve cached service worker with injected hash (migrated to sw-v2.js for optimized cache busting)
-app.get('/sw-v2.js', (req, res) => {
-    if (cachedServiceWorker) {
-        res.setHeader('Content-Type', 'application/javascript');
-        res.setHeader('Cache-Control', 'no-cache'); // Force browsers to check for updates
-        res.setHeader('Service-Worker-Allowed', '/');
-        console.log(`[DEBUG] Serving sw-v2.js with version: ${assetHashes.mainCss}`);
-        res.send(cachedServiceWorker);
-    } else {
-        res.status(404).send('Service worker not found');
-    }
-});
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -368,24 +303,15 @@ app.use('/api/keys', apiKeyRoutes);
 app.use('/api', featureFlagRoutes);
 
 
-// Debug middleware to log CSS/JS requests
-app.use((req, res, next) => {
-    if (req.path.endsWith('.css') || req.path.endsWith('.js')) {
-        const userAgent = req.headers['user-agent'] || 'unknown';
-        const isMobile = /Mobile|Android|iPhone/i.test(userAgent);
-        console.log(`[DEBUG] Static asset requested - Path: ${req.path}, Query: ${JSON.stringify(req.query)}, Mobile: ${isMobile}`);
-    }
-    next();
-});
 
 // Serve static files from the frontend directory (excluding index.html)
-// Override helmet cache headers for static assets to prevent 304s
+// Reduced cache time to allow faster propagation of updates while still benefiting from caching
 app.use(express.static(frontendPath, {
     index: false,
-    maxAge: '24h', // Cache for 24 hours
+    maxAge: '1h', // Cache for 1 hour (reduced from 24h for faster updates)
     setHeaders: (res, _path) => {
-        // Override any cache-control headers set by helmet
-        res.set('Cache-Control', 'public, max-age=86400');
+        // Cache for 1 hour - allows updates to propagate faster
+        res.set('Cache-Control', 'public, max-age=3600');
     }
 }));
 
@@ -510,15 +436,9 @@ app.get('*', webAuth, (req, res, next) => {
     }
 
     if (cachedIndexHtml) {
-        // Log asset hash info for debugging
-        const userAgent = req.headers['user-agent'] || 'unknown';
-        const isMobile = /Mobile|Android|iPhone/i.test(userAgent);
-        console.log(`[DEBUG] Serving index.html - Path: ${req.path}, Mobile: ${isMobile}, CSS Hash: ${assetHashes.mainCss}, JS Hash: ${assetHashes.appJs}`);
-
         res.setHeader('Content-Type', 'text/html');
         res.send(cachedIndexHtml);
     } else {
-        console.error('[ERROR] Attempted to serve index.html but cachedIndexHtml is null!');
         res.status(404).send('Index file not found');
     }
 });
