@@ -264,54 +264,45 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.footer {
-		padding: 12px 15px;
+		padding: 8px 10px;
 		justify-content: center;
-		flex-wrap: wrap;
-		gap: 8px;
+		flex-wrap: nowrap;
+		gap: 6px;
 		height: auto;
-		min-height: 60px;
+		min-height: 50px;
 	}
 	.api-link {
-		font-size: 0.75rem;
-		padding: 8px 10px;
+		font-size: 0.65rem;
+		padding: 6px 8px;
 		text-align: center;
 		flex-shrink: 1;
 		min-width: 0;
 		white-space: nowrap;
-		order: 1;
 	}
-	.github-link {
-		width: 36px;
-		height: 36px;
-		margin-right: 0;
-		flex-shrink: 0;
-		order: 2;
-	}
+	.github-link,
 	.reddit-link {
-		width: 36px;
-		height: 36px;
+		width: 32px;
+		height: 32px;
 		margin-right: 0;
 		flex-shrink: 0;
-		order: 3;
 	}
 	.github-icon,
 	.reddit-icon {
-		width: 16px;
-		height: 16px;
+		width: 14px;
+		height: 14px;
 	}
 	.tech-socket-btn {
 		flex-shrink: 0;
-		order: 4;
+		transform: scale(0.85);
 	}
 	.theme-select {
-		font-size: 0.8rem;
-		padding: 8px 25px 8px 12px;
-		flex: 1;
-		min-width: 120px;
-		order: 5;
-		width: 100%;
+		font-size: 0.65rem;
+		padding: 6px 20px 6px 8px;
+		flex-shrink: 1;
+		min-width: 0;
+		white-space: nowrap;
 	}
 	body {
-		padding-bottom: 80px;
+		padding-bottom: 70px;
 	}
 }
