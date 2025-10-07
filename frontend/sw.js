@@ -25,6 +25,27 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+// Fetch event handler - ensure cache busting works
+self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+
+    // For CSS/JS files with version parameter, always fetch fresh
+    if ((url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) && url.searchParams.has('v')) {
+        debug.log(`Fetching fresh asset: ${url.pathname}?v=${url.searchParams.get('v')}`);
+        event.respondWith(
+            fetch(event.request, { cache: 'reload' })
+                .catch(() => {
+                    // Fallback to cache if network fails
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+
+    // For all other requests, use default browser behavior
+    event.respondWith(fetch(event.request));
+});
+
 // Handle messages from the main thread
 self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'KEEP_ALIVE') {
