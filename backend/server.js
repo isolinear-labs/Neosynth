@@ -178,11 +178,18 @@ if (!fs.existsSync(frontendPath)) {
 // Generate asset hashes at startup for cache busting
 const assetHashes = generateAssetHashes(frontendPath);
 
+console.log('\n');
+console.log(' _   _                            _   _     _ ');
+console.log('| \\ | | ___  ___  ___ _   _ _ __ | |_| |__ | |');
+console.log('|  \\| |/ _ \\/ _ \\/ __| | | | \'_ \\| __| \'_ \\| |');
+console.log('| |\\  |  __/ (_) \\__ \\ |_| | | | | |_| | | |_|');
+console.log('|_| \\_|\\___|\\___/|___/\\__, |_| |_|\\__|_| |_(_)');
+console.log('                      |___/                   ');
 console.log('\n╔════════════════════════════════════════════════════════════════╗');
-console.log('║              ASSET HASHING & CACHE BUSTING                     ║');
+console.log('║                      ASSET HASHING                             ║');
 console.log('╚════════════════════════════════════════════════════════════════╝');
 console.log(`[INFO] CSS Hash: ${assetHashes.mainCss}`);
-console.log(`[INFO] JS Hash:  ${assetHashes.appJs}\n`);
+console.log(`[INFO] JS Hash:  ${assetHashes.appJs}`);
 
 // Cache index.html with injected asset hashes (generated once at startup)
 let cachedIndexHtml = null;
@@ -194,7 +201,7 @@ if (fs.existsSync(indexPath)) {
         .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
         .replace(/\{\{JS_HASH\}\}/g, assetHashes.appJs);
 
-    console.log('[OK] Index.html cached with asset hashes injected');
+    console.log('[OK] Index.html cached with asset hashes injected\n');
 } else {
     console.error('[ERROR] index.html not found at startup');
 }
@@ -447,22 +454,5 @@ app.get('*', webAuth, (req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Main server running on port ${PORT}`);
-
-    // Display connection info for WSL/mobile access
-    const os = require('os');
-    const networkInterfaces = os.networkInterfaces();
-    console.log('\n[INFO] Server accessible at:');
-    console.log(`  - Local: http://localhost:${PORT}`);
-
-    // Find and display all available IP addresses
-    Object.keys(networkInterfaces).forEach(interfaceName => {
-        networkInterfaces[interfaceName].forEach(iface => {
-            if (iface.family === 'IPv4' && !iface.internal) {
-                console.log(`  - Network (${interfaceName}): http://${iface.address}:${PORT}`);
-            }
-        });
-    });
-    console.log('\n[TIP] For WSL2 mobile access, use the Windows host IP');
-    console.log('[TIP] Run: ipconfig (Windows) to find your WiFi adapter IPv4 address\n');
 });
 

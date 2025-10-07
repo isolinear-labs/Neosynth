@@ -95,7 +95,6 @@ function generateAssetHashes(frontendPath) {
         appJs: generateFileHash(path.join(frontendPath, 'app.js'))
     };
 
-    console.log('[INFO] Asset hashes generated:', hashes);
     return hashes;
 }
 
