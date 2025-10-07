@@ -46,7 +46,7 @@ function generateCompositeHash(filePaths) {
 
         return hashSum.digest('hex').substring(0, 8);
     } catch (error) {
-        console.error(`[ERROR] Failed to generate composite hash:`, error.message);
+        console.error('[ERROR] Failed to generate composite hash:', error.message);
         return 'dev';
     }
 }

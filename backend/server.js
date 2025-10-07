@@ -195,7 +195,7 @@ console.log(`[INFO] JS Hash:  ${assetHashes.appJs}`);
 let cachedIndexHtml = null;
 const indexPath = path.join(frontendPath, 'index.html');
 if (fs.existsSync(indexPath)) {
-    let html = fs.readFileSync(indexPath, 'utf8');
+    const html = fs.readFileSync(indexPath, 'utf8');
 
     cachedIndexHtml = html
         .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
