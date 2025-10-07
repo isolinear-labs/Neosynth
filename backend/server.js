@@ -306,6 +306,32 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
     }
 });
 
+// Serve old sw.js endpoint with unregister script (migration helper)
+app.get('/sw.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('Cache-Control', 'no-cache');
+    console.log(`[DEBUG] Old sw.js requested - sending unregister script`);
+
+    // Return a script that unregisters itself
+    res.send(`
+// This service worker has been deprecated
+// Automatically unregister and redirect to new version
+self.addEventListener('install', () => {
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        self.registration.unregister().then(() => {
+            return self.clients.matchAll();
+        }).then((clients) => {
+            clients.forEach(client => client.navigate(client.url));
+        })
+    );
+});
+    `.trim());
+});
+
 // Serve cached service worker with injected hash (migrated to sw-v2.js for optimized cache busting)
 app.get('/sw-v2.js', (req, res) => {
     if (cachedServiceWorker) {
