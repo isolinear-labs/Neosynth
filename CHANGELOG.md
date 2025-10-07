@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - (admin/ff) removed the already released themes from the admin feature flag systemm  ([#12](https://github.com/isolinear-labs/Neosynth/pull/12))
 - (admin/ff) removed the verbose console logging and moved it behind feature flag 'console_debug_logging'
 - (backend/migration) added support for database migration mechanism  ([#13](https://github.com/isolinear-labs/Neosynth/pull/13))
+- (frontend/links) added a link to our new subreddit ([#17](https://github.com/isolinear-labs/Neosynth/pull/17))
+- (admin/ff) cleaned up feature flag logging to be more concise ([#17](https://github.com/isolinear-labs/Neosynth/pull/17))
 
 ### Bug Fixes
 - (mobile/resume) fixed race condition when resuming a track ([#16](https://github.com/isolinear-labs/Neosynth/pull/16))
