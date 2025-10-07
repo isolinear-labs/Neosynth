@@ -1,7 +1,7 @@
 const ApiKey = require('../models/ApiKey');
 const ipRangeCheck = require('ip-range-check');
 
-// Rate limiting storage (in production, use Redis)
+// Rate limiting storage (TODO: move to Redis)
 const rateLimitStore = new Map();
 
 class ApiAuthMiddleware {
