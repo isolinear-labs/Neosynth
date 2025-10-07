@@ -119,28 +119,18 @@ export class MobileOptimizations {
         };
     }
 
-    // Register service worker for better mobile behavior
+    // Service worker cleanup - unregister all service workers
+    // SW was causing cache issues and is not needed (query string cache busting handles updates)
+    // Media Session API (lockscreen controls) works without service workers
     setupServiceWorker() {
         if ('serviceWorker' in navigator) {
-            // Migration: Unregister old service worker (sw.js) and switch to new optimized version (sw-v2.js)
-            // The new version includes proper cache busting via fetch handler
+            debug.log('Unregistering all service workers for cache busting...');
             navigator.serviceWorker.getRegistrations().then(registrations => {
                 registrations.forEach(reg => {
-                    if (reg.active && reg.active.scriptURL.includes('/sw.js')) {
-                        debug.log('Unregistering old service worker:', reg.active.scriptURL);
-                        reg.unregister();
-                    }
+                    debug.log('Unregistering service worker:', reg.active ? reg.active.scriptURL : 'pending');
+                    reg.unregister();
                 });
             });
-
-            // Register new optimized service worker
-            navigator.serviceWorker.register('/sw-v2.js')
-                .then(registration => {
-                    debug.log('Service worker registered:', registration);
-                })
-                .catch(error => {
-                    debug.log('Service worker registration failed:', error);
-                });
         }
     }
 
