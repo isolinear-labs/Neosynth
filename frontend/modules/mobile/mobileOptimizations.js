@@ -119,7 +119,7 @@ export class MobileOptimizations {
         };
     }
 
-    // Register service worker for better mobile behavior
+    // Service worker registration for mobile optimizations
     setupServiceWorker() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')

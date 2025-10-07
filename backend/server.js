@@ -22,6 +22,7 @@ const trackRoutes = require('./routes/tracks');
 const userRoutes = require('./routes/users');
 const apiKeyRoutes = require('./routes/apiKeys');
 const featureFlagRoutes = require('./routes/featureFlags');
+const { generateAssetHashes } = require('./utils/assetHasher');
 
 
 // Initialize express app
@@ -174,6 +175,38 @@ if (!fs.existsSync(frontendPath)) {
     console.error(`Frontend directory not found at: ${frontendPath}`);
 }
 
+// Generate asset hashes at startup for cache busting
+const assetHashes = generateAssetHashes(frontendPath);
+
+console.log('\n');
+console.log(' _   _                            _   _     _ ');
+console.log('| \\ | | ___  ___  ___ _   _ _ __ | |_| |__ | |');
+console.log('|  \\| |/ _ \\/ _ \\/ __| | | | \'_ \\| __| \'_ \\| |');
+console.log('| |\\  |  __/ (_) \\__ \\ |_| | | | | |_| | | |_|');
+console.log('|_| \\_|\\___|\\___/|___/\\__, |_| |_|\\__|_| |_(_)');
+console.log('                      |___/                   ');
+console.log('\n╔════════════════════════════════════════════════════════════════╗');
+console.log('║                      ASSET HASHING                             ║');
+console.log('╚════════════════════════════════════════════════════════════════╝');
+console.log(`[INFO] CSS Hash: ${assetHashes.mainCss}`);
+console.log(`[INFO] JS Hash:  ${assetHashes.appJs}`);
+
+// Cache index.html with injected asset hashes (generated once at startup)
+let cachedIndexHtml = null;
+const indexPath = path.join(frontendPath, 'index.html');
+if (fs.existsSync(indexPath)) {
+    const html = fs.readFileSync(indexPath, 'utf8');
+
+    cachedIndexHtml = html
+        .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
+        .replace(/\{\{JS_HASH\}\}/g, assetHashes.appJs);
+
+    console.log('[OK] Index.html cached with asset hashes injected\n');
+} else {
+    console.error('[ERROR] index.html not found at startup');
+}
+
+
 // Health check endpoint for liveness probe (always responds, even during migrations)
 app.get('/health', (req, res) => {
     const healthStatus = {
@@ -263,6 +296,7 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
     }
 });
 
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/playlists', playlistRoutes);
@@ -276,14 +310,15 @@ app.use('/api/keys', apiKeyRoutes);
 app.use('/api', featureFlagRoutes);
 
 
+
 // Serve static files from the frontend directory (excluding index.html)
-// Override helmet cache headers for static assets to prevent 304s
+// Reduced cache time to allow faster propagation of updates while still benefiting from caching
 app.use(express.static(frontendPath, {
     index: false,
-    maxAge: '24h', // Cache for 24 hours
+    maxAge: '1h', // Cache for 1 hour (reduced from 24h for faster updates)
     setHeaders: (res, _path) => {
-        // Override any cache-control headers set by helmet
-        res.set('Cache-Control', 'public, max-age=86400');
+        // Cache for 1 hour - allows updates to propagate faster
+        res.set('Cache-Control', 'public, max-age=3600');
     }
 }));
 
@@ -406,15 +441,18 @@ app.get('*', webAuth, (req, res, next) => {
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    const indexPath = path.join(frontendPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
+
+    if (cachedIndexHtml) {
+        res.setHeader('Content-Type', 'text/html');
+        res.send(cachedIndexHtml);
     } else {
-        res.status(404).send(`Index file not found at: ${indexPath}`);
+        res.status(404).send('Index file not found');
     }
 });
 
 // Start server on port 5000
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Main server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Main server running on port ${PORT}`);
+});
 
