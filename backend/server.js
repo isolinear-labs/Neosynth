@@ -22,6 +22,7 @@ const trackRoutes = require('./routes/tracks');
 const userRoutes = require('./routes/users');
 const apiKeyRoutes = require('./routes/apiKeys');
 const featureFlagRoutes = require('./routes/featureFlags');
+const { generateAssetHashes } = require('./utils/assetHasher');
 
 
 // Initialize express app
@@ -172,6 +173,22 @@ if (process.cwd().endsWith('/backend')) {
 // Verify frontend path exists
 if (!fs.existsSync(frontendPath)) {
     console.error(`Frontend directory not found at: ${frontendPath}`);
+}
+
+// Generate asset hashes at startup for cache busting
+const assetHashes = generateAssetHashes(frontendPath);
+
+// Cache index.html with injected asset hashes (generated once at startup)
+let cachedIndexHtml = null;
+const indexPath = path.join(frontendPath, 'index.html');
+if (fs.existsSync(indexPath)) {
+    let html = fs.readFileSync(indexPath, 'utf8');
+    cachedIndexHtml = html
+        .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
+        .replace(/\{\{JS_HASH\}\}/g, assetHashes.appJs);
+    console.log('[INFO] Index.html cached with asset hashes injected');
+} else {
+    console.error('[ERROR] index.html not found at startup');
 }
 
 // Health check endpoint for liveness probe (always responds, even during migrations)
@@ -406,11 +423,12 @@ app.get('*', webAuth, (req, res, next) => {
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    const indexPath = path.join(frontendPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
+
+    if (cachedIndexHtml) {
+        res.setHeader('Content-Type', 'text/html');
+        res.send(cachedIndexHtml);
     } else {
-        res.status(404).send(`Index file not found at: ${indexPath}`);
+        res.status(404).send('Index file not found');
     }
 });
 
