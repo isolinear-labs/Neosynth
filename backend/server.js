@@ -309,23 +309,33 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
 // Serve old sw.js endpoint with unregister script (migration helper)
 app.get('/sw.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Expires', '0');
     console.log(`[DEBUG] Old sw.js requested - sending unregister script`);
 
-    // Return a script that unregisters itself
+    // Return a minimal script that immediately unregisters
+    // This will cause the browser to check again and the JS code will register sw-v2.js
     res.send(`
-// This service worker has been deprecated
-// Automatically unregister and redirect to new version
+// Deprecated service worker - immediately unregister
 self.addEventListener('install', () => {
     self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        self.registration.unregister().then(() => {
+        caches.keys().then(cacheNames => {
+            return Promise.all(cacheNames.map(c => caches.delete(c)));
+        }).then(() => {
+            return self.registration.unregister();
+        }).then(() => {
             return self.clients.matchAll();
         }).then((clients) => {
-            clients.forEach(client => client.navigate(client.url));
+            // Force reload all clients to get new service worker
+            clients.forEach(client => {
+                if (client.url.includes(self.location.origin)) {
+                    client.postMessage({ type: 'RELOAD' });
+                }
+            });
         })
     );
 });
