@@ -183,12 +183,38 @@ let cachedIndexHtml = null;
 const indexPath = path.join(frontendPath, 'index.html');
 if (fs.existsSync(indexPath)) {
     let html = fs.readFileSync(indexPath, 'utf8');
+
+    // Verify placeholders exist before replacement
+    const cssPlaceholderCount = (html.match(/\{\{CSS_HASH\}\}/g) || []).length;
+    const jsPlaceholderCount = (html.match(/\{\{JS_HASH\}\}/g) || []).length;
+    console.log(`[DEBUG] Found ${cssPlaceholderCount} CSS_HASH placeholders and ${jsPlaceholderCount} JS_HASH placeholders in index.html`);
+
     cachedIndexHtml = html
         .replace(/\{\{CSS_HASH\}\}/g, assetHashes.mainCss)
         .replace(/\{\{JS_HASH\}\}/g, assetHashes.appJs);
+
+    // Verify replacement succeeded
+    const cssHashInHtml = cachedIndexHtml.match(/main\.css\?v=([a-f0-9]+)/);
+    const jsHashInHtml = cachedIndexHtml.match(/app\.js\?v=([a-f0-9]+)/);
     console.log('[INFO] Index.html cached with asset hashes injected');
+    console.log(`[DEBUG] CSS URL in cached HTML: main.css?v=${cssHashInHtml ? cssHashInHtml[1] : 'NOT FOUND'}`);
+    console.log(`[DEBUG] JS URL in cached HTML: app.js?v=${jsHashInHtml ? jsHashInHtml[1] : 'NOT FOUND'}`);
 } else {
     console.error('[ERROR] index.html not found at startup');
+}
+
+// Cache sw.js with injected asset hash (use CSS hash as version for service worker)
+let cachedServiceWorker = null;
+const swPath = path.join(frontendPath, 'sw.js');
+if (fs.existsSync(swPath)) {
+    let swContent = fs.readFileSync(swPath, 'utf8');
+
+    // Use CSS hash as the service worker version (since SW mainly affects CSS/asset loading)
+    cachedServiceWorker = swContent.replace(/\{\{SW_HASH\}\}/g, assetHashes.mainCss);
+
+    console.log(`[INFO] Service worker cached with version: ${assetHashes.mainCss}`);
+} else {
+    console.warn('[WARN] sw.js not found at startup - service worker will not be available');
 }
 
 // Health check endpoint for liveness probe (always responds, even during migrations)
@@ -280,6 +306,19 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
     }
 });
 
+// Serve cached service worker with injected hash
+app.get('/sw.js', (req, res) => {
+    if (cachedServiceWorker) {
+        res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader('Cache-Control', 'no-cache'); // Force browsers to check for updates
+        res.setHeader('Service-Worker-Allowed', '/');
+        console.log(`[DEBUG] Serving sw.js with version: ${assetHashes.mainCss}`);
+        res.send(cachedServiceWorker);
+    } else {
+        res.status(404).send('Service worker not found');
+    }
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/playlists', playlistRoutes);
@@ -292,6 +331,16 @@ app.use('/api', nowPlayingRoutes);
 app.use('/api/keys', apiKeyRoutes);
 app.use('/api', featureFlagRoutes);
 
+
+// Debug middleware to log CSS/JS requests
+app.use((req, res, next) => {
+    if (req.path.endsWith('.css') || req.path.endsWith('.js')) {
+        const userAgent = req.headers['user-agent'] || 'unknown';
+        const isMobile = /Mobile|Android|iPhone/i.test(userAgent);
+        console.log(`[DEBUG] Static asset requested - Path: ${req.path}, Query: ${JSON.stringify(req.query)}, Mobile: ${isMobile}`);
+    }
+    next();
+});
 
 // Serve static files from the frontend directory (excluding index.html)
 // Override helmet cache headers for static assets to prevent 304s
@@ -425,14 +474,39 @@ app.get('*', webAuth, (req, res, next) => {
     }
 
     if (cachedIndexHtml) {
+        // Log asset hash info for debugging
+        const userAgent = req.headers['user-agent'] || 'unknown';
+        const isMobile = /Mobile|Android|iPhone/i.test(userAgent);
+        console.log(`[DEBUG] Serving index.html - Path: ${req.path}, Mobile: ${isMobile}, CSS Hash: ${assetHashes.mainCss}, JS Hash: ${assetHashes.appJs}`);
+
         res.setHeader('Content-Type', 'text/html');
         res.send(cachedIndexHtml);
     } else {
+        console.error('[ERROR] Attempted to serve index.html but cachedIndexHtml is null!');
         res.status(404).send('Index file not found');
     }
 });
 
 // Start server on port 5000
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Main server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Main server running on port ${PORT}`);
+
+    // Display connection info for WSL/mobile access
+    const os = require('os');
+    const networkInterfaces = os.networkInterfaces();
+    console.log('\n[INFO] Server accessible at:');
+    console.log(`  - Local: http://localhost:${PORT}`);
+
+    // Find and display all available IP addresses
+    Object.keys(networkInterfaces).forEach(interfaceName => {
+        networkInterfaces[interfaceName].forEach(iface => {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                console.log(`  - Network (${interfaceName}): http://${iface.address}:${PORT}`);
+            }
+        });
+    });
+    console.log('\n[TIP] For WSL2 mobile access, use the Windows host IP');
+    console.log('[TIP] Run: ipconfig (Windows) to find your WiFi adapter IPv4 address\n');
+});
 
