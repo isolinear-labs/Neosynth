@@ -1,64 +1,32 @@
-// NeoSynth Service Worker v2 - Optimized for cache busting
-// Migrated from sw.js to sw-v2.js to force clients to update to new version
-// Service Worker Version - injected at runtime from asset hash
-const SW_VERSION = '{{SW_HASH}}';
+// NeoSynth Service Worker - DEPRECATED AND REMOVED
+// This SW immediately unregisters itself - cache busting now uses query strings
+const SW_VERSION = 'DEPRECATED';
 
 // Use global debugLogger (service workers can't use ES6 imports)
 const debug = self.debugLogger || { log: () => {}, info: () => {} };
 
-self.addEventListener('install', (event) => {
-    debug.log(`NeoSynth service worker v${SW_VERSION} installing...`);
-    self.skipWaiting(); // Immediately activate new service worker
+self.addEventListener('install', () => {
+    // Immediately skip waiting to activate
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-    debug.log(`NeoSynth service worker v${SW_VERSION} activating...`);
     event.waitUntil(
-        caches.keys().then(cacheNames => {
-            // Delete all old caches on activation
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    debug.log(`Deleting old cache: ${cacheName}`);
-                    return caches.delete(cacheName);
-                })
-            );
-        }).then(() => clients.claim())
+        // Delete all caches
+        caches.keys()
+            .then(cacheNames => Promise.all(cacheNames.map(c => caches.delete(c))))
+            // Unregister this service worker
+            .then(() => self.registration.unregister())
+            // Notify all clients to reload
+            .then(() => self.clients.matchAll())
+            .then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({ type: 'SW_REMOVED', message: 'Service worker unregistered, please reload' });
+                });
+            })
     );
 });
 
-// Fetch event handler - ensure cache busting works
-self.addEventListener('fetch', (event) => {
-    const url = new URL(event.request.url);
+// No fetch handler - let browser handle all requests normally
 
-    // For CSS/JS files with version parameter, always fetch fresh
-    if ((url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) && url.searchParams.has('v')) {
-        debug.log(`Fetching fresh asset: ${url.pathname}?v=${url.searchParams.get('v')}`);
-        event.respondWith(
-            fetch(event.request, { cache: 'reload' })
-                .catch(() => {
-                    // Fallback to cache if network fails
-                    return caches.match(event.request);
-                })
-        );
-        return;
-    }
-
-    // For all other requests, use default browser behavior
-    event.respondWith(fetch(event.request));
-});
-
-// Handle messages from the main thread
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'KEEP_ALIVE') {
-        // Respond to keep-alive messages to maintain connection
-        event.ports[0].postMessage({ status: 'alive' });
-    }
-});
-
-// Optional: Add background sync for saving state
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'save-state') {
-        debug.log('Background sync: save-state');
-        // This could be used to save state even when the page is unloaded
-    }
-});
+// No message or sync handlers needed
