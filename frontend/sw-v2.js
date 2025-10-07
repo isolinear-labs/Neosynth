@@ -1,4 +1,5 @@
-// Create this file as frontend/sw.js
+// NeoSynth Service Worker v2 - Optimized for cache busting
+// Migrated from sw.js to sw-v2.js to force clients to update to new version
 // Service Worker Version - injected at runtime from asset hash
 const SW_VERSION = '{{SW_HASH}}';
 

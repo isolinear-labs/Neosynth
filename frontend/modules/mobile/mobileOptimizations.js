@@ -122,7 +122,19 @@ export class MobileOptimizations {
     // Register service worker for better mobile behavior
     setupServiceWorker() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
+            // Migration: Unregister old service worker (sw.js) and switch to new optimized version (sw-v2.js)
+            // The new version includes proper cache busting via fetch handler
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                registrations.forEach(reg => {
+                    if (reg.active && reg.active.scriptURL.includes('/sw.js')) {
+                        debug.log('Unregistering old service worker:', reg.active.scriptURL);
+                        reg.unregister();
+                    }
+                });
+            });
+
+            // Register new optimized service worker
+            navigator.serviceWorker.register('/sw-v2.js')
                 .then(registration => {
                     debug.log('Service worker registered:', registration);
                 })

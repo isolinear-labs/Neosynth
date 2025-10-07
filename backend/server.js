@@ -203,9 +203,9 @@ if (fs.existsSync(indexPath)) {
     console.error('[ERROR] index.html not found at startup');
 }
 
-// Cache sw.js with injected asset hash (use CSS hash as version for service worker)
+// Cache sw-v2.js with injected asset hash (migrated from sw.js for optimized cache busting)
 let cachedServiceWorker = null;
-const swPath = path.join(frontendPath, 'sw.js');
+const swPath = path.join(frontendPath, 'sw-v2.js');
 if (fs.existsSync(swPath)) {
     let swContent = fs.readFileSync(swPath, 'utf8');
 
@@ -214,7 +214,7 @@ if (fs.existsSync(swPath)) {
 
     console.log(`[INFO] Service worker cached with version: ${assetHashes.mainCss}`);
 } else {
-    console.warn('[WARN] sw.js not found at startup - service worker will not be available');
+    console.warn('[WARN] sw-v2.js not found at startup - service worker will not be available');
 }
 
 // Health check endpoint for liveness probe (always responds, even during migrations)
@@ -306,13 +306,13 @@ app.get('/admin', UnifiedAuth.authenticate, UnifiedAuth.requireAdmin, (req, res)
     }
 });
 
-// Serve cached service worker with injected hash
-app.get('/sw.js', (req, res) => {
+// Serve cached service worker with injected hash (migrated to sw-v2.js for optimized cache busting)
+app.get('/sw-v2.js', (req, res) => {
     if (cachedServiceWorker) {
         res.setHeader('Content-Type', 'application/javascript');
         res.setHeader('Cache-Control', 'no-cache'); // Force browsers to check for updates
         res.setHeader('Service-Worker-Allowed', '/');
-        console.log(`[DEBUG] Serving sw.js with version: ${assetHashes.mainCss}`);
+        console.log(`[DEBUG] Serving sw-v2.js with version: ${assetHashes.mainCss}`);
         res.send(cachedServiceWorker);
     } else {
         res.status(404).send('Service worker not found');
