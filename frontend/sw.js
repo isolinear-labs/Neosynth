@@ -1,4 +1,4 @@
-// Create this file as frontend/sw.js
+// NeoSynth Service Worker
 
 // Use global debugLogger (service workers can't use ES6 imports)
 const debug = self.debugLogger || { log: () => {}, info: () => {} };
