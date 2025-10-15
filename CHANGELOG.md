@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Bug Fixes
 - (mobile/resume) fixed race condition when resuming a track ([#16](https://github.com/isolinear-labs/Neosynth/pull/16))
 - (mobile/css) fixed the mobile footer alignment after the reddit button was added ([#18](https://github.com/isolinear-labs/Neosynth/pull/18))
+- (frontend/playlist) removed the playlist item '.' prefix that was preventing quick keyboard list navigation ([#19](https://github.com/isolinear-labs/Neosynth/pull/19))
 
 ### Dependencies
 
