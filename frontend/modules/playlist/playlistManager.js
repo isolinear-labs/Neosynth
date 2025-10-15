@@ -226,13 +226,6 @@ export class PlaylistManager {
 	 */
     applyCyberpunkStyling() {
         setTimeout(() => {
-            const options = this.playlistSelect.querySelectorAll('option');
-            options.forEach((option, index) => {
-                if (index > 0 && !option.textContent.startsWith('.')) {
-                    option.textContent = `.${option.textContent}`;
-                }
-            });
-			
             // Ensure the first option has the cyberpunk placeholder
             if (this.playlistSelect.options.length > 0) {
                 this.playlistSelect.options[0].text = '> Saved_Playlists.sh';
