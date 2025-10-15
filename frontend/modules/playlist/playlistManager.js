@@ -4,6 +4,8 @@
  * Playlist Management Module for NeoSynth
  * Handles saving, loading, and managing playlists
  */
+import debug from '../debugLogger/debugLogger.js';
+
 export class PlaylistManager {
     constructor() {
         this.API_URL = '/api';
@@ -224,13 +226,6 @@ export class PlaylistManager {
 	 */
     applyCyberpunkStyling() {
         setTimeout(() => {
-            const options = this.playlistSelect.querySelectorAll('option');
-            options.forEach((option, index) => {
-                if (index > 0 && !option.textContent.startsWith('.')) {
-                    option.textContent = `.${option.textContent}`;
-                }
-            });
-			
             // Ensure the first option has the cyberpunk placeholder
             if (this.playlistSelect.options.length > 0) {
                 this.playlistSelect.options[0].text = '> Saved_Playlists.sh';
@@ -509,6 +504,6 @@ export class PlaylistManager {
         this.playlistSelect = null;
         this.appElements = null;
 		
-        console.log('Playlist manager destroyed');
+        debug.log('Playlist manager destroyed');
     }
 }

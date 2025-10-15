@@ -2,7 +2,7 @@ name: PR Tests
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, nightly ]
 
 jobs:
   lint:
@@ -94,7 +94,7 @@ jobs:
   version-check:
     name: Version Increment Check
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-version-check')
+    if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-version-check') && contains(github.event.pull_request.title, 'release')
 
     steps:
     - name: Checkout PR branch

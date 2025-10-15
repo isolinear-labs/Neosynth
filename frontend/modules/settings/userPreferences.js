@@ -1,5 +1,7 @@
 // Enhanced User Preferences Module with Settings Integration
 
+import debug from '../debugLogger/debugLogger.js';
+
 // Default preferences
 const DEFAULT_PREFERENCES = {
     volume: 100,
@@ -170,7 +172,7 @@ async function initPreferencesWithSettings(userId, appElements, settingsSystem) 
             settingsSystem.setPreferences(preferences);
         }
 		
-        console.log('Preferences initialized with settings integration');
+        debug.log('Preferences initialized with settings integration');
         return preferences;
 		
     } catch (error) {

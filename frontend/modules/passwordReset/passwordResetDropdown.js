@@ -1,6 +1,8 @@
 // Password Reset Dropdown Module
 // Adds a dropdown to the username area with password reset functionality
 
+const debug = window.debugLogger || { log: () => {}, info: () => {} };
+
 class PasswordResetDropdown {
     constructor() {
         this.modal = null;
@@ -39,10 +41,10 @@ class PasswordResetDropdown {
 
     // Show password reset modal
     showPasswordResetModal() {
-        console.log('showPasswordResetModal called'); // Debug
+        debug.log('showPasswordResetModal called'); // Debug
         this.modal = this.createModal();
         document.body.appendChild(this.modal);
-        console.log('Modal appended to body'); // Debug
+        debug.log('Modal appended to body'); // Debug
 
         // Start terminal opening animation
         this.startTerminalAnimation();
@@ -160,13 +162,13 @@ class PasswordResetDropdown {
 
     // Start terminal opening animation
     startTerminalAnimation() {
-        console.log('startTerminalAnimation called'); // Debug
+        debug.log('startTerminalAnimation called'); // Debug
         this.modal.classList.remove('hide');
-        console.log('Hide class removed'); // Debug
+        debug.log('Hide class removed'); // Debug
 
         const container = this.modal.querySelector('.terminal-container');
         const loadingOverlay = this.modal.querySelector('.loading-overlay');
-        console.log('Container and overlay found:', container, loadingOverlay); // Debug
+        debug.log('Container and overlay found:', container, loadingOverlay); // Debug
 
         if (container && loadingOverlay) {
             // Start loading animation

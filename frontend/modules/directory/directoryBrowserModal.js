@@ -2,6 +2,7 @@
  * Enhanced directory browser modal for selecting files from directories
  */
 
+import debug from '../debugLogger/debugLogger.js';
 import { handleDirectoryUrl } from './directoryHandler.js';
 
 /**

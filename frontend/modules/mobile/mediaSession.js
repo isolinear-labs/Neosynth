@@ -1,3 +1,5 @@
+import debug from '../debugLogger/debugLogger.js';
+
 export class MediaSessionManager {
     constructor() {
         this.isSupported = 'mediaSession' in navigator;

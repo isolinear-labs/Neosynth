@@ -3,6 +3,8 @@
  * Supports adding multiple media files from directories
  */
 
+import debug from '../debugLogger/debugLogger.js';
+
 /**
  * Check if a filename is a media file based on extension
  * @param {string} filename - The filename to check

@@ -3,6 +3,7 @@
  * Handles the full-screen settings panel with various user preferences
  */
 
+import debug from '../debugLogger/debugLogger.js';
 import { digitalRainManager as _digitalRainManager } from '../effects/index.js';
 import { featureManager } from '../features/index.js';
 
@@ -40,7 +41,7 @@ export class SettingsSystem {
         await this.loadDynamicThemes();
         await this.loadPreferences();
 		
-        console.log('Settings system initialized');
+        debug.log('Settings system initialized');
     }
 
     /**
@@ -977,7 +978,7 @@ export class SettingsSystem {
         // Update current theme display in dropdown button
         this.updateCurrentThemeDisplay(currentTheme);
         
-        console.log(`Populated ${themes.length} themes in settings UI with click handlers`);
+        debug.log(`Populated ${themes.length} themes in settings UI with click handlers`);
     }
 
     /**

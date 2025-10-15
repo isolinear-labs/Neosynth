@@ -1,5 +1,7 @@
 // frontend/modules/effects/digitalRain.js
 
+import debug from '../debugLogger/debugLogger.js';
+
 /**
  * Digital Rain Effect Module for NeoSynth
  * Provides a dynamic, responsive digital rain background effect
@@ -35,18 +37,18 @@ export class DigitalRainManager {
 		
         this.container = document.getElementById(containerId);
         if (!this.container) {
-            console.warn(`Digital rain container '${containerId}' not found`);
+            debug.warn(`Digital rain container '${containerId}' not found`);
             return false;
         }
 
-        console.log('Initializing digital rain effect...');
-		
+        debug.log('Initializing digital rain effect...');
+
         this.createInitialRain();
         this.setupResizeHandler();
         this.startRainGeneration();
         this.isInitialized = true;
-		
-        console.log(`Digital rain initialized with ${this.currentColumns} columns`);
+
+        debug.log(`Digital rain initialized with ${this.currentColumns} columns`);
         return true;
     }
 
@@ -185,7 +187,7 @@ export class DigitalRainManager {
         );
 		
         if (newColumns !== this.currentColumns) {
-            console.log(`Resize: ${this.currentColumns} -> ${newColumns} columns`);
+            debug.log(`Resize: ${this.currentColumns} -> ${newColumns} columns`);
             this.redistributeRain(newColumns);
         } else {
             // Same number of columns, just reposition existing ones
@@ -315,7 +317,7 @@ export class DigitalRainManager {
     updateTheme() {
         if (!this.isInitialized) return;
 		
-        console.log('Updating digital rain theme...');
+        debug.log('Updating digital rain theme...');
 		
         // Update all tracked rain elements
         this.rainElements.forEach(rain => {
@@ -362,7 +364,7 @@ export class DigitalRainManager {
             this.container.style.display = visible ? 'block' : 'none';
         }
 		
-        console.log(`Digital rain ${visible ? 'enabled' : 'disabled'}`);
+        debug.log(`Digital rain ${visible ? 'enabled' : 'disabled'}`);
     }
 
     /**
@@ -412,7 +414,7 @@ export class DigitalRainManager {
             clearInterval(this.rainInterval);
             this.rainInterval = null;
         }
-        console.log('Digital rain paused');
+        debug.log('Digital rain paused');
     }
 
     /**
@@ -421,7 +423,7 @@ export class DigitalRainManager {
     resume() {
         if (this.isInitialized && !this.rainInterval) {
             this.startRainGeneration();
-            console.log('Digital rain resumed');
+            debug.log('Digital rain resumed');
         }
     }
 
@@ -429,7 +431,7 @@ export class DigitalRainManager {
 	 * Cleanup and destroy the rain effect
 	 */
     destroy() {
-        console.log('Destroying digital rain effect...');
+        debug.log('Destroying digital rain effect...');
 		
         // Clear intervals and timeouts
         if (this.rainInterval) {
@@ -459,7 +461,7 @@ export class DigitalRainManager {
         this.currentColumns = 0;
         this.container = null;
 		
-        console.log('Digital rain effect destroyed');
+        debug.log('Digital rain effect destroyed');
     }
 }
 

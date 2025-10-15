@@ -404,8 +404,8 @@ router.post('/auth-step1', async (req, res) => {
         const stepToken = crypto.randomBytes(32).toString('hex');
         const stepExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-        // Store step1 data temporarily (in a real app, use Redis)
-        // For now, we'll store in memory - TODO: move to Redis for production
+        // Store step1 data temporarily
+        // For now, we'll store in memory - TODO: move to Redis
         if (!global.authStepTokens) global.authStepTokens = new Map();
         global.authStepTokens.set(stepToken, {
             userId: user.userId,

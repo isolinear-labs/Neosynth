@@ -255,17 +255,46 @@ function discoverThemes() {
 function logFeatureFlagChange(action, flagData, userId, userRole) {
     const logEntry = {
         timestamp: new Date().toISOString(),
-        action, // 'create', 'update', 'delete'
-        flagName: flagData.name,
-        flagId: flagData._id,
-        userId,
-        userRole,
-        changes: flagData
+        action,
+        flag: flagData.name,
+        user: userId
     };
-    
-    console.log('AUDIT - Feature Flag Change:', JSON.stringify(logEntry));
-    
-    // In production, consider writing to a dedicated audit log file or database
+
+    // Only include relevant changes, not the entire flag object
+    if (action === 'update' && flagData.changes) {
+        const changes = flagData.changes;
+
+        // Add relevant fields from changes
+        if (changes.enabled !== undefined) logEntry.enabled = changes.enabled;
+        if (changes.rolloutPercentage !== undefined) logEntry.rolloutPercentage = changes.rolloutPercentage;
+        if (changes.description !== undefined) logEntry.description = changes.description;
+        if (changes.category !== undefined) logEntry.category = changes.category;
+
+        // Simplify conditions
+        if (changes.conditions) {
+            if (changes.conditions.userRoles?.length > 0) {
+                logEntry.userRoles = changes.conditions.userRoles;
+            }
+            if (changes.conditions.userIds?.length > 0) {
+                logEntry.userIds = changes.conditions.userIds;
+            }
+        }
+    } else if (action === 'create') {
+        // For create, log key properties
+        logEntry.enabled = flagData.enabled;
+        logEntry.rolloutPercentage = flagData.rolloutPercentage;
+        logEntry.category = flagData.category;
+        if (flagData.conditions?.userRoles?.length > 0) {
+            logEntry.userRoles = flagData.conditions.userRoles;
+        }
+        if (flagData.conditions?.userIds?.length > 0) {
+            logEntry.userIds = flagData.conditions.userIds;
+        }
+    }
+
+    console.log('AUDIT - Feature Flag:', JSON.stringify(logEntry));
+
+    // TODO: update logging to write to a dedicated audit log file or database
     // Example: auditLogger.info(logEntry);
 }
 
@@ -634,6 +663,14 @@ router.get('/admin/discovery/categories', UnifiedAuth.authenticate, UnifiedAuth.
                 description: 'Developer tools and debugging features',
                 templates: [
                     ...(appFeatureCategories['developer'] || []),
+                    {
+                        id: 'console_debug_logging',
+                        name: 'Console Debug Logging',
+                        description: 'Enable verbose console logging for debugging frontend modules',
+                        category: 'developer',
+                        adminOnly: false,
+                        metadata: { frontend: true, location: 'All frontend modules via debugLogger' }
+                    },
                     {
                         id: 'debug_authentication_logging',
                         name: 'Authentication Debug Logging',

@@ -1,12 +1,15 @@
-// Create this file as frontend/sw.js
+// NeoSynth Service Worker
+
+// Use global debugLogger (service workers can't use ES6 imports)
+const debug = self.debugLogger || { log: () => {}, info: () => {} };
 
 self.addEventListener('install', (event) => {
-    console.log('NeoSynth service worker installing...');
+    debug.log('NeoSynth service worker installing...');
     self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-    console.log('NeoSynth service worker activating...');
+    debug.log('NeoSynth service worker activating...');
     event.waitUntil(clients.claim());
 });
 
@@ -21,7 +24,7 @@ self.addEventListener('message', (event) => {
 // Optional: Add background sync for saving state
 self.addEventListener('sync', (event) => {
     if (event.tag === 'save-state') {
-        console.log('Background sync: save-state');
+        debug.log('Background sync: save-state');
         // This could be used to save state even when the page is unloaded
     }
 });
