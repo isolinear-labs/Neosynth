@@ -4,12 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Breaking Changes
+## [v1.0.2a] - 2025-10-15
 
 ### Enhancements
-- (admin/ff) removed the already released themes from the admin feature flag systemm  ([#12](https://github.com/isolinear-labs/Neosynth/pull/12))
+- (admin/ff) removed the already released themes from the admin feature flag system  ([#12](https://github.com/isolinear-labs/Neosynth/pull/12))
 - (admin/ff) removed the verbose console logging and moved it behind feature flag 'console_debug_logging'
 - (backend/migration) added support for database migration mechanism  ([#13](https://github.com/isolinear-labs/Neosynth/pull/13))
 - (frontend/links) added a link to our new subreddit ([#17](https://github.com/isolinear-labs/Neosynth/pull/17))
@@ -17,17 +15,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - (backend/caching) implemented composite hash-based cache busting for CSS and JS assets ([#18](https://github.com/isolinear-labs/Neosynth/pull/18))
 - (backend/caching) reduced static asset cache TTL from 24 hours to 1 hour for faster update propagation  ([#18](https://github.com/isolinear-labs/Neosynth/pull/18))
 
-
 ### Bug Fixes
 - (mobile/resume) fixed race condition when resuming a track ([#16](https://github.com/isolinear-labs/Neosynth/pull/16))
 - (mobile/css) fixed the mobile footer alignment after the reddit button was added ([#18](https://github.com/isolinear-labs/Neosynth/pull/18))
 - (frontend/playlist) removed the playlist item '.' prefix that was preventing quick keyboard list navigation ([#19](https://github.com/isolinear-labs/Neosynth/pull/19))
 
-### Dependencies
-
 
 ## [v1.0.1] - 2025-9-30
-
 
 ### Enhancements
 
