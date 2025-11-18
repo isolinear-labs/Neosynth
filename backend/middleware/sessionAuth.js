@@ -190,10 +190,13 @@ class SessionAuth {
     // Utility method to set secure session cookie
     static setSessionCookie(res, sessionToken, expiresAt) {
         const isProduction = process.env.NODE_ENV === 'production';
+        // Allow disabling secure cookies for HTTP deployments (e.g., Docker on port 5000)
+        // Set FORCE_SECURE_COOKIES=false to explicitly disable secure cookies
+        const forceSecure = process.env.FORCE_SECURE_COOKIES !== 'false';
         
         res.cookie('sessionToken', sessionToken, {
             httpOnly: true,        // Prevent XSS attacks
-            secure: isProduction,  // HTTPS only in production
+            secure: isProduction && forceSecure,  // HTTPS only in production, unless explicitly disabled
             sameSite: 'lax',       // Allow cross-site navigation while maintaining CSRF protection
             expires: expiresAt,    // Match session expiration
             path: '/',             // Available site-wide
@@ -203,9 +206,13 @@ class SessionAuth {
 
     // Utility method to clear session cookie
     static clearSessionCookie(res) {
+        const isProduction = process.env.NODE_ENV === 'production';
+        // Use same secure cookie logic as setSessionCookie
+        const forceSecure = process.env.FORCE_SECURE_COOKIES !== 'false';
+        
         res.clearCookie('sessionToken', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: isProduction && forceSecure,
             sameSite: 'strict',
             path: '/',
             signed: true

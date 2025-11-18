@@ -11,6 +11,7 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017/neosynth
       - COOKIE_SECRET=your_super_secret_cookie_secret_here
       - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
+      - FORCE_SECURE_COOKIES=false
     depends_on:
       - mongodb
     networks:

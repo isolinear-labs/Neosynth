@@ -33,6 +33,7 @@ node -e "console.log('COOKIE_SECRET=' + require('crypto').randomBytes(32).toStri
 - `MONGODB_URI` - Connection string for MongoDB database
 - `COOKIE_SECRET` - Secret key for cookie encryption (generate using command above)
 - `TOTP_ENCRYPTION_KEY` - Secret key for TOTP encryption (generate using command above)
+- `FORCE_SECURE_COOKIES` - (Optional) Set to `false` to allow HTTP connections in production (default: `true`). Use for Docker deployments without SSL/TLS
 
 ## Docker Compose
 
@@ -52,6 +53,7 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017/neosynth
       - COOKIE_SECRET=your_super_secret_cookie_secret_here
       - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
+      - FORCE_SECURE_COOKIES=false
     depends_on:
       - mongodb
     networks:
