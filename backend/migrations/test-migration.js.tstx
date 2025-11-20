@@ -1,0 +1,129 @@
+/**
+ * Test script for migration system
+ *
+ * Usage: node backend/migrations/test-migration.js
+ */
+
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const path = require('path');
+
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+const { runMigrations, getAvailableMigrations, compareVersions } = require('./migrationRunner');
+const SystemSettings = require('../models/SystemSettings');
+const FeatureFlag = require('../models/FeatureFlag');
+
+async function testMigrationSystem() {
+    try {
+        console.log('╔════════════════════════════════════════════════════════════════╗');
+        console.log('║              MIGRATION SYSTEM TEST SUITE                       ║');
+        console.log('╚════════════════════════════════════════════════════════════════╝\n');
+
+        // Connect to MongoDB
+        console.log('[*] Connecting to MongoDB...');
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('[OK] Connected to MongoDB\n');
+
+        // Test 1: Check current system version
+        console.log('[TEST 1] Checking current system version...');
+        const settings = await SystemSettings.getSystemSettings();
+        console.log(`[INFO] Current version: ${settings.version}`);
+        console.log('[OK] System settings retrieved successfully\n');
+
+        // Test 2: List available migrations
+        console.log('[TEST 2] Listing available migrations...');
+        const migrations = getAvailableMigrations();
+        console.log(`[INFO] Found ${migrations.length} migration(s):`);
+        migrations.forEach(m => {
+            console.log(`  - Version ${m.version}: ${m.description}`);
+        });
+        console.log('[OK] Migrations listed successfully\n');
+
+        // Test 3: Test version comparison
+        console.log('[TEST 3] Testing version comparison...');
+        const tests = [
+            { v1: '1.0.0', v2: '1.0.1', expected: -1 },
+            { v1: '1.0.2', v2: '1.0.1', expected: 1 },
+            { v1: '1.0.0', v2: '1.0.0', expected: 0 },
+            { v1: '1.0.0', v2: '1.1.0', expected: -1 }
+        ];
+
+        let versionTestsPassed = 0;
+        tests.forEach(test => {
+            const result = compareVersions(test.v1, test.v2);
+            if (result === test.expected) {
+                console.log(`  [OK] ${test.v1} vs ${test.v2} = ${result}`);
+                versionTestsPassed++;
+            } else {
+                console.log(`  [FAIL] ${test.v1} vs ${test.v2} = ${result} (expected ${test.expected})`);
+            }
+        });
+        console.log(`[OK] Version comparison: ${versionTestsPassed}/${tests.length} tests passed\n`);
+
+        // Test 4: Run migrations
+        console.log('[TEST 4] Running migrations...');
+        const result = await runMigrations();
+
+        if (result.success) {
+            console.log('[OK] Migrations completed successfully');
+            console.log(`[INFO] Migrations run: ${result.migrationsRun}`);
+            if (result.currentVersion) {
+                console.log(`[INFO] Current version: ${result.currentVersion}`);
+            }
+        } else {
+            console.log('[FAIL] Migrations failed');
+            console.log(`[ERROR] ${result.error}`);
+        }
+        console.log('');
+
+        // Test 5: Verify feature flag was created
+        console.log('[TEST 5] Verifying feature flag creation...');
+        const flag = await FeatureFlag.findOne({ name: 'console_debug_logging' });
+
+        if (flag) {
+            console.log('[OK] Feature flag "console_debug_logging" exists');
+            console.log(`  - Enabled: ${flag.enabled}`);
+            console.log(`  - Category: ${flag.category}`);
+            console.log(`  - Description: ${flag.description}`);
+
+            if (flag.enabled === false) {
+                console.log('[OK] Feature flag is correctly disabled by default');
+            } else {
+                console.log('[WARN] Feature flag is not disabled by default');
+            }
+        } else {
+            console.log('[FAIL] Feature flag "console_debug_logging" not found');
+        }
+        console.log('');
+
+        // Test 6: Verify system version was updated
+        console.log('[TEST 6] Verifying system version update...');
+        const updatedSettings = await SystemSettings.getSystemSettings();
+        console.log(`[INFO] Updated system version: ${updatedSettings.version}`);
+
+        if (compareVersions(updatedSettings.version, '1.0.2') >= 0) {
+            console.log('[OK] System version is 1.0.2 or higher');
+        } else {
+            console.log('[WARN] System version is still below 1.0.2');
+        }
+        console.log('');
+
+        console.log('╔════════════════════════════════════════════════════════════════╗');
+        console.log('║                  TEST SUITE COMPLETED                          ║');
+        console.log('╚════════════════════════════════════════════════════════════════╝\n');
+
+        await mongoose.disconnect();
+        console.log('[OK] Disconnected from MongoDB');
+        process.exit(0);
+
+    } catch (error) {
+        console.error('\n[ERROR] Test suite failed:', error);
+        await mongoose.disconnect();
+        process.exit(1);
+    }
+}
+
+// Run the test suite
+testMigrationSystem();

@@ -43,7 +43,7 @@ version: '3.8'
 
 services:
   neosynth:
-    image: ghcr.io/isolinear-labs/Neosynth:latest
+    image: ghcr.io/isolinear-labs/neosynth:latest
     ports:
       - "5000:5000"
     environment:
