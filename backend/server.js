@@ -64,7 +64,8 @@ app.use(helmet({
             frameSrc: ['\'none\'']                      // Block iframes
         }
     },
-    crossOriginEmbedderPolicy: false // Disable COEP for compatibility
+    crossOriginEmbedderPolicy: false, // Disable COEP for compatibility
+    crossOriginOpenerPolicy: process.env.NODE_ENV === 'production' ? { policy: 'same-origin' } : false // Disable COOP in development
 }));
 
 // Middleware
