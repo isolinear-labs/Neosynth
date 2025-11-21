@@ -62,7 +62,9 @@ app.use(helmet({
             connectSrc: ['\'self\'', 'https:', 'http:'], // Allow API calls to external streaming sources
             fontSrc: ['\'self\'', 'data:', 'https://fonts.gstatic.com'],  // Allow fonts from same origin, data URLs, and Google Fonts
             objectSrc: ['\'none\''],                    // Block object/embed tags
-            mediaSrc: ['\'self\'', 'https:'],           // Allow audio/video from HTTPS sources
+            mediaSrc: process.env.NODE_ENV === 'production'
+                ? ['\'self\'', 'https:']                // Production: HTTPS only
+                : ['\'self\'', 'https:', 'http:'],      // Development: Allow HTTP for local network
             frameSrc: ['\'none\'']                      // Block iframes
         }
     },
