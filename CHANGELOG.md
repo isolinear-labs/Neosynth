@@ -6,7 +6,7 @@
 
 ### Bug Fixes
 - fix(ssl) fixed a helmet bug that caused SSL errors when a env was defined as non-prod ([#24](https://github.com/isolinear-labs/Neosynth/pull/24))
-- fix(helmnet)  fixed security headers and CSP directives for non-production HTTP environments ([#24](https://github.com/isolinear-labs/Neosynth/pull/24))
+- fix(helmnet)  fixed security headers and CSP directives for non-production HTTP environments ([#27](https://github.com/isolinear-labs/Neosynth/pull/27))
 
 ### Dependencies
 
