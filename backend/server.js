@@ -53,7 +53,9 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ['\'self\''],
-            scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-hashes\''], // Allow inline scripts and event handlers
+            upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null, // Disable in development
+            blockAllMixedContent: process.env.NODE_ENV === 'production' ? [] : null, // Disable in development
+            scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-hashes\'', 'blob:'], // Allow inline scripts, event handlers, and blob URLs
             scriptSrcAttr: ['\'unsafe-inline\''],       // Allow inline event handlers (onclick, etc.)
             styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],  // Allow inline styles and Google Fonts
             imgSrc: ['\'self\'', 'data:', 'https:'],    // Allow images from any HTTPS source
@@ -65,7 +67,8 @@ app.use(helmet({
         }
     },
     crossOriginEmbedderPolicy: false, // Disable COEP for compatibility
-    crossOriginOpenerPolicy: process.env.NODE_ENV === 'production' ? { policy: 'same-origin' } : false // Disable COOP in development
+    crossOriginOpenerPolicy: process.env.NODE_ENV === 'production' ? { policy: 'same-origin' } : false, // Disable COOP in development
+    originAgentCluster: process.env.NODE_ENV === 'production' // Disable Origin-Agent-Cluster in development
 }));
 
 // Middleware
