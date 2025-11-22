@@ -2,7 +2,7 @@
  * NeoSynth Application Constants
  */
 
-export const VERSION = '1.0.3';
+export const VERSION = '1.0.3a';
 export const SYSTEM_NAME = 'NeoSynth System';
 export const BUILD_STATUS = '';
 
