@@ -5,9 +5,13 @@
 ### Enhancements
 
 ### Bug Fixes
-- fix(helmnet) fixed an issue where tracks will not play in non-prod environments that were not using HTTPS ([#28](https://github.com/isolinear-labs/Neosynth/pull/28))
 
 ### Dependencies
+
+## [v1.0.3a] - 2025-11-21
+
+### Bug Fixes
+- fix(helmnet) fixed an issue where tracks will not play in non-prod environments that were not using HTTPS ([#28](https://github.com/isolinear-labs/Neosynth/pull/28))
 
 ## [v1.0.3] - 2025-11-20
 
