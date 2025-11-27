@@ -482,6 +482,44 @@ export class PlaylistManager {
     }
 
     /**
+	 * Auto-update the current playlist in the database when tracks are added/removed
+	 * Only updates if the playlist has a playlistId (i.e., was loaded from saved playlists)
+	 */
+    async autoUpdatePlaylist() {
+        const playlistId = this.appElements.playlist.playlistId;
+        const playlistName = this.playlistNameInput?.value.trim();
+
+        if (!playlistId || !playlistName) {
+            debug.log('Skipping auto-update: no playlistId or name');
+            return;
+        }
+
+        try {
+            const playlistData = {
+                name: playlistName,
+                userId: this.userId,
+                tracks: this.appElements.playlist
+            };
+
+            const response = await window.apiCall(`${this.API_URL}/playlists/${playlistId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(playlistData)
+            });
+
+            if (response && response.ok) {
+                debug.log(`Auto-updated playlist: ${playlistName}`);
+            } else {
+                console.error('Failed to auto-update playlist');
+            }
+        } catch (error) {
+            console.error('Error auto-updating playlist:', error);
+        }
+    }
+
+    /**
 	 * Destroy the playlist manager
 	 */
     destroy() {

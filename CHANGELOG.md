@@ -3,8 +3,10 @@
 ## [Unreleased]
 
 ### Enhancements
+- (backend/tests) added comprehensive Helmet CSP regression tests to prevent HTTP-blocking bugs
 
 ### Bug Fixes
+- (frontend/resume) fixed resume feature to maintain playlist context when tracks are added to saved playlists
 
 ### Dependencies
 

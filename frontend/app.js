@@ -588,15 +588,20 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (addedCount > 0) {
                     renderPlaylist();
                     updateTrackCounter();
-					
+
+                    // If this playlist has a playlistId, auto-save the updated playlist
+                    if (playlist.playlistId) {
+                        await playlistManager.autoUpdatePlaylist();
+                    }
+
                     // Start playing if this is the first track
                     if (playlist.length === addedCount) {
                         playTrack(0);
                     }
-					
+
                     // Clear input field
                     urlInput.value = '';
-					
+
                     showStatus(`Added ${addedCount} files from directory`, false);
                 } else {
                     showStatus('No files were added', true);
@@ -625,16 +630,21 @@ document.addEventListener('DOMContentLoaded', async function() {
             name: fileName,
             duration: null
         });
-		
+
         renderPlaylist();
         updateTrackCounter();
         showStatus(`Added: ${fileName}`);
-		
+
+        // If this playlist has a playlistId, auto-save the updated playlist
+        if (playlist.playlistId) {
+            await playlistManager.autoUpdatePlaylist();
+        }
+
         // Start playing if this is the first track
         if (playlist.length === 1) {
             playTrack(0);
         }
-		
+
         // Clear input field
         urlInput.value = '';
         return true;
@@ -766,14 +776,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 	
     // Remove track from playlist
-    function removeTrack(index) {
+    async function removeTrack(index) {
         const trackName = playlist[index].name;
-		
+
         // If removing currently playing track
         if (index === currentTrackIndex) {
             stopPlayback();
             playlist.splice(index, 1);
-			
+
             // If there are still tracks, play the next one
             if (playlist.length > 0) {
                 currentTrackIndex = index >= playlist.length ? 0 : index;
@@ -787,13 +797,18 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (index < currentTrackIndex) {
                 currentTrackIndex--;
             }
-			
+
             playlist.splice(index, 1);
         }
-		
+
         renderPlaylist();
         updateTrackCounter();
         showStatus(`Removed: ${trackName}`);
+
+        // If this playlist has a playlistId, auto-save the updated playlist
+        if (playlist.playlistId) {
+            await playlistManager.autoUpdatePlaylist();
+        }
     }
 	
     // Play a track
