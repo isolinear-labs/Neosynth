@@ -247,6 +247,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Make shuffle manager globally available
     window.shuffleManager = shuffleManager;
 
+    // Make nowPlaying manager globally available
+    window.nowPlayingManager = nowPlayingManager;
+
     // Helper function to load playlist data (for compatibility with nowPlayingManager)
     function loadPlaylistData(name, tracks, playlistId = null) {
         // Use the playlist manager's loadPlaylistData method

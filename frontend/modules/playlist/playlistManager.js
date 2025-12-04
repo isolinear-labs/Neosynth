@@ -91,11 +91,14 @@ export class PlaylistManager {
                     },
                     body: JSON.stringify(playlistData)
                 });
-				
+
                 if (!updateResponse || !updateResponse.ok) {
                     throw new Error('Failed to update playlist');
                 }
-				
+
+                // Set the playlistId on the current playlist
+                this.appElements.playlist.playlistId = existingPlaylist._id;
+
                 this.showStatus(`Playlist "${playlistName}" updated`);
             } else {
                 // Create new playlist
@@ -106,14 +109,24 @@ export class PlaylistManager {
                     },
                     body: JSON.stringify(playlistData)
                 });
-				
+
                 if (!createResponse || !createResponse.ok) {
                     throw new Error('Failed to create playlist');
                 }
-				
+
+                const createdPlaylist = await createResponse.json();
+
+                // Set the playlistId on the current playlist
+                this.appElements.playlist.playlistId = createdPlaylist._id;
+
                 this.showStatus(`Playlist "${playlistName}" saved to database`);
             }
-			
+
+            // Trigger a nowPlaying save to update the state with the new playlistId
+            if (window.nowPlayingManager) {
+                window.nowPlayingManager.saveNowPlaying();
+            }
+
             // Reload playlists to update the dropdown
             this.loadSavedPlaylists();
 			

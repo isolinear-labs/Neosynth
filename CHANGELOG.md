@@ -6,7 +6,8 @@
 - (backend/tests) added comprehensive Helmet CSP regression tests to prevent HTTP-blocking bugs
 
 ### Bug Fixes
-- (frontend/resume) fixed resume feature to maintain playlist context when tracks are added to saved playlists
+- (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context
+- (frontend/resume) ensured nowPlaying state updates with playlistId after playlist save operations
 
 ### Dependencies
 
