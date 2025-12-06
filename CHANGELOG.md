@@ -3,11 +3,9 @@
 ## [Unreleased]
 
 ### Enhancements
-- (backend/tests) added comprehensive Helmet CSP regression tests to prevent HTTP-blocking bugs
 
 ### Bug Fixes
-- (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context
-- (frontend/resume) ensured nowPlaying state updates with playlistId after playlist save operations
+- (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context ([#30](https://github.com/isolinear-labs/Neosynth/pull/30))
 
 ### Dependencies
 
