@@ -91,11 +91,14 @@ export class PlaylistManager {
                     },
                     body: JSON.stringify(playlistData)
                 });
-				
+
                 if (!updateResponse || !updateResponse.ok) {
                     throw new Error('Failed to update playlist');
                 }
-				
+
+                // Set the playlistId on the current playlist
+                this.appElements.playlist.playlistId = existingPlaylist._id;
+
                 this.showStatus(`Playlist "${playlistName}" updated`);
             } else {
                 // Create new playlist
@@ -106,14 +109,24 @@ export class PlaylistManager {
                     },
                     body: JSON.stringify(playlistData)
                 });
-				
+
                 if (!createResponse || !createResponse.ok) {
                     throw new Error('Failed to create playlist');
                 }
-				
+
+                const createdPlaylist = await createResponse.json();
+
+                // Set the playlistId on the current playlist
+                this.appElements.playlist.playlistId = createdPlaylist._id;
+
                 this.showStatus(`Playlist "${playlistName}" saved to database`);
             }
-			
+
+            // Trigger a nowPlaying save to update the state with the new playlistId
+            if (window.nowPlayingManager) {
+                window.nowPlayingManager.saveNowPlaying();
+            }
+
             // Reload playlists to update the dropdown
             this.loadSavedPlaylists();
 			
@@ -479,6 +492,44 @@ export class PlaylistManager {
     async playlistExists(playlistName) {
         const playlists = await this.getAvailablePlaylists();
         return playlists.some(playlist => playlist.name === playlistName);
+    }
+
+    /**
+	 * Auto-update the current playlist in the database when tracks are added/removed
+	 * Only updates if the playlist has a playlistId (i.e., was loaded from saved playlists)
+	 */
+    async autoUpdatePlaylist() {
+        const playlistId = this.appElements.playlist.playlistId;
+        const playlistName = this.playlistNameInput?.value.trim();
+
+        if (!playlistId || !playlistName) {
+            debug.log('Skipping auto-update: no playlistId or name');
+            return;
+        }
+
+        try {
+            const playlistData = {
+                name: playlistName,
+                userId: this.userId,
+                tracks: this.appElements.playlist
+            };
+
+            const response = await window.apiCall(`${this.API_URL}/playlists/${playlistId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(playlistData)
+            });
+
+            if (response && response.ok) {
+                debug.log(`Auto-updated playlist: ${playlistName}`);
+            } else {
+                console.error('Failed to auto-update playlist');
+            }
+        } catch (error) {
+            console.error('Error auto-updating playlist:', error);
+        }
     }
 
     /**

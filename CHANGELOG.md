@@ -5,6 +5,7 @@
 ### Enhancements
 
 ### Bug Fixes
+- (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context ([#30](https://github.com/isolinear-labs/Neosynth/pull/30))
 
 ### Dependencies
 

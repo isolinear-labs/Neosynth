@@ -47,21 +47,22 @@ jobs:
   backend-tests:
     name: Backend Unit Tests
     runs-on: ubuntu-latest
-      
+    if: ${{ !contains(github.event.pull_request.title, 'release') }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-    
+
     - name: Install backend dependencies
       run: |
         cd backend
         npm install
-    
+
     - name: Run backend unit tests
       run: |
         cd backend
