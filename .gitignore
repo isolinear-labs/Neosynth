@@ -35,3 +35,4 @@ docs
 # Tests
 *.cmd
 *.tstx
+PARTITION*
