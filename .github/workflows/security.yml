@@ -161,7 +161,7 @@ jobs:
           p/javascript
     
     - name: Upload Semgrep results
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       if: always() && github.repository_owner == 'RC-Projects'
       with:
         sarif_file: semgrep.sarif
