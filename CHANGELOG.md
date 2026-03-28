@@ -12,7 +12,7 @@
 - (backend/server) updated catch-all route to Express 5 wildcard syntax `/{*path}` ([#41](https://github.com/isolinear-labs/Neosynth/pull/41))
 - (backend) upgraded express-rate-limit from  7.5.0 to 8.3.1 ([#43](https://github.com/isolinear-labs/Neosynth/pull/43))
 - (backend) migrated express-rate-limit `max` option to `limit` for v8 compatibility ([#43](https://github.com/isolinear-labs/Neosynth/pull/43))
-- (backend/ci) scoped npm security audit to production dependencies only, patched dev transitive vulnerabilities ([#PR](https://github.com/isolinear-labs/Neosynth/pull/PR))
+- (backend/ci) scoped npm security audit to production dependencies only, patched dev transitive vulnerabilities ([#44](https://github.com/isolinear-labs/Neosynth/pull/44))
 
 ## [v1.0.3a] - 2025-11-21
 
