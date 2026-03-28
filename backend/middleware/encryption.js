@@ -36,7 +36,7 @@ function encryptTotpSecret(plaintext) {
         
     } catch (error) {
         console.error('TOTP encryption error:', error);
-        throw new Error('Failed to encrypt TOTP secret');
+        throw new Error('Failed to encrypt TOTP secret', { cause: error });
     }
 }
 
@@ -59,7 +59,7 @@ function decryptTotpSecret(encryptedData) {
         
     } catch (error) {
         console.error('TOTP decryption error:', error);
-        throw new Error('Failed to decrypt TOTP secret');
+        throw new Error('Failed to decrypt TOTP secret', { cause: error });
     }
 }
 
