@@ -18,7 +18,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: '18'
+        node-version: '20'
 
     - name: Install dependencies
       working-directory: ./backend
@@ -178,7 +178,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: '18'
+        node-version: '20'
     
     - name: Install license checker
       run: npm install -g license-checker
@@ -220,7 +220,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: '18'
+        node-version: '20'
 
     - name: Install dependencies
       working-directory: ./backend
