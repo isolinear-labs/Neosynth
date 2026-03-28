@@ -11,7 +11,7 @@ const sseConnections = new Map(); // userId -> response object
 // Rate limiting configurations
 const featureFlagReadLimit = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 30, // 30 requests per minute per user
+    limit: 30, // 30 requests per minute per user
     message: { message: 'Too many feature flag requests, please try again later.' },
     standardHeaders: true,
     legacyHeaders: false
@@ -19,7 +19,7 @@ const featureFlagReadLimit = rateLimit({
 
 const featureFlagAdminLimit = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute  
-    max: 30, // 30 admin operations per minute (same as read limit)
+    limit: 30, // 30 admin operations per minute (same as read limit)
     message: { message: 'Too many admin requests, please try again later.' },
     standardHeaders: true,
     legacyHeaders: false
