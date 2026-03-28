@@ -63,7 +63,7 @@ jobs:
         fi
     
     - name: Upload audit results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: npm-audit-backend
         path: backend/audit-results.json
@@ -91,7 +91,7 @@ jobs:
           --exclude "**/tests/**"
     
     - name: Upload OWASP results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: owasp-dependency-check
         path: reports/
@@ -135,7 +135,7 @@ jobs:
         fi
     
     - name: Upload build log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: docker-build-log
@@ -203,7 +203,7 @@ jobs:
         echo "License check passed"
     
     - name: Upload license report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: license-report
         path: backend-licenses.json
@@ -330,7 +330,7 @@ jobs:
         echo "Scan completed at: $(date)" >> security-summary.md
     
     - name: Upload security summary
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: security-summary
         path: security-summary.md
