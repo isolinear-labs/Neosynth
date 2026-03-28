@@ -6,6 +6,7 @@
 
 ### Bug Fixes
 - (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context ([#30](https://github.com/isolinear-labs/Neosynth/pull/30))
+- (backend/models) removed duplicate schema indexes on fields already declared with `unique: true` ([#46](https://github.com/isolinear-labs/Neosynth/pull/46))
 
 ### Dependencies
 - (backend) upgraded Express 4 to Express 5 ([#41](https://github.com/isolinear-labs/Neosynth/pull/41))
