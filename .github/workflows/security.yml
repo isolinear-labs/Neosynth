@@ -31,17 +31,17 @@ jobs:
         echo "Generated on: $(date)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
 
-        # Run audit and capture output
-        if npm audit --audit-level=moderate --json > audit-results.json 2>&1; then
+        # Run audit and capture output (production dependencies only)
+        if npm audit --omit=dev --audit-level=moderate --json > audit-results.json; then
           echo "✅ **No moderate or higher vulnerabilities found**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Summary:" >> $GITHUB_STEP_SUMMARY
-          npm audit --audit-level=low | head -20 >> $GITHUB_STEP_SUMMARY
+          npm audit --omit=dev --audit-level=low | head -20 >> $GITHUB_STEP_SUMMARY
         else
           echo "⚠️ **Vulnerabilities detected in backend**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Audit Results:" >> $GITHUB_STEP_SUMMARY
-          npm audit | head -50 >> $GITHUB_STEP_SUMMARY
+          npm audit --omit=dev | head -50 >> $GITHUB_STEP_SUMMARY
 
           # Extract vulnerability counts
           if [ -f audit-results.json ]; then
