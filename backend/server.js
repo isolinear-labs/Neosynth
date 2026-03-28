@@ -442,7 +442,7 @@ const webAuth = async (req, res, next) => {
 };
 
 // Catch-all route for API endpoint - for any other routes, serve the index.html
-app.get('*', webAuth, (req, res, next) => {
+app.get('/{*path}', webAuth, (req, res, next) => {
     // Skip API routes
     if (req.path.startsWith('/api/')) {
         return next();

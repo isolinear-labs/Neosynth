@@ -19,7 +19,7 @@
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
-        "express": "^4.19.2",
+        "express": "^5.2.1",
         "express-rate-limit": "^7.1.5",
         "helmet": "^8.1.0",
         "ip-range-check": "^0.2.0",
