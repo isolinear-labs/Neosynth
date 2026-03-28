@@ -73,7 +73,6 @@ const UserSecuritySchema = new mongoose.Schema({
     }
 });
 
-UserSecuritySchema.index({ userId: 1 });
 UserSecuritySchema.index({ 'tempCodes.expiresAt': 1 }, { expireAfterSeconds: 0 });
 
 module.exports = mongoose.model('UserSecurity', UserSecuritySchema);

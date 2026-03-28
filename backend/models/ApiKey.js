@@ -98,7 +98,6 @@ const ApiKeySchema = new mongoose.Schema({
 });
 
 // Indexes for performance
-ApiKeySchema.index({ keyHash: 1 });
 ApiKeySchema.index({ userId: 1 });
 ApiKeySchema.index({ isActive: 1 });
 ApiKeySchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });

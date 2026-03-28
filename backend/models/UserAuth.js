@@ -29,6 +29,4 @@ const UserAuthSchema = new mongoose.Schema({
     }
 });
 
-UserAuthSchema.index({ userId: 1 });
-
 module.exports = mongoose.model('UserAuth', UserAuthSchema);
