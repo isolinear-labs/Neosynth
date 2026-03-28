@@ -6,6 +6,8 @@
 
 ### Bug Fixes
 
+### Docs
+
 ### Dependencies
 
 ## [v1.0.4] - 2026-03-28
