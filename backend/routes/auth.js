@@ -18,7 +18,7 @@ const UnifiedAuth = require('../middleware/unifiedAuth');
 // Rate limiting configurations for TOTP endpoints
 const totpSetupLimit = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // 5 TOTP setup attempts per 15 minutes
+    limit: 5, // 5 TOTP setup attempts per 15 minutes
     message: { message: 'Too fast' },
     standardHeaders: false,
     legacyHeaders: false
@@ -26,7 +26,7 @@ const totpSetupLimit = rateLimit({
 
 const totpVerifyLimit = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 10, // 10 TOTP verification attempts per 5 minutes
+    limit: 10, // 10 TOTP verification attempts per 5 minutes
     message: { message: 'Too fast' },
     standardHeaders: false,
     legacyHeaders: false

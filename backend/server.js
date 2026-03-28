@@ -256,7 +256,7 @@ app.get('/register', (req, res) => {
 // Rate limiting for setup endpoint to prevent DB hammering
 const setupLimit = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 15, // 10 requests per 15 minutes per IP
+    limit: 15, // 10 requests per 15 minutes per IP
     message: { message: 'Too many setup requests' },
     standardHeaders: false,
     legacyHeaders: false
