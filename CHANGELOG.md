@@ -8,8 +8,8 @@
 - (frontend/playlist) fixed playlistId not being set when saving playlists, preventing resume from loading full playlist context ([#30](https://github.com/isolinear-labs/Neosynth/pull/30))
 
 ### Dependencies
-- (backend) upgraded Express 4 to Express 5
-- (backend/server) updated catch-all route to Express 5 wildcard syntax `/{*path}`
+- (backend) upgraded Express 4 to Express 5 ([#41](https://github.com/isolinear-labs/Neosynth/pull/41))
+- (backend/server) updated catch-all route to Express 5 wildcard syntax `/{*path}` ([#41](https://github.com/isolinear-labs/Neosynth/pull/41))
 
 ## [v1.0.3a] - 2025-11-21
 
