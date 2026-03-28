@@ -183,7 +183,7 @@ class SessionAuth {
             };
         } catch (error) {
             console.error('Error creating session:', error);
-            throw new Error('Failed to create session');
+            throw new Error('Failed to create session', { cause: error });
         }
     }
 
@@ -224,7 +224,7 @@ class SessionAuth {
             return false;
         } catch (error) {
             console.error('Error revoking session:', error);
-            throw new Error('Failed to revoke session');
+            throw new Error('Failed to revoke session', { cause: error });
         }
     }
 }
