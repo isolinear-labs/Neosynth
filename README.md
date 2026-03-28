@@ -6,7 +6,8 @@
 
 ![Demo](demo.png)
 
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-neosynth-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/isolinearlabs/neosynth/tags) [![GitHub Package](https://img.shields.io/badge/GitHub%20Packages-neosynth-2088FF?logo=github&logoColor=white)](https://github.com/isolinear-labs/Neosynth/pkgs/container/neosynth)
+[![GitHub Stars](https://img.shields.io/github/stars/isolinear-labs/Neosynth?style=social)](https://github.com/isolinear-labs/Neosynth/stargazers)
+[![GitHub Package](https://img.shields.io/badge/GitHub%20Packages-neosynth-2088FF?logo=github&logoColor=white)](https://github.com/isolinear-labs/Neosynth/pkgs/container/neosynth)
 
 ---
 
