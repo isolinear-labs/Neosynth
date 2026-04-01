@@ -32,6 +32,6 @@ jobs:
           version: "Unreleased"
 
       - name: Commit changelog entry
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "docs(CHANGELOG.md): add dependency bump from dependabot"
