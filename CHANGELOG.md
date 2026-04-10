@@ -15,6 +15,7 @@
 - Bump `actions/checkout` from 4 to 6 ([#50](https://github.com/isolinear-labs/Neosynth/pull/50))
 - Bump `dotenv` from 17.3.1 to 17.4.1 ([#54](https://github.com/isolinear-labs/Neosynth/pull/54))
 - Bump `mongoose` from 9.3.3 to 9.4.1 ([#54](https://github.com/isolinear-labs/Neosynth/pull/54))
+- Bump `eslint` from 10.1.0 to 10.2.0 ([#53](https://github.com/isolinear-labs/Neosynth/pull/53))
 
 ## [v1.0.4] - 2026-03-28
 
