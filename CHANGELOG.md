@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Enhancements
+- (docker) added `APP_VERSION` and `BUILD_STATUS` build args to stamp `constants.js` at image build time — pass `BUILD_STATUS=$(git rev-parse --short HEAD)` to identify the exact build running in the PWA
 
 ### Bug Fixes
 - (frontend/resume) fixed mobile Resume playing from the wrong track/position — playlist now loads directly on the saved track, seeks before `play()` is called, resulting in a much smoother Resume experience ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
