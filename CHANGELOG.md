@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Enhancements
+- (docker) added support for `APP_VERSION` and `BUILD_STATUS` build args to stamp app at image build time. Build example: `BUILD_STATUS=$(git rev-parse --short HEAD)` ([#57](https://github.com/isolinear-labs/Neosynth/pull/57))
 - feat(frontend/mobile): Revamped iOS background audio controls: pause now works on first press, play reliably resumes and pauses. This allows external audio control devices, such as airpods, to correctly push commands to the player ([#56](https://github.com/isolinear-labs/Neosynth/pull/56))
 
 ### Bug Fixes
