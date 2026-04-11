@@ -49,11 +49,13 @@ export class MobileOptimizations {
         const _originalTogglePlayPause = this.appElements.togglePlayPause;
         this.appElements.togglePlayPause = async () => {
             if (this.appElements.isPlaying) {
-                // Just pause normally
+                // Set state before calling pause() so the 'pause' event fires
+                // with isPlaying already false — prevents the debounce in
+                // audioInterruption from treating this as an OS interruption.
                 if (this.appElements.currentPlayer) {
-                    this.appElements.currentPlayer.pause();
                     this.appElements.isPlaying = false;
                     this.appElements.playPauseBtn.textContent = '▶';
+                    this.appElements.currentPlayer.pause();
                 }
             } else {
                 // Try to play with interruption recovery
@@ -82,13 +84,11 @@ export class MobileOptimizations {
         document.addEventListener('touchstart', resumeAudioOnInteraction, { once: true });
         document.addEventListener('click', resumeAudioOnInteraction, { once: true });
 
-        // Periodically check if audio is actually playing on iOS
-        setInterval(() => {
-            if (this.appElements.isPlaying && !this.audioInterruption.isAudioActuallyPlaying()) {
-                debug.log('iOS: Detected audio stopped playing unexpectedly');
-                this.audioInterruption.handleAudioInterruption();
-            }
-        }, 2000);
+        // NOTE: The 2-second polling interval for isAudioActuallyPlaying() has
+        // been removed for the same reason as the 1-second interval in
+        // audioInterruption — it triggered false positives during buffering pauses
+        // now that currentPlayer/isPlaying are live references, leaving isPlaying
+        // wrongly false and making the lock-screen pause unresponsive.
     }
 
     // Wrap playback functions to handle interruptions

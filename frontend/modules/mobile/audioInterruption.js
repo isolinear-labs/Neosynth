@@ -50,18 +50,6 @@ export class AudioInterruptionManager {
             document.addEventListener('click', resumeAudioContext);
         }
 
-        // Handle media session interruptions
-        if ('mediaSession' in navigator) {
-            // These events help detect when another app takes control
-            navigator.mediaSession.setActionHandler('pause', () => {
-                debug.log('Media session pause detected');
-                this.handleAudioInterruption();
-                if (this.appElements.togglePlayPause) {
-                    this.appElements.togglePlayPause();
-                }
-            });
-        }
-
         // Handle native audio interruption events
         if (audioPlayer) {
             // Debounce pause/waiting detection - programmatic pauses (e.g. seek) are brief and
@@ -142,21 +130,26 @@ export class AudioInterruptionManager {
 
     // Enhanced audio context handling
     setupAudioContextHandling() {
-        // Create a global audio context monitor
+        // Resume suspended audio context on user interaction so the first tap
+        // after a page load or interruption doesn't silently fail.
         if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
-            const _AudioContextClass = AudioContext || webkitAudioContext;
-			
-            // Create a monitor that checks audio context state
-            setInterval(() => {
-                if (this.appElements.currentPlayer && this.appElements.isPlaying) {
-                    // Check if audio is actually playing
-                    if (this.appElements.currentPlayer.paused && !this.isInterrupted) {
-                        debug.log('Detected audio is paused while state says playing');
-                        this.handleAudioInterruption();
-                    }
+            const AudioContextClass = AudioContext || webkitAudioContext;
+            const resumeCtx = () => {
+                const ctx = new AudioContextClass();
+                if (ctx.state === 'suspended') {
+                    ctx.resume().catch(err => debug.log('Failed to resume audio context:', err));
                 }
-            }, 1000);
+            };
+            document.addEventListener('touchstart', resumeCtx, { once: true });
+            document.addEventListener('click', resumeCtx, { once: true });
         }
+        // NOTE: The 1-second polling interval that previously called
+        // handleAudioInterruption() when currentPlayer.paused was true has been
+        // removed. It produced false positives during normal buffering pauses
+        // (now that currentPlayer is a live reference), stomping isPlaying=false
+        // while audio was still running and making lock-screen pause require two
+        // presses. Genuine interruptions are already handled by the debounced
+        // 'pause' event listener in setupInterruptionHandlers().
     }
 
     // Handle page visibility changes

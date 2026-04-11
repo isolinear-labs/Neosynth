@@ -20,57 +20,51 @@ export class MediaSessionManager {
     }
 
     // Set up media session action handlers
+    // Uses live this.appElements references so that any function wrapping applied
+    // by mobileOptimizations after init is automatically picked up.
     setupActionHandlers() {
-        const {
-            togglePlayPause,
-            playNext,
-            playPrevious,
-            stopPlayback
-        } = this.appElements;
-
-
         if (this.isMobile) {
-            // Mobile: Use state-aware handlers
+            // Mobile: state-aware handlers prevent double-toggle on iOS
             navigator.mediaSession.setActionHandler('play', () => {
-                if (togglePlayPause && !this.appElements.isPlaying) {
-                    togglePlayPause();
+                if (this.appElements.togglePlayPause && !this.appElements.isPlaying) {
+                    this.appElements.togglePlayPause();
                 }
             });
 
             navigator.mediaSession.setActionHandler('pause', () => {
-                if (togglePlayPause && this.appElements.isPlaying) {
-                    togglePlayPause();
+                if (this.appElements.togglePlayPause && this.appElements.isPlaying) {
+                    this.appElements.togglePlayPause();
                 }
             });
 
-            // Set seek handlers to forward to next/previous track on mobile
-            navigator.mediaSession.setActionHandler('seekbackward', () => {
-                if (playPrevious) playPrevious();
-            });
-            navigator.mediaSession.setActionHandler('seekforward', () => {
-                if (playNext) playNext();
-            });
+            // Unregister seek handlers so iOS shows nexttrack/previoustrack instead.
+            // iOS will hide next/prev when seek handlers are registered — choose one or the other.
+            // To switch to +/-10s seek buttons replace these with:
+            //   ('seekbackward', (d) => { const s = d.seekOffset || 10; if (this.appElements.currentPlayer) this.appElements.currentPlayer.currentTime = Math.max(0, this.appElements.currentPlayer.currentTime - s); });
+            //   ('seekforward',  (d) => { const s = d.seekOffset || 10; if (this.appElements.currentPlayer) this.appElements.currentPlayer.currentTime = Math.min(this.appElements.currentPlayer.duration || 0, this.appElements.currentPlayer.currentTime + s); });
+            navigator.mediaSession.setActionHandler('seekbackward', null);
+            navigator.mediaSession.setActionHandler('seekforward', null);
         } else {
-            // Desktop: Use toggle for both (existing working behavior)
+            // Desktop: toggle for both (existing working behavior)
             navigator.mediaSession.setActionHandler('play', () => {
-                if (togglePlayPause) togglePlayPause();
+                if (this.appElements.togglePlayPause) this.appElements.togglePlayPause();
             });
 
             navigator.mediaSession.setActionHandler('pause', () => {
-                if (togglePlayPause) togglePlayPause();
+                if (this.appElements.togglePlayPause) this.appElements.togglePlayPause();
             });
         }
 
         navigator.mediaSession.setActionHandler('nexttrack', () => {
-            if (playNext) playNext();
+            if (this.appElements.playNext) this.appElements.playNext();
         });
 
         navigator.mediaSession.setActionHandler('previoustrack', () => {
-            if (playPrevious) playPrevious();
+            if (this.appElements.playPrevious) this.appElements.playPrevious();
         });
 
         navigator.mediaSession.setActionHandler('stop', () => {
-            if (stopPlayback) stopPlayback();
+            if (this.appElements.stopPlayback) this.appElements.stopPlayback();
         });
     }
 
@@ -133,19 +127,12 @@ export class MediaSessionManager {
 
         navigator.mediaSession.metadata = metadata;
         this.currentMetadata = metadata;
-        
-        
-        // Mobile-specific: Re-establish handlers to prevent grayed out buttons
-        if (this.isMobile) {
-            const { playNext, playPrevious } = this.appElements;
-            
-            navigator.mediaSession.setActionHandler('nexttrack', () => {
-                if (playNext) playNext();
-            });
 
-            navigator.mediaSession.setActionHandler('previoustrack', () => {
-                if (playPrevious) playPrevious();
-            });
+        // Re-establish all handlers on every metadata update — iOS can silently
+        // drop registered handlers when metadata changes, causing the lock screen
+        // controls to route to another app (e.g. Apple Music) instead.
+        if (this.isMobile) {
+            this.setupActionHandlers();
         }
     }
 
