@@ -251,9 +251,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     window.nowPlayingManager = nowPlayingManager;
 
     // Helper function to load playlist data (for compatibility with nowPlayingManager)
-    function loadPlaylistData(name, tracks, playlistId = null) {
-        // Use the playlist manager's loadPlaylistData method
-        playlistManager.loadPlaylistData(name, tracks, playlistId);
+    function loadPlaylistData(name, tracks, playlistId = null, startTrackIndex = null, startPosition = null) {
+        playlistManager.loadPlaylistData(name, tracks, playlistId, startTrackIndex, startPosition);
     }
 
     // Initialize feature manager first (needed by settings system)
@@ -300,8 +299,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         appCallbacks: {
             addTrack: addTrack,
             getCurrentPlayer: () => currentPlayer,
-            loadPlaylistData: loadPlaylistData,
-            playTrack: playTrack
+            loadPlaylistData: loadPlaylistData
         }
     });
 
@@ -814,26 +812,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 	
-    // Play a track
-    function playTrack(index) {
+    // Play a track. Pass startPosition (seconds) to seek before playback begins,
+    // which avoids briefly playing from 0 on resume.
+    function playTrack(index, startPosition = null) {
         if (index < 0 || index >= playlist.length) return;
-		
+
         // Stop current playback
         stopPlayback();
-		
+
         currentTrackIndex = index;
         updatePlayHistory(currentTrackIndex);
         const track = playlist[currentTrackIndex];
-		
+
         // Update now playing info
         nowPlayingName.textContent = track.name;
-		
+
         // Show now playing container
         nowPlayingContainer.classList.remove('hide');
-		
+
         // Check file extension
         const fileExt = track.url.split('.').pop().toLowerCase();
-		
+
         // Setup the appropriate player
         if (['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'].includes(fileExt)) {
             // Audio file
@@ -845,7 +844,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             videoContainer.classList.add('hide'); // Hide first, then show if it has video
             videoPlayer.src = track.url;
             currentPlayer = videoPlayer;
-			
+
             // Check if it has video content
             videoPlayer.addEventListener('loadedmetadata', function videoCheck() {
                 try {
@@ -863,23 +862,40 @@ document.addEventListener('DOMContentLoaded', async function() {
                 videoPlayer.removeEventListener('loadedmetadata', videoCheck);
             });
         }
-		
+
         // Set volume
         currentPlayer.volume = volumeSlider.value / 100;
-		
-        // Start playing
-        currentPlayer.play()
-            .then(() => {
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
-                renderPlaylist();
-                
-                // Record play in shuffle manager
-                shuffleManager.recordPlay(track.url, track.name);
-            })
-            .catch(error => {
-                showStatus(`Error playing track: ${error.message}`, true);
-            });
+
+        const doPlay = () => {
+            currentPlayer.play()
+                .then(() => {
+                    isPlaying = true;
+                    playPauseBtn.textContent = '⏸';
+                    renderPlaylist();
+
+                    // Record play in shuffle manager
+                    shuffleManager.recordPlay(track.url, track.name);
+                })
+                .catch(error => {
+                    showStatus(`Error playing track: ${error.message}`, true);
+                });
+        };
+
+        if (startPosition !== null && startPosition > 0) {
+            // Seek before playing so audio never starts from position 0
+            const seekThenPlay = () => {
+                currentPlayer.currentTime = startPosition;
+                currentPlayer.removeEventListener('loadedmetadata', seekThenPlay);
+                doPlay();
+            };
+            if (currentPlayer.readyState >= 1) {
+                seekThenPlay();
+            } else {
+                currentPlayer.addEventListener('loadedmetadata', seekThenPlay);
+            }
+        } else {
+            doPlay();
+        }
     }
 	
     // Stop current playback

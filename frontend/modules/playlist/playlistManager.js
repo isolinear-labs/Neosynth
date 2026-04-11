@@ -302,28 +302,28 @@ export class PlaylistManager {
 	 * @param {Array} tracks - Array of tracks
 	 * @param {string} playlistId - Optional playlist ID
 	 */
-    loadPlaylistData(name, tracks, playlistId = null) {
+    loadPlaylistData(name, tracks, playlistId = null, startTrackIndex = null, startPosition = null) {
         // Stop current playback
         if (this.appElements.stopPlayback) {
             this.appElements.stopPlayback();
         }
-		
+
         // Update playlist
         this.appElements.playlist.length = 0;
         this.appElements.playlist.push(...tracks);
         this.appElements.playlist.playlistId = playlistId;
         this.appElements.currentTrackIndex = -1;
-		
+
         // Update play history if it exists
         if (this.appElements.updatePlayHistory) {
             this.appElements.updatePlayHistory(this.appElements.currentTrackIndex);
         }
-		
+
         // Update volume multiplier display and apply to player for new playlist
         if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
             window.volumeMultiplierManager.onTrackChange();
         }
-		
+
         // Re-render playlist and update counter
         if (this.appElements.renderPlaylist) {
             this.appElements.renderPlaylist();
@@ -331,21 +331,23 @@ export class PlaylistManager {
         if (this.appElements.updateTrackCounter) {
             this.appElements.updateTrackCounter();
         }
-		
+
         // Start playing if there are tracks
         if (this.appElements.playlist.length > 0) {
-            // If shuffle is enabled, choose a random track to start with
             let startIndex = 0;
-            if (this.appElements.isShuffleEnabled && this.appElements.shuffleState && 
-				this.appElements.shuffleState.value && this.appElements.playlist.length > 1) {
+            if (startTrackIndex !== null && startTrackIndex >= 0 && startTrackIndex < this.appElements.playlist.length) {
+                // Caller specified a starting track (e.g. resume to saved track)
+                startIndex = startTrackIndex;
+            } else if (this.appElements.isShuffleEnabled && this.appElements.shuffleState &&
+                this.appElements.shuffleState.value && this.appElements.playlist.length > 1) {
                 startIndex = Math.floor(Math.random() * this.appElements.playlist.length);
             }
-			
+
             if (this.appElements.playTrack) {
-                this.appElements.playTrack(startIndex);
+                this.appElements.playTrack(startIndex, startPosition);
             }
         }
-		
+
         // Update playlist name input
         this.playlistNameInput.value = name;
         this.showStatus(`Loaded playlist: "${name}"`);
