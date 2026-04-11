@@ -83,15 +83,22 @@ export class AudioInterruptionManager {
                 clearTimeout(this._pauseInterruptionTimer);
             });
 
+            // stalled = browser can't get data - debounce since it can fire during normal
+            // track loading/source changes before data arrives
             audioPlayer.addEventListener('stalled', () => {
-                debug.log('Audio stalled - possible interruption');
-                this.handleAudioInterruption();
+                if (this.appElements.isPlaying && !this.isInterrupted) {
+                    clearTimeout(this._stalledInterruptionTimer);
+                    this._stalledInterruptionTimer = setTimeout(() => {
+                        if (this.appElements.isPlaying && !this.isInterrupted && !this.isHandlingInterruption) {
+                            debug.log('Audio stalled - possible interruption');
+                            this.handleAudioInterruption();
+                        }
+                    }, 3000);
+                }
             });
 
-            audioPlayer.addEventListener('suspend', () => {
-                debug.log('Audio suspended - possible interruption');
-                this.handleAudioInterruption();
-            });
+            // suspend fires constantly during normal buffering (browser stops pre-fetching) -
+            // it is NOT a reliable indicator of an external interruption, so we ignore it here
 
             audioPlayer.addEventListener('waiting', () => {
                 // Only treat as interruption if we were playing and not mid-seek
@@ -106,8 +113,9 @@ export class AudioInterruptionManager {
                 }
             });
 
-            // Clear waiting timer when playback resumes
+            // Clear all debounce timers when playback actually resumes
             audioPlayer.addEventListener('playing', () => {
+                clearTimeout(this._stalledInterruptionTimer);
                 clearTimeout(this._waitingInterruptionTimer);
             });
         }
