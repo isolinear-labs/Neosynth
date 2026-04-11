@@ -1,5 +1,5 @@
 // Restore Track Manager - Expandable button for resuming last played track
-const debug = window.debugLogger || { log: () => {}, info: () => {} };
+import debug from '../debugLogger/debugLogger.js';
 
 class RestoreTrackManager {
     constructor() {
@@ -136,88 +136,38 @@ class RestoreTrackManager {
             return;
         }
 
+        debug.log('[Resume] Starting resume - track:', this.resumeData.trackName, '| position:', this.resumeData.position);
+
         try {
             // If we have a playlist ID, restore the full playlist
             if (this.resumeData.playListId && this.appCallbacks.loadPlaylistData) {
+                debug.log('[Resume] Fetching playlist:', this.resumeData.playListId);
                 const playlistResponse = await this.apiCall(`/api/playlists/detail/${this.resumeData.playListId}`);
-                
+
                 if (playlistResponse && playlistResponse.ok) {
                     const playlistData = await playlistResponse.json();
-                    
-                    // Load the full playlist
-                    this.appCallbacks.loadPlaylistData(playlistData.name, playlistData.tracks, playlistData._id);
-                    
-                    // Find the track index by URL
+                    debug.log('[Resume] Playlist loaded:', playlistData.name, '|', playlistData.tracks.length, 'tracks');
+
+                    // Find the track index BEFORE loading the playlist so we can start on the right track
                     const trackIndex = playlistData.tracks.findIndex(track => track.url === this.resumeData.trackUrl);
-                    
-                    if (trackIndex >= 0 && this.appCallbacks.playTrack) {
-                        // Wait a moment for stopPlayback() to complete, then play the track
-                        setTimeout(() => {
-                            // Play the track - it will auto-start
-                            this.appCallbacks.playTrack(trackIndex);
+                    debug.log('[Resume] Track index in playlist:', trackIndex, '| URL:', this.resumeData.trackUrl);
 
-                            // Wait for player to initialize and start playing
-                            const waitForPlayerAndSeek = () => {
-                                const player = this.appCallbacks.getCurrentPlayer();
-                                if (!player) {
-                                    setTimeout(waitForPlayerAndSeek, 50);
-                                    return;
-                                }
+                    if (trackIndex >= 0 && this.appCallbacks.loadPlaylistData) {
+                        // Load playlist starting directly on the saved track - avoids jumping from track 0
+                        this.appCallbacks.loadPlaylistData(playlistData.name, playlistData.tracks, playlistData._id, trackIndex);
 
-                                // Wait for the media to be ready before seeking
-                                const seekToPosition = () => {
-                                    if (player.readyState >= 2) { // HAVE_CURRENT_DATA or higher
-                                        // Pause first to avoid the "operation aborted" error
-                                        player.pause();
-
-                                        // Then seek to saved position
-                                        if (typeof this.resumeData.position === 'number') {
-                                            player.currentTime = this.resumeData.position;
-                                        }
-
-                                        // Apply volume multiplier after resuming
-                                        if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
-                                            window.volumeMultiplierManager.onTrackChange();
-                                        }
-
-                                        // Resume playback
-                                        player.play().catch(e => debug.log('Play interrupted:', e));
-                                    } else {
-                                        // Wait for loadeddata event
-                                        const onLoadedData = () => {
-                                            player.pause();
-
-                                            if (typeof this.resumeData.position === 'number') {
-                                                player.currentTime = this.resumeData.position;
-                                            }
-
-                                            // Apply volume multiplier after resuming
-                                            if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
-                                                window.volumeMultiplierManager.onTrackChange();
-                                            }
-
-                                            player.play().catch(e => debug.log('Play interrupted:', e));
-                                            player.removeEventListener('loadeddata', onLoadedData);
-                                        };
-                                        player.addEventListener('loadeddata', onLoadedData);
-                                    }
-                                };
-
-                                seekToPosition();
-                            };
-
-                            waitForPlayerAndSeek();
-                        }, 300);
+                        // Seek to saved position once the player is ready
+                        this._waitAndSeek();
                     } else {
-                        // Track not found in playlist, fall back to single track
+                        debug.log('[Resume] Track not found in playlist, falling back to single track');
                         await this.fallbackToSingleTrack();
                     }
                 } else {
-                    // Playlist not found, fall back to single track
+                    debug.log('[Resume] Playlist fetch failed, falling back to single track');
                     await this.fallbackToSingleTrack();
                 }
             } else {
-                // No playlist ID, just play the single track
+                debug.log('[Resume] No playlist ID, playing single track');
                 await this.fallbackToSingleTrack();
             }
 
@@ -225,69 +175,63 @@ class RestoreTrackManager {
             this.container.style.display = 'none';
 
         } catch (error) {
-            console.error('Error resuming playback:', error);
+            console.error('[Resume] Error resuming playback:', error);
             // Fall back to single track on any error
             await this.fallbackToSingleTrack();
         }
     }
 
+    // Wait for the player to be available and ready, then seek to saved position
+    _waitAndSeek() {
+        const position = this.resumeData.position;
+        if (typeof position !== 'number' || position <= 0) {
+            debug.log('[Resume] No seek needed (position:', position, ')');
+            return;
+        }
+
+        debug.log('[Resume] Waiting for player to seek to', position);
+
+        const waitForPlayer = () => {
+            const player = this.appCallbacks.getCurrentPlayer();
+            if (!player) {
+                setTimeout(waitForPlayer, 50);
+                return;
+            }
+
+            const doSeek = () => {
+                debug.log('[Resume] Seeking to', position, '| readyState:', player.readyState);
+                // Set currentTime directly while playing - no pause() needed and avoids
+                // triggering the mobile audio interruption detection
+                player.currentTime = position;
+
+                if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
+                    window.volumeMultiplierManager.onTrackChange();
+                }
+            };
+
+            if (player.readyState >= 2) {
+                doSeek();
+            } else {
+                debug.log('[Resume] Player not ready (readyState:', player.readyState, '), waiting for canplay');
+                const onCanPlay = () => {
+                    player.removeEventListener('canplay', onCanPlay);
+                    doSeek();
+                };
+                player.addEventListener('canplay', onCanPlay);
+            }
+        };
+
+        waitForPlayer();
+    }
+
     async fallbackToSingleTrack() {
-        // Fallback: just add the single track
+        debug.log('[Resume] Fallback: adding single track:', this.resumeData.trackUrl);
         if (this.appCallbacks.addTrack) {
             const success = await this.appCallbacks.addTrack(this.resumeData.trackUrl);
+            debug.log('[Resume] addTrack result:', success);
 
-            if (success && this.appCallbacks.getCurrentPlayer) {
-                // Wait for player to initialize and start playing
-                const waitForPlayerAndSeek = () => {
-                    const player = this.appCallbacks.getCurrentPlayer();
-                    if (!player) {
-                        setTimeout(waitForPlayerAndSeek, 50);
-                        return;
-                    }
-
-                    // Wait for the media to be ready before seeking
-                    const seekToPosition = () => {
-                        if (player.readyState >= 2) { // HAVE_CURRENT_DATA or higher
-                            // Pause first to avoid the "operation aborted" error
-                            player.pause();
-
-                            // Then seek to saved position
-                            if (typeof this.resumeData.position === 'number') {
-                                player.currentTime = this.resumeData.position;
-                            }
-
-                            // Apply volume multiplier after resuming
-                            if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
-                                window.volumeMultiplierManager.onTrackChange();
-                            }
-
-                            // Resume playback
-                            player.play().catch(e => debug.log('Play interrupted:', e));
-                        } else {
-                            // Wait for loadeddata event
-                            const onLoadedData = () => {
-                                player.pause();
-
-                                if (typeof this.resumeData.position === 'number') {
-                                    player.currentTime = this.resumeData.position;
-                                }
-
-                                // Apply volume multiplier after resuming
-                                if (window.volumeMultiplierManager && window.volumeMultiplierManager.isInitialized) {
-                                    window.volumeMultiplierManager.onTrackChange();
-                                }
-
-                                player.play().catch(e => debug.log('Play interrupted:', e));
-                                player.removeEventListener('loadeddata', onLoadedData);
-                            };
-                            player.addEventListener('loadeddata', onLoadedData);
-                        }
-                    };
-
-                    seekToPosition();
-                };
-
-                waitForPlayerAndSeek();
+            if (success) {
+                this._waitAndSeek();
             }
         }
     }

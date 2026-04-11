@@ -251,9 +251,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     window.nowPlayingManager = nowPlayingManager;
 
     // Helper function to load playlist data (for compatibility with nowPlayingManager)
-    function loadPlaylistData(name, tracks, playlistId = null) {
-        // Use the playlist manager's loadPlaylistData method
-        playlistManager.loadPlaylistData(name, tracks, playlistId);
+    function loadPlaylistData(name, tracks, playlistId = null, startTrackIndex = null) {
+        playlistManager.loadPlaylistData(name, tracks, playlistId, startTrackIndex);
     }
 
     // Initialize feature manager first (needed by settings system)

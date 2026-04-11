@@ -5,6 +5,10 @@
 ### Enhancements
 
 ### Bug Fixes
+- (frontend/resume) fixed playlist jumping on mobile Resume — playlist now starts on the saved track directly instead of playing track 0 first
+- (frontend/resume) fixed audio cutting out after seeking on mobile — removed programmatic `pause()` before seek to avoid triggering mobile interruption detection
+- (frontend/resume) fixed debug logs not appearing — switched from `window.debugLogger` fallback to proper ES module import; added `[Resume]` log points throughout the resume flow
+- (frontend/mobile) debounced `pause` and `waiting` event handlers in audio interruption detection to avoid false positives during brief seek operations
 
 ### Docs
 

@@ -64,12 +64,23 @@ export class AudioInterruptionManager {
 
         // Handle native audio interruption events
         if (audioPlayer) {
+            // Debounce pause/waiting detection - programmatic pauses (e.g. seek) are brief and
+            // should not be treated as external interruptions. Only fire if still paused after 800ms.
             audioPlayer.addEventListener('pause', (_e) => {
-                // Check if this pause was programmatic or due to interruption
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
-                    debug.log('Audio paused unexpectedly - possible interruption');
-                    this.handleAudioInterruption();
+                    clearTimeout(this._pauseInterruptionTimer);
+                    this._pauseInterruptionTimer = setTimeout(() => {
+                        if (this.appElements.currentPlayer?.paused && this.appElements.isPlaying && !this.isHandlingInterruption) {
+                            debug.log('Audio paused unexpectedly - possible interruption');
+                            this.handleAudioInterruption();
+                        }
+                    }, 800);
                 }
+            });
+
+            // Clear the debounce timer when playback resumes (seek complete)
+            audioPlayer.addEventListener('play', () => {
+                clearTimeout(this._pauseInterruptionTimer);
             });
 
             audioPlayer.addEventListener('stalled', () => {
@@ -83,11 +94,21 @@ export class AudioInterruptionManager {
             });
 
             audioPlayer.addEventListener('waiting', () => {
-                // Only treat as interruption if we were playing
+                // Only treat as interruption if we were playing and not mid-seek
                 if (this.appElements.isPlaying && !this.isInterrupted) {
-                    debug.log('Audio waiting - possible interruption');
-                    this.handleAudioInterruption();
+                    clearTimeout(this._waitingInterruptionTimer);
+                    this._waitingInterruptionTimer = setTimeout(() => {
+                        if (this.appElements.isPlaying && !this.isInterrupted && !this.isHandlingInterruption) {
+                            debug.log('Audio waiting - possible interruption');
+                            this.handleAudioInterruption();
+                        }
+                    }, 800);
                 }
+            });
+
+            // Clear waiting timer when playback resumes
+            audioPlayer.addEventListener('playing', () => {
+                clearTimeout(this._waitingInterruptionTimer);
             });
         }
 
@@ -95,9 +116,18 @@ export class AudioInterruptionManager {
             // Similar handlers for video player
             videoPlayer.addEventListener('pause', (_e) => {
                 if (!this.isHandlingInterruption && this.appElements.isPlaying) {
-                    debug.log('Video paused unexpectedly - possible interruption');
-                    this.handleAudioInterruption();
+                    clearTimeout(this._videoPauseInterruptionTimer);
+                    this._videoPauseInterruptionTimer = setTimeout(() => {
+                        if (this.appElements.currentPlayer?.paused && this.appElements.isPlaying && !this.isHandlingInterruption) {
+                            debug.log('Video paused unexpectedly - possible interruption');
+                            this.handleAudioInterruption();
+                        }
+                    }, 800);
                 }
+            });
+
+            videoPlayer.addEventListener('play', () => {
+                clearTimeout(this._videoPauseInterruptionTimer);
             });
         }
     }
