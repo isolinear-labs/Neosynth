@@ -302,7 +302,7 @@ export class PlaylistManager {
 	 * @param {Array} tracks - Array of tracks
 	 * @param {string} playlistId - Optional playlist ID
 	 */
-    loadPlaylistData(name, tracks, playlistId = null, startTrackIndex = null) {
+    loadPlaylistData(name, tracks, playlistId = null, startTrackIndex = null, startPosition = null) {
         // Stop current playback
         if (this.appElements.stopPlayback) {
             this.appElements.stopPlayback();
@@ -344,7 +344,7 @@ export class PlaylistManager {
             }
 
             if (this.appElements.playTrack) {
-                this.appElements.playTrack(startIndex);
+                this.appElements.playTrack(startIndex, startPosition);
             }
         }
 

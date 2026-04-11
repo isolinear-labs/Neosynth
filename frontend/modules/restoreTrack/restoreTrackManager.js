@@ -153,11 +153,12 @@ class RestoreTrackManager {
                     debug.log('[Resume] Track index in playlist:', trackIndex, '| URL:', this.resumeData.trackUrl);
 
                     if (trackIndex >= 0 && this.appCallbacks.loadPlaylistData) {
-                        // Load playlist starting directly on the saved track - avoids jumping from track 0
-                        this.appCallbacks.loadPlaylistData(playlistData.name, playlistData.tracks, playlistData._id, trackIndex);
-
-                        // Seek to saved position once the player is ready
-                        this._waitAndSeek();
+                        // Load playlist starting on the saved track at the saved position.
+                        // startPosition is passed into playTrack so the seek happens before
+                        // play() is called — no audible playback from position 0.
+                        const savedPosition = typeof this.resumeData.position === 'number' ? this.resumeData.position : null;
+                        debug.log('[Resume] Loading playlist with startTrackIndex:', trackIndex, '| startPosition:', savedPosition);
+                        this.appCallbacks.loadPlaylistData(playlistData.name, playlistData.tracks, playlistData._id, trackIndex, savedPosition);
                     } else {
                         debug.log('[Resume] Track not found in playlist, falling back to single track');
                         await this.fallbackToSingleTrack();
