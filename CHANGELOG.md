@@ -3,9 +3,10 @@
 ## [Unreleased]
 
 ### Enhancements
+- feat(frontend/mobile): Revamped iOS background audio controls: pause now works on first press, play reliably resumes and pauses. This allows external audio control devices, such as airpods, to correctly push commands to the player ([#56](https://github.com/isolinear-labs/Neosynth/pull/56))
 
 ### Bug Fixes
-- (frontend/resume) fixed mobile Resume playing from the wrong track/position — playlist now loads directly on the saved track, seeks before `play()` is called, resulting in a much smoother Resume experience ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
+- fix(frontend/resume) fixed mobile Resume playing from the wrong track/position — playlist now loads directly on the saved track, seeks before `play()` is called, resulting in a much smoother Resume experience ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
 
 ### Docs
 

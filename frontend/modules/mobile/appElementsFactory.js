@@ -27,9 +27,20 @@ export function createAppElements(appScope) {
         }
     }
 	
-    // Extract variables from app scope
+    // Extract variables from app scope as live getters/setters so that
+    // changes made in app.js (e.g. isPlaying, currentPlayer) are immediately
+    // visible to all mobile modules, and writes from mobile modules propagate
+    // back to the app without the two copies diverging.
     for (const variableName of APP_ELEMENTS_CONFIG.variables) {
-        if (appScope[variableName] !== undefined) {
+        const descriptor = Object.getOwnPropertyDescriptor(appScope, variableName);
+        if (descriptor && (descriptor.get || descriptor.set)) {
+            Object.defineProperty(appElements, variableName, {
+                get: () => appScope[variableName],
+                set: (v) => { appScope[variableName] = v; },
+                enumerable: true,
+                configurable: true
+            });
+        } else if (appScope[variableName] !== undefined) {
             appElements[variableName] = appScope[variableName];
         } else {
             console.warn(`Variable '${variableName}' not found in app scope`);

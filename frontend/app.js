@@ -928,9 +928,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (!currentPlayer || currentTrackIndex < 0) return;
 		
         if (isPlaying) {
-            currentPlayer.pause();
             isPlaying = false;
             playPauseBtn.textContent = '▶';
+            currentPlayer.pause();
         } else {
             currentPlayer.play()
                 .then(() => {
