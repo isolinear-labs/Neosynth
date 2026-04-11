@@ -95,10 +95,10 @@ export class MobileOptimizations {
     wrapPlaybackFunctions() {
         // Wrap playTrack to handle interruptions
         const originalPlayTrack = this.appElements.playTrack;
-        this.appElements.playTrack = async (index) => {
+        this.appElements.playTrack = async (index, ...args) => {
             // Reset interruption state when playing a new track
             this.audioInterruption.isInterrupted = false;
-            return originalPlayTrack.call(this, index);
+            return originalPlayTrack.call(this, index, ...args);
         };
 
         // Wrap play functions to use interruption recovery

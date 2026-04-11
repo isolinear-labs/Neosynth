@@ -299,8 +299,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         appCallbacks: {
             addTrack: addTrack,
             getCurrentPlayer: () => currentPlayer,
-            loadPlaylistData: loadPlaylistData,
-            playTrack: playTrack
+            loadPlaylistData: loadPlaylistData
         }
     });
 

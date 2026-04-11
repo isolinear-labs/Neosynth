@@ -53,15 +53,15 @@ export class NowPlaying {
     
         // Skip if no user ID or no current track
         if (!this.userId || this.appElements.currentTrackIndex < 0) {
-            console.log('Skipping save - no userID or current track', 
+            debug.log('Skipping nowPlaying save - no userID or current track',
                 { userId: this.userId, currentTrackIndex: this.appElements.currentTrackIndex });
             return;
         }
-		
+
         // Throttle saves to avoid too many requests
         const now = Date.now();
         if (now - this.lastSaveTime < this.saveThrottleMs) {
-            console.log('Skipping save - throttled');
+            debug.log('Skipping nowPlaying save - throttled');
             return;
         }
 		

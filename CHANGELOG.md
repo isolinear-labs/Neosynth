@@ -5,10 +5,7 @@
 ### Enhancements
 
 ### Bug Fixes
-- (frontend/resume) fixed audio starting from position 0 before seeking on mobile Resume — `startPosition` is now threaded through `loadPlaylistData` into `playTrack`, which seeks before calling `play()` so audio begins at the saved position with no audible gap
-- (frontend/resume) fixed playlist jumping on mobile Resume — playlist now starts on the saved track directly instead of playing track 0 first
-- (frontend/resume) fixed debug logs not appearing — switched from `window.debugLogger` fallback to proper ES module import; added `[Resume]` log points throughout the resume flow
-- (frontend/mobile) debounced `pause`, `waiting`, and `stalled` event handlers in audio interruption detection to avoid false positives during seek and track loading; removed `suspend` as an interruption trigger since it fires constantly during normal buffering
+- (frontend/resume) fixed mobile Resume playing from the wrong track/position — playlist now loads directly on the saved track, seeks before `play()` is called, resulting in a much smoother Resume experience ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
 
 ### Docs
 
