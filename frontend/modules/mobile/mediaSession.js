@@ -83,12 +83,15 @@ export class MediaSessionManager {
             }
         };
 
-        // Update position state
-        if (audioPlayer) {
-            audioPlayer.addEventListener('timeupdate', updatePositionState);
-        }
-        if (videoPlayer) {
-            videoPlayer.addEventListener('timeupdate', updatePositionState);
+        // Update position state (desktop only — on mobile, setPositionState causes iOS to
+        // render seek controls on the first lock screen notification instead of prev/next)
+        if (!this.isMobile) {
+            if (audioPlayer) {
+                audioPlayer.addEventListener('timeupdate', updatePositionState);
+            }
+            if (videoPlayer) {
+                videoPlayer.addEventListener('timeupdate', updatePositionState);
+            }
         }
 
         // Update playback state
@@ -125,15 +128,17 @@ export class MediaSessionManager {
             ]
         });
 
-        navigator.mediaSession.metadata = metadata;
-        this.currentMetadata = metadata;
-
         // Re-establish all handlers on every metadata update — iOS can silently
         // drop registered handlers when metadata changes, causing the lock screen
         // controls to route to another app (e.g. Apple Music) instead.
+        // Must happen BEFORE setting metadata so the OS sees the correct handlers
+        // when it first renders the lock screen notification.
         if (this.isMobile) {
             this.setupActionHandlers();
         }
+
+        navigator.mediaSession.metadata = metadata;
+        this.currentMetadata = metadata;
     }
 
     // Clear media session metadata

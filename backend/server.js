@@ -212,6 +212,20 @@ if (fs.existsSync(indexPath)) {
     console.error('[ERROR] index.html not found at startup');
 }
 
+// Cache app.js with hash injected into module import URLs so ES module
+// imports are cache-busted whenever any JS file changes
+let cachedAppJs = null;
+const appJsPath = path.join(frontendPath, 'app.js');
+if (fs.existsSync(appJsPath)) {
+    const js = fs.readFileSync(appJsPath, 'utf8');
+    // Rewrite bare .js imports to include the version hash, e.g.:
+    //   from './modules/foo.js'  →  from './modules/foo.js?v=HASH'
+    cachedAppJs = js.replace(/(from\s+['"])(\.\/[^'"]+\.js)(['"])/g, `$1$2?v=${assetHashes.appJs}$3`);
+    console.log('[OK] app.js cached with module import hashes injected\n');
+} else {
+    console.error('[ERROR] app.js not found at startup');
+}
+
 
 // Health check endpoint for liveness probe (always responds, even during migrations)
 app.get('/health', (req, res) => {
@@ -317,14 +331,32 @@ app.use('/api', featureFlagRoutes);
 
 
 
+// Serve app.js with injected module import hashes (must come before static middleware)
+app.get('/app.js', (req, res) => {
+    if (cachedAppJs) {
+        res.setHeader('Content-Type', 'text/javascript');
+        res.setHeader('Cache-Control', 'public, no-cache');
+        res.send(cachedAppJs);
+    } else {
+        res.status(404).send('app.js not found');
+    }
+});
+
 // Serve static files from the frontend directory (excluding index.html)
-// Reduced cache time to allow faster propagation of updates while still benefiting from caching
+// JS modules are served with no-cache so browsers always revalidate via ETag —
+// only app.js?v=HASH and main.css?v=HASH get long-term caching since their URLs change on update.
 app.use(express.static(frontendPath, {
     index: false,
-    maxAge: '1h', // Cache for 1 hour (reduced from 24h for faster updates)
-    setHeaders: (res, _path) => {
-        // Cache for 1 hour - allows updates to propagate faster
-        res.set('Cache-Control', 'public, max-age=3600');
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.js')) {
+            // Revalidate every request — ETag prevents re-downloading if unchanged
+            res.set('Cache-Control', 'public, no-cache');
+        } else if (filePath.endsWith('.css')) {
+            res.set('Cache-Control', 'public, no-cache');
+        } else {
+            // Images, fonts, etc. — safe to cache longer
+            res.set('Cache-Control', 'public, max-age=3600');
+        }
     }
 }));
 
@@ -442,7 +474,7 @@ const webAuth = async (req, res, next) => {
 };
 
 // Catch-all route for API endpoint - for any other routes, serve the index.html
-app.get('/{*path}', webAuth, (req, res, next) => {
+app.get(['/', '/{*path}'], webAuth, (req, res, next) => {
     // Skip API routes
     if (req.path.startsWith('/api/')) {
         return next();

@@ -90,9 +90,29 @@ function generateAssetHashes(frontendPath) {
         path.join(frontendPath, 'cssCustom/passwordTerminal.css')
     ];
 
+    // Composite hash across all JS module files so any change busts the cache
+    const allJsFiles = (() => {
+        const jsDir = frontendPath;
+        const results = [];
+        const walk = (dir) => {
+            try {
+                for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                    const full = path.join(dir, entry.name);
+                    if (entry.isDirectory() && entry.name !== 'node_modules') {
+                        walk(full);
+                    } else if (entry.isFile() && entry.name.endsWith('.js')) {
+                        results.push(full);
+                    }
+                }
+            } catch (_) { /* ignore unreadable dirs */ }
+        };
+        walk(jsDir);
+        return results.sort(); // sort for determinism
+    })();
+
     const hashes = {
         mainCss: generateCompositeHash(allCssFiles),
-        appJs: generateFileHash(path.join(frontendPath, 'app.js'))
+        appJs: generateCompositeHash(allJsFiles)
     };
 
     return hashes;

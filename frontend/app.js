@@ -297,9 +297,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         apiCall: apiCall,
         userId: userId,
         appCallbacks: {
-            addTrack: addTrack,
+            addTrack: (url) => addTrack(url),
             getCurrentPlayer: () => currentPlayer,
-            loadPlaylistData: loadPlaylistData
+            loadPlaylistData: loadPlaylistData,
+            playTrack: (index, startPosition) => playTrack(index, startPosition)
         }
     });
 
