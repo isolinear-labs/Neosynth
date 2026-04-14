@@ -8,7 +8,7 @@
 
 ### Bug Fixes
 - fix(frontend/resume): fixed mobile Resume playing from the wrong track/position — playlist now loads directly on the saved track, seeks before `play()` is called, resulting in a much smoother Resume experience ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
-- fix(migration): convert Mongoose pre-save hooks to async to resolve next is not a function on fresh deployments  ([#55](https://github.com/isolinear-labs/Neosynth/pull/55))
+- fix(migration): convert Mongoose pre-save hooks to async to resolve next is not a function on fresh deployments  ([#59](https://github.com/isolinear-labs/Neosynth/pull/59))
 
 ### Docs
 
