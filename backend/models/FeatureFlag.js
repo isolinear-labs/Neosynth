@@ -53,9 +53,8 @@ const FeatureFlagSchema = new mongoose.Schema({
     }
 });
 
-FeatureFlagSchema.pre('save', function(next) {
+FeatureFlagSchema.pre('save', async function() {
     this.updated = Date.now();
-    next();
 });
 
 module.exports = mongoose.model('FeatureFlag', FeatureFlagSchema);
