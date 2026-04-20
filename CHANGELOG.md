@@ -18,8 +18,9 @@
 - Bump `stefanzweifel/git-auto-commit-action` from 5 to 7 ([#49](https://github.com/isolinear-labs/Neosynth/pull/49))
 - Bump `actions/checkout` from 4 to 6 ([#50](https://github.com/isolinear-labs/Neosynth/pull/50))
 - Bump `dotenv` from 17.3.1 to 17.4.2 ([#54](https://github.com/isolinear-labs/Neosynth/pull/54), [#58](https://github.com/isolinear-labs/Neosynth/pull/58))
-- Bump `mongoose` from 9.3.3 to 9.4.1 ([#54](https://github.com/isolinear-labs/Neosynth/pull/54))
+- Bump `mongoose` from 9.3.3 to 9.5.0 ([#54](https://github.com/isolinear-labs/Neosynth/pull/54), [#62](https://github.com/isolinear-labs/Neosynth/pull/62))
 - Bump `eslint` from 10.1.0 to 10.2.0 ([#53](https://github.com/isolinear-labs/Neosynth/pull/53), [#52](https://github.com/isolinear-labs/Neosynth/pull/52))
+- Bump `sanitize-html` from 2.17.2 to 2.17.3 ([#62](https://github.com/isolinear-labs/Neosynth/pull/62))
 
 ## [v1.0.4] - 2026-03-28
 
