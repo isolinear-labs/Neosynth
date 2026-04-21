@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "eslint": "^10.2.0",
+        "eslint": "^10.2.1",
         "jest": "^30.3.0",
         "nodemon": "^3.1.14",
         "supertest": "^7.2.2"
