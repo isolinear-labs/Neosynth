@@ -20,7 +20,7 @@
         "cors": "^2.8.6",
         "dotenv": "^17.4.2",
         "express": "^5.2.1",
-        "express-rate-limit": "^8.3.2",
+        "express-rate-limit": "^8.4.1",
         "helmet": "^8.1.0",
         "ip-range-check": "^0.2.0",
         "joi": "^18.1.2",
