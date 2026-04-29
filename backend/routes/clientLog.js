@@ -13,7 +13,6 @@ const clientLogLimit = rateLimit({
 
 const ALLOWED_EVENTS = [
     'visibility_hidden',
-    'visibility_visible',
     'page_freeze',
     'page_hide',
     'audio_interrupted',

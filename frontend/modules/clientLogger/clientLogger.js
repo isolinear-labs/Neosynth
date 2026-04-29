@@ -78,8 +78,6 @@ class ClientLogger {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 this.send('visibility_hidden');
-            } else {
-                this.send('visibility_visible');
             }
         });
 
