@@ -12,7 +12,6 @@ const clientLogLimit = rateLimit({
 });
 
 const ALLOWED_EVENTS = [
-    'visibility_hidden',
     'page_freeze',
     'page_hide',
     'audio_interrupted',

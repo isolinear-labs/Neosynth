@@ -75,12 +75,6 @@ class ClientLogger {
     }
 
     _setupLifecycleListeners() {
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.send('visibility_hidden');
-            }
-        });
-
         // Page Lifecycle API — fires just before the browser freezes/suspends the page (iOS PWA)
         window.addEventListener('freeze', () => {
             this.send('page_freeze');
