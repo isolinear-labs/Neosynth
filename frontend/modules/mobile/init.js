@@ -32,7 +32,7 @@ export async function initMobile(appScope, showStatus) {
         mediaSession.init(appElements),
         mobileOptimizations.init(appElements, statePersistence)
     ]);
-	
+
     // Return object with methods that can be called from main app
     return {
         statePersistence,

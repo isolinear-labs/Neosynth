@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Enhancements
+- feat(frontend/mobile): Added `client_error_logging` feature flag and client logger module — captures audio interruption and page lifecycle events (visibility, freeze, pagehide) and forwards them to the backend log via `sendBeacon` for iOS PWA debugging
 
 ### Bug Fixes
 

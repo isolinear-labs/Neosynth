@@ -664,6 +664,14 @@ router.get('/admin/discovery/categories', UnifiedAuth.authenticate, UnifiedAuth.
                 templates: [
                     ...(appFeatureCategories['developer'] || []),
                     {
+                        id: 'client_error_logging',
+                        name: 'Client Error Logging',
+                        description: 'Forward client-side audio interruptions, playback errors, and page lifecycle events to the backend log for debugging (uses sendBeacon — survives page teardown)',
+                        category: 'developer',
+                        adminOnly: false,
+                        metadata: { frontend: true, location: 'modules/clientLogger/clientLogger.js' }
+                    },
+                    {
                         id: 'console_debug_logging',
                         name: 'Console Debug Logging',
                         description: 'Enable verbose console logging for debugging frontend modules',

@@ -22,6 +22,7 @@ const trackRoutes = require('./routes/tracks');
 const userRoutes = require('./routes/users');
 const apiKeyRoutes = require('./routes/apiKeys');
 const featureFlagRoutes = require('./routes/featureFlags');
+const clientLogRoutes = require('./routes/clientLog');
 const { generateAssetHashes } = require('./utils/assetHasher');
 
 
@@ -314,6 +315,7 @@ app.use('/api/tracks', trackRoutes);
 app.use('/api', nowPlayingRoutes);
 app.use('/api/keys', apiKeyRoutes);
 app.use('/api', featureFlagRoutes);
+app.use('/api', clientLogRoutes);
 
 
 

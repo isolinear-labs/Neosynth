@@ -1,4 +1,5 @@
 import debug from '../debugLogger/debugLogger.js';
+import clientLogger from '../clientLogger/clientLogger.js';
 
 export class AudioInterruptionManager {
     constructor() {
@@ -12,6 +13,7 @@ export class AudioInterruptionManager {
 
     init(appElements) {
         this.appElements = appElements;
+        clientLogger.init(appElements);
         this.setupInterruptionHandlers();
         this.setupAudioContextHandling();
         this.setupVisibilityHandling();
@@ -29,6 +31,7 @@ export class AudioInterruptionManager {
             // Handle audio context state changes
             audioContext.addEventListener('statechange', () => {
                 console.log('Audio context state changed:', audioContext.state);
+                clientLogger.logAudioContextChange(audioContext.state);
                 if (audioContext.state === 'suspended') {
                     this.handleAudioInterruption();
                 } else if (audioContext.state === 'running') {
@@ -60,6 +63,7 @@ export class AudioInterruptionManager {
                     this._pauseInterruptionTimer = setTimeout(() => {
                         if (this.appElements.currentPlayer?.paused && this.appElements.isPlaying && !this.isHandlingInterruption) {
                             debug.log('Audio paused unexpectedly - possible interruption');
+                            clientLogger.logAudioInterruption('unexpected_pause');
                             this.handleAudioInterruption();
                         }
                     }, 800);
@@ -105,6 +109,14 @@ export class AudioInterruptionManager {
             audioPlayer.addEventListener('playing', () => {
                 clearTimeout(this._stalledInterruptionTimer);
                 clearTimeout(this._waitingInterruptionTimer);
+            });
+
+            audioPlayer.addEventListener('error', () => {
+                if (audioPlayer.error && !this.appElements.isIntentionalStop) {
+                    // Snapshot src immediately — checkAndRefreshAudio() clears it during recovery
+                    const failedSrc = audioPlayer.src || this.currentTrackUrl || null;
+                    clientLogger.logPlaybackError(audioPlayer.error, failedSrc);
+                }
             });
         }
 
