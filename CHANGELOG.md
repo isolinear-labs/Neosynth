@@ -9,8 +9,10 @@
 ### Docs
 
 ### Dependencies
-- Bump `express-rate-limit` from 8.3.2 to 8.4.1 ([#64](https://github.com/isolinear-labs/Neosynth/pull/64))
+- Bump `express-rate-limit` from 8.3.2 to 8.5.0 ([#64](https://github.com/isolinear-labs/Neosynth/pull/64), [#68](https://github.com/isolinear-labs/Neosynth/pull/68))
 - Bump `eslint` from 10.2.1 to 10.3.0 ([#67](https://github.com/isolinear-labs/Neosynth/pull/67), [#66](https://github.com/isolinear-labs/Neosynth/pull/66))
+- Bump `joi` from 18.1.2 to 18.2.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
+- Bump `mongoose` from 9.5.0 to 9.6.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
 
 ## [v1.1.0] - 2026-04-20
 
