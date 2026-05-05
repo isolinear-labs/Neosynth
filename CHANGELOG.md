@@ -10,6 +10,7 @@
 
 ### Dependencies
 - Bump `express-rate-limit` from 8.3.2 to 8.4.1 ([#64](https://github.com/isolinear-labs/Neosynth/pull/64))
+- Bump `eslint` from 10.2.1 to 10.3.0 ([#67](https://github.com/isolinear-labs/Neosynth/pull/67))
 
 ## [v1.1.0] - 2026-04-20
 
