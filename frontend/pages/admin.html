@@ -1098,19 +1098,43 @@
     })();
 
     /* ─── Template redirect: clicking a template also opens Create tab ── */
+    function switchToTab(name) {
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        const btn = document.querySelector('[data-tab="' + name + '"]');
+        const panel = document.getElementById('panel-' + name);
+        if (btn) btn.classList.add('active');
+        if (panel) panel.classList.add('active');
+    }
+
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('template-btn')) {
             // Switch to Create tab after a short delay (let admin.js populate the form first)
-            setTimeout(() => {
-                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                const createBtn = document.querySelector('[data-tab="create"]');
-                const createPanel = document.getElementById('panel-create');
-                if (createBtn) createBtn.classList.add('active');
-                if (createPanel) createPanel.classList.add('active');
-            }, 80);
+            setTimeout(() => switchToTab('create'), 80);
         }
     });
+
+    /* ─── Return to Flags tab after a successful create ──────────── */
+    (function () {
+        const form = document.getElementById('createFlagForm');
+        if (!form) return;
+
+        let pending = false;
+        form.addEventListener('submit', () => { pending = true; });
+
+        // Watch the flags grid for new cards — admin.js calls loadFeatureFlags()
+        // on success which re-renders the grid. That's our success signal.
+        const flagsContainer = document.getElementById('featureFlagsContainer');
+        if (flagsContainer) {
+            const mo = new MutationObserver(() => {
+                if (pending && flagsContainer.querySelector('.feature-flags-grid')) {
+                    pending = false;
+                    setTimeout(() => switchToTab('flags'), 120);
+                }
+            });
+            mo.observe(flagsContainer, { childList: true, subtree: true });
+        }
+    })();
 
     /* ─── Update flag count badge after load ─────────────────────── */
     const _origRenderFeatureFlags = Object.getOwnPropertyDescriptor;
@@ -1265,6 +1289,7 @@
         frame();
     })();
     </script>
+
     <script type="module" src="../scripts/admin.js" defer></script>
 </body>
 </html>
