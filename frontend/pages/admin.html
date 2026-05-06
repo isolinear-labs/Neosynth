@@ -3,700 +3,1268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEOSYNTH - Admin Control Panel</title>
-    <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon.png">
-    <meta name="msapplication-TileImage" content="../assets/favicon.png">
-    <meta name="msapplication-TileColor" content="#1a0d33">
+    <title>NEOSYNTH — Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../styles/main.css">
     <style>
-        /* Admin-specific styles */
+        /* ─── Hackers-movie palette ──────────────────────────────── */
+        :root {
+            --h-bg:        #1a3870;
+            --h-bg-2:      #2d4a8a;
+            --h-cyan:      #00f0ff;
+            --h-cyan-dim:  rgba(0,240,255,0.65);
+            --h-magenta:   #ff2d9b;
+            --h-purple:    #b44dff;
+            --h-blue-hi:   #6ddcff;
+            --h-red:       #ff3355;
+            --h-green:     #00ff88;
+            --h-text:      #e0f4ff;
+            --h-text-dim:  rgba(200,235,255,0.6);
+            --h-glass:     rgba(20, 60, 130, 0.32);
+            --h-glass-hi:  rgba(30, 80, 160, 0.5);
+            --h-border:    rgba(0,240,255,0.35);
+            --h-border-hi: rgba(0,240,255,0.8);
+            --h-glow:      0 0 24px rgba(0,240,255,0.6);
+            --h-glow-sm:   0 0 12px rgba(0,240,255,0.45);
+            --h-glow-mg:   0 0 14px rgba(255,45,155,0.5);
+            --h-glow-pu:   0 0 12px rgba(180,77,255,0.5);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            background: var(--background-color);
+            background:
+                radial-gradient(ellipse at 50% 0%, #2d5aa0 0%, #1a3870 45%, #0d2150 100%);
+            background-attachment: fixed;
             font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        .admin-container {
+            color: var(--h-text);
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a0119 0%, #1d0b3a 50%, #2e1a5c 100%);
-            position: relative;
+            overflow-x: hidden;
+            perspective: 1200px;
         }
 
-        /* Cyberpunk grid background */
-        .admin-container::before {
-            content: '';
+        /* ─── 3D perspective grid floor ─────────────────────────── */
+        .grid-floor {
             position: fixed;
+            left: 50%;
+            bottom: 0;
+            width: 300vw;
+            height: 70vh;
+            transform: translateX(-50%) perspective(600px) rotateX(62deg);
+            transform-origin: 50% 100%;
+            background-image:
+                linear-gradient(rgba(0,240,255,0.45) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,240,255,0.45) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScroll 6s linear infinite;
+        }
+
+        .grid-ceiling {
+            position: fixed;
+            left: 50%;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(5, 217, 232, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 1;
+            width: 300vw;
+            height: 50vh;
+            transform: translateX(-50%) perspective(600px) rotateX(-62deg);
+            transform-origin: 50% 0%;
+            background-image:
+                linear-gradient(rgba(255,45,155,0.18) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,45,155,0.18) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridScroll {
+            from { background-position: 0 0; }
+            to   { background-position: 0 60px; }
+        }
+
+        /* horizon glow */
+        .horizon {
+            position: fixed;
+            left: 0; right: 0;
+            top: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--h-cyan), transparent);
+            box-shadow: 0 0 40px var(--h-cyan), 0 0 80px rgba(0,240,255,0.5);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        /* ─── 3D canvas bg ──────────────────────────────────────── */
+        #bgCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
             pointer-events: none;
         }
 
-        .admin-header {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--interactive-highlight);
-            padding: 20px;
+        /* ─── Ambient glow blobs ────────────────────────────────── */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(100px);
+        }
+        .bg-blob-1 {
+            width: 900px; height: 500px;
+            top: -100px; left: -200px;
+            background: radial-gradient(ellipse, rgba(0,180,255,0.3) 0%, transparent 65%);
+        }
+        .bg-blob-2 {
+            width: 600px; height: 600px;
+            bottom: -150px; right: -100px;
+            background: radial-gradient(ellipse, rgba(180,77,255,0.22) 0%, transparent 65%);
+        }
+        .bg-blob-3 {
+            width: 400px; height: 300px;
+            top: 30%; right: 20%;
+            background: radial-gradient(ellipse, rgba(100,200,255,0.15) 0%, transparent 70%);
+        }
+        .bg-blob-mg {
+            width: 350px; height: 350px;
+            top: 55%; left: 8%;
+            background: radial-gradient(ellipse, rgba(255,45,155,0.16) 0%, transparent 70%);
+        }
+
+        /* ─── Boot overlay ──────────────────────────────────────── */
+        #bootOverlay {
+            position: fixed;
+            inset: 0;
+            background: #060f1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        #bootOverlay.fade-out { opacity: 0; pointer-events: none; }
+
+        .boot-inner { width: min(580px, 90vw); }
+
+        .boot-prompt-line {
+            color: var(--h-cyan);
+            font-size: 1rem;
+            text-shadow: var(--h-glow);
+            margin-bottom: 22px;
+            min-height: 1.4em;
+        }
+
+        .boot-cursor {
+            display: inline-block;
+            width: 9px; height: 1em;
+            background: var(--h-cyan);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blinkCursor 0.75s step-end infinite;
+        }
+
+        @keyframes blinkCursor { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        .boot-loading-label {
+            color: var(--h-text-dim);
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .boot-bar {
+            width: 100%;
+            height: 2px;
+            background: rgba(0,229,255,0.1);
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .boot-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--h-purple), var(--h-cyan), var(--h-magenta));
+            transition: width 0.1s ease;
+            box-shadow: 0 0 14px var(--h-cyan);
+        }
+
+        .boot-lines { display: flex; flex-direction: column; gap: 8px; }
+
+        .boot-line {
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .boot-line.show { opacity: 1; transform: none; }
+        .boot-line .tag-ok    { color: var(--h-cyan); text-shadow: var(--h-glow-sm); }
+        .boot-line .tag-warn  { color: var(--h-magenta); }
+        .boot-line .tag-ready { color: #ffe066; font-weight: bold; text-shadow: 0 0 10px rgba(255,224,102,0.5); }
+        .boot-line .line-text { color: var(--h-text-dim); }
+
+        /* ─── Admin shell ───────────────────────────────────────── */
+        #adminShell {
             position: relative;
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(5, 217, 232, 0.3);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        #adminShell.visible { opacity: 1; }
+
+        /* ─── Header ────────────────────────────────────────────── */
+        .admin-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(8, 18, 40, 0.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--h-border);
+            box-shadow: 0 1px 0 rgba(0,229,255,0.1), 0 4px 32px rgba(0,0,0,0.35);
+            padding: 0 32px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .header-text { display: flex; flex-direction: column; gap: 2px; }
+
+        .header-prompt {
+            color: rgba(0,229,255,0.38);
+            font-size: 0.63rem;
+            letter-spacing: 1px;
+            line-height: 1;
         }
 
         .admin-title {
-            font-size: 2.5rem;
+            font-size: 1rem;
             font-weight: bold;
-            color: var(--interactive-highlight);
-            text-shadow: 0 0 20px var(--interactive-highlight);
+            color: var(--h-cyan);
+            text-shadow: var(--h-glow-sm);
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .header-status {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            color: rgba(0,229,255,0.45);
+            text-transform: uppercase;
         }
 
+        .status-dot-live {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--h-green);
+            box-shadow: 0 0 8px var(--h-green);
+            animation: pulse 2s infinite;
+        }
 
-        .admin-subtitle {
-            color: var(--primary-accent);
-            font-size: 1rem;
-            margin-top: 8px;
-            text-shadow: 0 0 10px var(--primary-accent);
+        .back-link {
+            flex-shrink: 0;
+            color: rgba(0,229,255,0.55);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--h-border);
+            padding: 7px 16px;
+            border-radius: 3px;
+            background: rgba(0,229,255,0.04);
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--h-cyan);
+            border-color: var(--h-cyan-dim);
+            background: rgba(0,229,255,0.1);
+            box-shadow: var(--h-glow-sm);
+        }
+
+        /* ─── Tab nav ───────────────────────────────────────────── */
+        .admin-tabs {
+            position: sticky;
+            top: 62px;
+            z-index: 40;
+            background: rgba(8,18,40,0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,229,255,0.12);
+            padding: 0 32px;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: rgba(0,229,255,0.32);
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            top: 1px;
         }
 
+        .tab-btn:hover { color: var(--h-cyan-dim); background: rgba(0,229,255,0.04); }
+
+        .tab-btn.active {
+            color: var(--h-cyan);
+            border-bottom-color: var(--h-cyan);
+            text-shadow: var(--h-glow-sm);
+        }
+
+        .tab-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,229,255,0.12);
+            color: var(--h-cyan);
+            font-size: 0.62rem;
+            min-width: 18px; height: 18px;
+            border-radius: 9px;
+            padding: 0 5px;
+            margin-left: 7px;
+            vertical-align: middle;
+        }
+
+        /* ─── Content ───────────────────────────────────────────── */
         .admin-content {
-            position: relative;
-            z-index: 10;
-            padding: 30px;
-            max-width: 1200px;
+            flex: 1;
+            padding: 28px 32px 56px;
+            max-width: 1180px;
+            width: 100%;
             margin: 0 auto;
         }
 
-        .control-section {
-            background: rgba(5, 5, 15, 0.85);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(1, 255, 195, 0.6);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 35px;
-            box-shadow: 0 12px 40px rgba(1, 255, 195, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .control-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--interactive-highlight), transparent);
-            opacity: 0.5;
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ─── Section header ────────────────────────────────────── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0,229,255,0.12);
         }
 
         .section-title {
-            font-size: 1.5rem;
-            color: var(--warning-accent);
-            text-shadow: 0 0 15px var(--warning-accent);
-            margin-bottom: 20px;
+            font-size: 0.68rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid var(--warning-accent);
-            padding-bottom: 10px;
+            color: var(--h-magenta);
+            text-shadow: var(--h-glow-mg);
         }
 
-        .feature-flags-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .flag-card {
-            background: rgba(10, 10, 25, 0.8);
-            border: 1px solid rgba(1, 255, 195, 0.3);
-            border-radius: 10px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .flag-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .flag-card:hover::before {
-            left: 100%;
-        }
-
-        .flag-card:hover {
-            border-color: var(--interactive-highlight);
-            box-shadow: 0 4px 20px rgba(5, 217, 232, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .flag-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--interactive-highlight);
-            margin-bottom: 8px;
-            text-transform: uppercase;
+        .section-meta {
+            font-size: 0.68rem;
+            color: var(--h-text-dim);
             letter-spacing: 1px;
         }
 
+        /* ─── Flag cards — 3D floating panels ───────────────────── */
+        .feature-flags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 16px;
+            perspective: 1200px;
+        }
+
+        .flag-card {
+            background: var(--h-glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--h-border);
+            border-radius: 4px;
+            padding: 20px 20px 16px;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0.1, 1);
+            position: relative;
+            text-align: left;
+            overflow: hidden;
+            transform: perspective(800px) rotateX(1deg);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.35),
+                0 1px 0 rgba(0,229,255,0.15) inset,
+                0 0 0 0 rgba(0,229,255,0);
+        }
+
+        /* top-left HUD corner */
+        .flag-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 22px; height: 22px;
+            border-top: 2px solid var(--h-cyan);
+            border-left: 2px solid var(--h-cyan);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        /* bottom-right HUD corner */
+        .flag-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 16px; height: 16px;
+            border-bottom: 1px solid var(--h-magenta);
+            border-right: 1px solid var(--h-magenta);
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .flag-card:hover {
+            border-color: var(--h-border-hi);
+            background: var(--h-glass-hi);
+            transform: perspective(800px) rotateX(0deg) translateY(-4px) translateZ(8px);
+            box-shadow:
+                0 16px 48px rgba(0,0,0,0.45),
+                0 1px 0 rgba(0,229,255,0.3) inset,
+                0 0 40px rgba(0,229,255,0.1);
+        }
+
+        .flag-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(0,229,255,0.6);
+            width: 28px; height: 28px;
+        }
+
+        .flag-card:hover::after { opacity: 0.7; }
+
+        /* Shimmer sweep */
+        .flag-card .shimmer {
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,229,255,0.05), transparent);
+            transition: left 0.6s ease;
+            pointer-events: none;
+        }
+
+        .flag-card:hover .shimmer { left: 140%; }
+
+        .flag-name {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--h-cyan);
+            text-shadow: var(--h-glow-sm);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            word-break: break-all;
+            line-height: 1.35;
+            margin-bottom: 8px;
+        }
+
         .flag-description {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.95rem;
-            margin-bottom: 18px;
-            line-height: 1.5;
+            font-size: 0.82rem;
+            color: var(--h-text-dim);
+            line-height: 1.6;
+            margin-bottom: 12px;
             font-weight: 400;
+        }
+
+        .flag-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.62rem;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 10px 3px 7px;
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+
+        .status-enabled {
+            color: var(--h-green);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+        }
+
+        .status-disabled {
+            color: rgba(0,229,255,0.3);
+            background: rgba(0,229,255,0.04);
+            border: 1px solid rgba(0,229,255,0.1);
+        }
+
+        .status-indicator {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-enabled .status-indicator {
+            background: var(--h-green);
+            box-shadow: 0 0 6px var(--h-green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-disabled .status-indicator {
+            background: rgba(0,229,255,0.2);
+            animation: none;
+        }
+
+        .rollout-info {
+            font-size: 0.67rem;
+            color: rgba(0,229,255,0.3);
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            padding: 0;
+            background: none;
+            border: none;
         }
 
         .flag-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .flag-status {
-            display: flex;
-            align-items: center;
             gap: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,229,255,0.1);
         }
 
-        .status-enabled {
-            color: var(--warning-accent);
-            text-shadow: 0 0 8px var(--warning-accent);
-        }
-
-        .status-disabled {
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .status-enabled .status-indicator {
-            background: var(--warning-accent);
-            box-shadow: 0 0 10px var(--warning-accent);
-        }
-
-        .status-disabled .status-indicator {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .rollout-info {
-            font-size: 0.9rem;
-            color: #b8e6ff;
-            margin-bottom: 12px;
-            background: rgba(184, 230, 255, 0.1);
-            padding: 8px 12px;
-            border-radius: 6px;
-            border-left: 3px solid #b8e6ff;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
+        /* ─── Buttons ───────────────────────────────────────────── */
         .admin-btn {
-            background: linear-gradient(45deg, var(--interactive-highlight), var(--primary-accent));
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
+            background: rgba(0,229,255,0.06);
+            border: 1px solid var(--h-border);
+            color: var(--h-cyan);
+            padding: 6px 14px;
+            border-radius: 3px;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Courier New', monospace;
+            font-size: 0.67rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
         }
 
         .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(5, 217, 232, 0.4);
+            background: rgba(0,229,255,0.14);
+            border-color: var(--h-cyan-dim);
+            box-shadow: var(--h-glow-sm);
         }
 
         .admin-btn.danger {
-            background: linear-gradient(45deg, #ff0080, #ff4040);
+            border-color: rgba(255,51,85,0.3);
+            color: var(--h-red);
+            background: rgba(255,51,85,0.05);
+        }
+
+        .admin-btn.danger:hover {
+            background: rgba(255,51,85,0.12);
+            border-color: var(--h-red);
+            box-shadow: 0 0 12px rgba(255,51,85,0.4);
         }
 
         .admin-btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-color: rgba(0,229,255,0.12);
+            color: rgba(0,229,255,0.38);
+            background: transparent;
         }
 
-        .create-flag-form {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--primary-accent);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 20px;
+        .admin-btn.secondary:hover {
+            color: var(--h-cyan-dim);
+            border-color: var(--h-border);
+            background: rgba(0,229,255,0.06);
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .admin-btn.primary {
+            border-color: rgba(180,77,255,0.4);
+            color: var(--h-purple);
+            background: rgba(180,77,255,0.06);
         }
 
-        .form-label {
-            display: block;
-            color: var(--interactive-highlight);
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+        .admin-btn.primary:hover {
+            background: rgba(180,77,255,0.12);
+            box-shadow: var(--h-glow-pu);
         }
 
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(10, 10, 25, 0.7);
-            border: 2px solid rgba(1, 255, 195, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        .admin-btn.submit {
+            border-color: var(--h-cyan-dim);
+            color: var(--h-cyan);
+            background: rgba(0,229,255,0.08);
+            padding: 11px 32px;
+            font-size: 0.75rem;
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--interactive-highlight);
-            box-shadow: 0 0 15px rgba(1, 255, 195, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
-            background: rgba(10, 10, 25, 0.9);
+        .admin-btn.submit:hover {
+            background: rgba(0,229,255,0.18);
+            box-shadow: var(--h-glow);
         }
 
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .form-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-        }
-
-        .back-link {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--interactive-highlight);
-            color: var(--interactive-highlight);
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: var(--interactive-highlight);
-            color: black;
-            box-shadow: 0 0 20px var(--interactive-highlight);
-        }
-
-        .loading {
-            text-align: center;
-            color: var(--interactive-highlight);
-            font-size: 1.2rem;
-            padding: 40px;
-        }
-
-        .error {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff4040;
-            color: #ff4040;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .templates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .template-category {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .template-category:hover {
-            border-color: var(--primary-accent);
-            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
-        }
-
-        .template-title {
-            font-size: 1.1rem;
-            color: var(--primary-accent);
-            text-shadow: 0 0 10px var(--primary-accent);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--primary-accent);
-            padding-bottom: 8px;
-        }
-
-        .template-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-        }
-
-        .template-btn {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(5, 217, 232, 0.5);
-            color: var(--interactive-highlight);
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.7rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .template-btn:hover {
-            background: rgba(5, 217, 232, 0.1);
-            border-color: var(--interactive-highlight);
-            color: white;
-            box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .template-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .template-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Edit form styles */
+        /* ─── Edit form ─────────────────────────────────────────── */
         .edit-form {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--primary-accent);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
-            position: relative;
+            background: rgba(6,16,40,0.82);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(180,77,255,0.22);
+            border-top: 2px solid rgba(180,77,255,0.4);
+            border-radius: 4px;
+            padding: 18px;
+            margin-top: 12px;
             opacity: 0;
-            transform: translateY(-10px);
+            transform: perspective(600px) rotateX(-4deg) translateY(-8px);
             transition: all 0.3s ease;
         }
 
         .edit-form.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: perspective(600px) rotateX(0deg) translateY(0);
         }
 
         .edit-form-title {
-            color: var(--primary-accent);
-            text-shadow: 0 0 10px var(--primary-accent);
-            margin-bottom: 15px;
+            font-size: 0.67rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 1rem;
-            border-bottom: 1px solid var(--primary-accent);
+            color: var(--h-purple);
+            margin-bottom: 14px;
             padding-bottom: 8px;
+            border-bottom: 1px solid rgba(180,77,255,0.15);
+            text-shadow: var(--h-glow-pu);
         }
 
-        .edit-form-group {
-            margin-bottom: 15px;
-        }
+        .edit-form-group { margin-bottom: 12px; }
 
         .edit-form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
             align-items: end;
         }
 
         .edit-form-label {
             display: block;
-            color: var(--interactive-highlight);
-            font-weight: bold;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            font-size: 0.65rem;
             letter-spacing: 1px;
-            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: rgba(0,229,255,0.5);
+            margin-bottom: 5px;
         }
 
         .edit-form-input {
             width: 100%;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            color: white;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            padding: 8px 10px;
+            background: rgba(4,12,32,0.65);
+            border: 1px solid rgba(0,229,255,0.15);
+            border-radius: 3px;
+            color: var(--h-text);
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            transition: border-color 0.2s;
         }
 
         .edit-form-input:focus {
             outline: none;
-            border-color: var(--interactive-highlight);
-            box-shadow: 0 0 8px rgba(5, 217, 232, 0.3);
+            border-color: var(--h-cyan-dim);
+            box-shadow: 0 0 10px rgba(0,229,255,0.18);
         }
 
-        .edit-form-textarea {
-            min-height: 60px;
-            resize: vertical;
-        }
+        .edit-form-textarea { min-height: 56px; resize: vertical; }
 
         .edit-form-checkbox {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: white;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
+            color: var(--h-text-dim);
             cursor: pointer;
-        }
-
-        .edit-form-checkbox input[type="checkbox"] {
-            width: auto;
-            margin: 0;
         }
 
         .edit-form-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            gap: 8px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,229,255,0.08);
         }
 
-        /* Enhanced form help text styling */
-        .form-help-text {
-            color: #a8d8ff;
-            font-size: 0.9rem;
-            margin-top: 8px;
-            display: block;
-            font-weight: 400;
-            line-height: 1.4;
-            background: rgba(168, 216, 255, 0.08);
-            padding: 6px 10px;
+        /* ─── Templates ─────────────────────────────────────────── */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 16px;
+            perspective: 1200px;
+        }
+
+        .template-category {
+            background: var(--h-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(180,77,255,0.2);
+            border-top: 2px solid rgba(180,77,255,0.45);
             border-radius: 4px;
-            border-left: 2px solid rgba(168, 216, 255, 0.4);
+            padding: 20px;
+            transition: all 0.25s ease;
+            transform: perspective(800px) rotateX(1deg);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.3);
         }
 
-        /* Enhanced section titles - override existing */
-        .section-title {
-            font-size: 1.6rem !important;
-            color: var(--warning-accent) !important;
-            text-shadow: 0 0 20px rgba(255, 230, 0, 0.6) !important;
-            margin-bottom: 25px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 2px !important;
-            border-bottom: 2px solid rgba(255, 230, 0, 0.4) !important;
-            padding-bottom: 12px !important;
-            position: relative !important;
+        .template-category:hover {
+            border-color: rgba(180,77,255,0.4);
+            background: var(--h-glass-hi);
+            transform: perspective(800px) rotateX(0deg) translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 24px rgba(180,77,255,0.1);
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: var(--warning-accent);
-            box-shadow: 0 0 10px var(--warning-accent);
+        .template-title {
+            font-size: 0.68rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--h-purple);
+            text-shadow: var(--h-glow-pu);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(180,77,255,0.12);
         }
 
-        /* Enhanced admin buttons - override existing */
-        .admin-btn {
-            background: linear-gradient(45deg, rgba(1, 255, 195, 0.2), rgba(255, 230, 0, 0.2)) !important;
-            border: 2px solid var(--interactive-highlight) !important;
-            color: var(--interactive-highlight) !important;
-            padding: 12px 20px !important;
-            border-radius: 6px !important;
-            cursor: pointer !important;
-            font-family: inherit !important;
-            font-weight: bold !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            font-size: 0.85rem !important;
-            transition: all 0.3s ease !important;
-            position: relative !important;
-            overflow: hidden !important;
+        .template-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .template-btn {
+            background: rgba(0,229,255,0.05);
+            border: 1px solid rgba(0,229,255,0.2);
+            color: var(--h-cyan-dim);
+            padding: 7px 13px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.67rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
         }
 
-        .admin-btn:hover {
-            background: linear-gradient(45deg, rgba(1, 255, 195, 0.3), rgba(255, 230, 0, 0.3)) !important;
-            color: white !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 6px 20px rgba(1, 255, 195, 0.4) !important;
+        .template-btn:hover {
+            background: rgba(0,229,255,0.12);
+            border-color: var(--h-cyan-dim);
+            color: var(--h-text);
+            box-shadow: var(--h-glow-sm);
         }
 
+        /* ─── Create form ───────────────────────────────────────── */
+        .create-form-wrap { max-width: 620px; }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 0.68rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(0,229,255,0.55);
+            margin-bottom: 7px;
         }
 
-        @media (max-width: 768px) {
-            .admin-content {
-                padding: 20px;
-            }
-            
-            .feature-flags-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .admin-title {
-                font-size: 2rem;
-            }
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(6,16,42,0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0,229,255,0.18);
+            border-radius: 4px;
+            color: var(--h-text);
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--h-cyan-dim);
+            box-shadow: 0 0 16px rgba(0,229,255,0.16);
+            background: rgba(8,22,55,0.85);
+        }
+
+        .form-input option { background: #0b1f3a; }
+
+        .form-textarea { min-height: 80px; resize: vertical; }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--h-text);
+            font-size: 0.86rem;
+            cursor: pointer;
+        }
+
+        .form-checkbox input[type="checkbox"] { width: auto; accent-color: var(--h-cyan); }
+
+        .form-help-text {
+            display: block;
+            font-size: 0.72rem;
+            color: rgba(0,229,255,0.3);
+            margin-top: 7px;
+            line-height: 1.4;
+        }
+
+        .form-submit-row { padding-top: 8px; }
+
+        /* ─── States ────────────────────────────────────────────── */
+        .loading {
+            text-align: center;
+            color: rgba(0,229,255,0.4);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            padding: 48px 0;
+        }
+
+        .error {
+            background: rgba(255,51,85,0.06);
+            border: 1px solid rgba(255,51,85,0.25);
+            color: var(--h-red);
+            padding: 14px 18px;
+            border-radius: 4px;
+            font-size: 0.84rem;
+            margin-bottom: 16px;
+        }
+
+        /* ─── Animations ────────────────────────────────────────── */
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-110%); opacity: 0; }
+            to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(0);    opacity: 1; }
+            to   { transform: translateX(-50%) translateY(-110%); opacity: 0; }
+        }
+
+        /* ─── Responsive ────────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .admin-content { padding: 20px 16px 40px; }
+            .feature-flags-grid, .templates-grid { grid-template-columns: 1fr; }
+            .admin-title { font-size: 0.85rem; }
+            .tab-btn { padding: 12px 14px; font-size: 0.68rem; }
+            .edit-form-row { grid-template-columns: 1fr; }
+            .flag-card, .template-category { transform: none; }
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <a href="/" class="back-link">← Back to App</a>
-        
-        <header class="admin-header">
-            <h1 class="admin-title">Admin Control Panel</h1>
-        </header>
 
-        <main class="admin-content">
-            <section class="control-section">
-                <h2 class="section-title">Feature Flags</h2>
-                <div id="featureFlagsContainer" class="loading">
-                    Loading feature flags...
-                </div>
-            </section>
+    <canvas id="bgCanvas"></canvas>
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+    <div class="bg-blob bg-blob-mg"></div>
 
-            <section class="control-section">
-                <h2 class="section-title">Quick Create Templates</h2>
-                <div id="templatesContainer" class="templates-grid">
-                    <div class="loading-placeholder">Loading templates...</div>
-                </div>
-            </section>
-
-            <section class="control-section">
-                <h2 class="section-title">Create New Feature Flag</h2>
-                <form id="createFlagForm" class="create-flag-form">
-                    <div class="form-group">
-                        <label for="flagName" class="form-label">Flag Name</label>
-                        <input type="text" id="flagName" class="form-input" placeholder="e.g., beta_feature_xyz" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="flagDescription" class="form-label">Description</label>
-                        <textarea id="flagDescription" class="form-input form-textarea" placeholder="Describe what this feature flag controls..." required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="flagCategory" class="form-label">Category</label>
-                        <select id="flagCategory" class="form-input">
-                            <option value="general">General</option>
-                            <option value="themes">Themes</option>
-                            <option value="audio">Audio</option>
-                            <option value="mobile">Mobile</option>
-                            <option value="admin">Admin</option>
-                            <option value="navigation">Navigation</option>
-                            <option value="ui">UI</option>
-                            <option value="developer">Developer</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox" id="flagEnabled">
-                            <span>Enable Feature Flag</span>
-                        </label>
-                        <small class="form-help-text">
-                            Master switch - feature is OFF for everyone if unchecked
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="rolloutPercentage" class="form-label">Rollout Percentage (0-100)</label>
-                        <input type="number" id="rolloutPercentage" class="form-input" min="0" max="100" value="0">
-                        <small class="form-help-text">
-                            0% = admin only, 100% = all users (auto-enables feature)
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox" id="adminOnly">
-                            <span>Admin only access</span>
-                        </label>
-                        <small class="form-help-text">
-                            Admin-only features automatically set rollout to 0% and disable percentage-based rollout
-                        </small>
-                    </div>
-                    
-                    <button type="submit" class="admin-btn">Create Feature Flag</button>
-                </form>
-            </section>
-        </main>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!--  BOOT OVERLAY                                             -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div id="bootOverlay">
+        <div class="boot-inner">
+            <div class="boot-prompt-line" id="bootPrompt"></div>
+            <div class="boot-loading-label">Initialising admin socket</div>
+            <div class="boot-bar">
+                <div class="boot-bar-fill" id="bootBarFill"></div>
+            </div>
+            <div class="boot-lines" id="bootLines">
+                <div class="boot-line" id="bl0"><span class="tag-ok">[  OK  ]</span> <span class="line-text">Establishing encrypted channel</span></div>
+                <div class="boot-line" id="bl1"><span class="tag-ok">[  OK  ]</span> <span class="line-text">Authenticating root session</span></div>
+                <div class="boot-line" id="bl2"><span class="tag-ok">[  OK  ]</span> <span class="line-text">Mounting feature flag registry</span></div>
+                <div class="boot-line" id="bl3"><span class="tag-warn">[ WARN ]</span> <span class="line-text">Elevated privileges active — all actions are logged</span></div>
+                <div class="boot-line" id="bl4"><span class="tag-ready">[ OPEN ]</span> <span class="line-text">Socket open · Welcome, root</span></div>
+            </div>
+        </div>
     </div>
 
-    <script type="module" src="../scripts/admin.js"></script>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!--  ADMIN SHELL                                              -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div id="adminShell">
+
+        <header class="admin-header">
+            <div class="header-left">
+                <div class="header-text">
+                    <span class="header-prompt">root@neosynth:~# ./admin.sh</span>
+                    <h1 class="admin-title">Admin Control Panel</h1>
+                </div>
+                <div class="header-status">
+                    <span class="status-dot-live"></span>
+                    <span>Socket Open</span>
+                </div>
+            </div>
+            <a href="/" class="back-link">← Exit</a>
+        </header>
+
+        <nav class="admin-tabs">
+            <button class="tab-btn active" data-tab="flags">// Flags <span class="tab-badge" id="flagCount" style="display:none"></span></button>
+            <button class="tab-btn" data-tab="templates">// Templates</button>
+            <button class="tab-btn" data-tab="create">// Create</button>
+        </nav>
+
+        <main class="admin-content">
+
+            <!-- ── FLAGS ───────────────────────────────────────── -->
+            <div class="tab-panel active" id="panel-flags">
+                <div class="section-header">
+                    <span class="section-title">// Feature Flags</span>
+                </div>
+                <div id="featureFlagsContainer" class="loading">
+                    Loading feature flags<span id="loadingDots"></span>
+                </div>
+            </div>
+
+            <!-- ── TEMPLATES ───────────────────────────────────── -->
+            <div class="tab-panel" id="panel-templates">
+                <div class="section-header">
+                    <span class="section-title">// Quick-Create Templates</span>
+                    <span class="section-meta">Select a template to pre-fill the create form</span>
+                </div>
+                <div id="templatesContainer" class="templates-grid">
+                    <div class="loading">Loading templates<span></span></div>
+                </div>
+            </div>
+
+            <!-- ── CREATE ──────────────────────────────────────── -->
+            <div class="tab-panel" id="panel-create">
+                <div class="section-header">
+                    <span class="section-title">// Create Feature Flag</span>
+                </div>
+                <div class="create-form-wrap">
+                    <form id="createFlagForm">
+
+                        <div class="form-group">
+                            <label for="flagName" class="form-label">Flag Name</label>
+                            <input type="text" id="flagName" class="form-input" placeholder="e.g. beta_feature_xyz" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="flagDescription" class="form-label">Description</label>
+                            <textarea id="flagDescription" class="form-input form-textarea" placeholder="Describe what this flag controls…" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="flagCategory" class="form-label">Category</label>
+                            <select id="flagCategory" class="form-input">
+                                <option value="general">General</option>
+                                <option value="themes">Themes</option>
+                                <option value="audio">Audio</option>
+                                <option value="mobile">Mobile</option>
+                                <option value="admin">Admin</option>
+                                <option value="navigation">Navigation</option>
+                                <option value="ui">UI</option>
+                                <option value="developer">Developer</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="flagEnabled">
+                                <span>Enable Feature Flag</span>
+                            </label>
+                            <small class="form-help-text">Master switch — feature is OFF for everyone if unchecked</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rolloutPercentage" class="form-label">Rollout Percentage (0–100)</label>
+                            <input type="number" id="rolloutPercentage" class="form-input" min="0" max="100" value="0">
+                            <small class="form-help-text">0% = admin only · 100% = all users (auto-enables flag)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="adminOnly">
+                                <span>Admin Only Access</span>
+                            </label>
+                            <small class="form-help-text">Locks rollout to 0% and restricts to admin accounts</small>
+                        </div>
+
+                        <div class="form-submit-row">
+                            <button type="submit" class="admin-btn submit">Create Feature Flag</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div><!-- /adminShell -->
+
+
+    <script>
+    /* ─── Boot sequence ──────────────────────────────────────────── */
+    (function () {
+        const overlay   = document.getElementById('bootOverlay');
+        const shell     = document.getElementById('adminShell');
+        const promptEl  = document.getElementById('bootPrompt');
+        const barFill   = document.getElementById('bootBarFill');
+        const bootLines = [0,1,2,3,4].map(i => document.getElementById('bl' + i));
+
+        const PROMPT_TEXT = 'root@neosynth:~# ./admin.sh';
+        let charIdx = 0;
+
+        // Type the prompt
+        function typePrompt() {
+            if (charIdx < PROMPT_TEXT.length) {
+                promptEl.textContent = PROMPT_TEXT.slice(0, ++charIdx);
+                setTimeout(typePrompt, 38 + Math.random() * 18);
+            } else {
+                // Add blinking cursor
+                const cur = document.createElement('span');
+                cur.className = 'boot-cursor';
+                promptEl.appendChild(cur);
+                // Start the bar + lines
+                setTimeout(startBoot, 250);
+            }
+        }
+
+        function startBoot() {
+            // Animate progress bar
+            let pct = 0;
+            const interval = setInterval(() => {
+                pct = Math.min(pct + (1 + Math.random() * 3), 100);
+                barFill.style.width = pct + '%';
+                if (pct >= 100) clearInterval(interval);
+            }, 40);
+
+            // Reveal each boot line with a stagger
+            const delays = [200, 600, 950, 1250, 1600];
+            bootLines.forEach((el, i) => {
+                setTimeout(() => { if (el) el.classList.add('show'); }, delays[i]);
+            });
+
+            // Fade out overlay and reveal shell
+            setTimeout(() => {
+                overlay.classList.add('fade-out');
+                shell.classList.add('visible');
+                setTimeout(() => { overlay.style.display = 'none'; }, 650);
+            }, 2300);
+        }
+
+        // Small loading dots on the "Loading feature flags..." text
+        const dotsEl = document.getElementById('loadingDots');
+        if (dotsEl) {
+            let d = 0;
+            setInterval(() => {
+                dotsEl.textContent = '.'.repeat((d++ % 3) + 1);
+            }, 400);
+        }
+
+
+        // Start typing
+        setTimeout(typePrompt, 100);
+    })();
+
+    /* ─── Tab navigation ─────────────────────────────────────────── */
+    (function () {
+        const tabs   = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.tab-panel');
+
+        tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const panel = document.getElementById('panel-' + btn.dataset.tab);
+                if (panel) panel.classList.add('active');
+            });
+        });
+    })();
+
+    /* ─── Template redirect: clicking a template also opens Create tab ── */
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('template-btn')) {
+            // Switch to Create tab after a short delay (let admin.js populate the form first)
+            setTimeout(() => {
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                const createBtn = document.querySelector('[data-tab="create"]');
+                const createPanel = document.getElementById('panel-create');
+                if (createBtn) createBtn.classList.add('active');
+                if (createPanel) createPanel.classList.add('active');
+            }, 80);
+        }
+    });
+
+    /* ─── Update flag count badge after load ─────────────────────── */
+    const _origRenderFeatureFlags = Object.getOwnPropertyDescriptor;
+    document.addEventListener('adminFlagsLoaded', (e) => {
+        const badge = document.getElementById('flagCount');
+        if (badge && e.detail && e.detail.count !== undefined) {
+            badge.textContent = e.detail.count;
+        }
+    });
+
+    // Observe featureFlagsContainer for grid insertion to update badge
+    const observer = new MutationObserver(() => {
+        const grid = document.querySelector('.feature-flags-grid');
+        const badge = document.getElementById('flagCount');
+        if (grid && badge) {
+            const n = grid.querySelectorAll('.flag-card').length;
+            if (n > 0) {
+                badge.textContent = n;
+                badge.style.display = '';
+            }
+        }
+    });
+    observer.observe(document.getElementById('featureFlagsContainer'), { childList: true, subtree: true });
+    </script>
+
+    <!-- Hackers-style 3D perspective grid + code rain -->
+    <script>
+    (function () {
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let W, H, t = 0;
+
+        // Code column state
+        const CODE_CHARS = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ[]{}()<>/\\|=+*&%#@!?';
+        const cols = [];
+
+        function resize() {
+            W = canvas.width  = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+            initCols();
+        }
+
+        function initCols() {
+            cols.length = 0;
+            const count = Math.floor(W / 55);
+            for (let i = 0; i < count; i++) {
+                cols.push({
+                    x: (i / count) * W + 27,
+                    y: Math.random() * H,
+                    speed: 0.4 + Math.random() * 0.8,
+                    chars: Array.from({length: 8 + Math.floor(Math.random()*8)}, () =>
+                        CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]),
+                    opacity: 0.08 + Math.random() * 0.14,
+                    size: 9 + Math.random() * 5
+                });
+            }
+        }
+
+        function drawGrid() {
+            const vx = W / 2;
+            const vy = H * 0.52;   // horizon slightly below centre
+
+            // How many grid lines
+            const hLines = 14;   // horizontal (depth)
+            const vLines = 22;   // vertical columns
+
+            // ── Horizontal lines (depth bands) ──
+            for (let i = 0; i <= hLines; i++) {
+                const frac = Math.pow(i / hLines, 1.8);   // non-linear spacing → perspective
+                const y = vy + (H - vy) * frac;
+                const alpha = 0.05 + frac * 0.22;
+
+                // spread: how wide the line is at this depth
+                const spread = frac;
+                const x0 = vx - (W * 0.68) * spread;
+                const x1 = vx + (W * 0.68) * spread;
+
+                ctx.beginPath();
+                ctx.moveTo(x0, y);
+                ctx.lineTo(x1, y);
+                ctx.strokeStyle = `rgba(0,200,255,${alpha})`;
+                ctx.lineWidth = i === 0 ? 0.4 : frac * 1.2;
+                ctx.stroke();
+            }
+
+            // ── Vertical (converging) lines ──
+            for (let i = 0; i <= vLines; i++) {
+                const frac = i / vLines;
+                // bottom x spread
+                const bx = W * 0.08 + frac * W * 0.84;
+                // all converge to vx
+                const alpha = 0.06 + Math.abs(frac - 0.5) * 0.18;
+
+                ctx.beginPath();
+                ctx.moveTo(vx, vy);
+                ctx.lineTo(bx, H);
+                ctx.strokeStyle = `rgba(0,180,255,${alpha})`;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+            }
+
+            // ── Horizon glow ──
+            const hGrad = ctx.createLinearGradient(0, vy - 40, 0, vy + 40);
+            hGrad.addColorStop(0, 'transparent');
+            hGrad.addColorStop(0.5, `rgba(0,200,255,0.07)`);
+            hGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = hGrad;
+            ctx.fillRect(0, vy - 40, W, 80);
+        }
+
+        function drawCodeCols() {
+            ctx.font = `${11}px 'Courier New', monospace`;
+            cols.forEach(col => {
+                col.chars.forEach((ch, i) => {
+                    const alpha = col.opacity * (1 - i / col.chars.length) * 1.4;
+                    const isBright = i === 0;
+                    ctx.fillStyle = isBright
+                        ? `rgba(0,229,255,${Math.min(alpha * 2, 0.7)})`
+                        : `rgba(100,200,255,${alpha})`;
+                    ctx.shadowColor = isBright ? 'rgba(0,229,255,0.8)' : 'transparent';
+                    ctx.shadowBlur = isBright ? 6 : 0;
+                    ctx.fillText(ch, col.x, col.y - i * 14);
+                });
+                ctx.shadowBlur = 0;
+
+                // Scroll
+                col.y += col.speed;
+                if (col.y - col.chars.length * 14 > H) {
+                    col.y = -20;
+                    col.chars = col.chars.map(() =>
+                        CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
+                }
+
+                // Occasionally mutate a char
+                if (Math.random() < 0.015) {
+                    const idx = Math.floor(Math.random() * col.chars.length);
+                    col.chars[idx] = CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
+                }
+            });
+        }
+
+        function frame() {
+            ctx.clearRect(0, 0, W, H);
+            drawGrid();
+            drawCodeCols();
+            t++;
+            requestAnimationFrame(frame);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        frame();
+    })();
+    </script>
+    <script type="module" src="../scripts/admin.js" defer></script>
 </body>
 </html>
