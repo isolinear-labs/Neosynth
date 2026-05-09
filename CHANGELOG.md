@@ -14,6 +14,7 @@
 - Bump `joi` from 18.1.2 to 18.2.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
 - Bump `mongoose` from 9.5.0 to 9.6.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
 - Bump `flatted` from 3.3.3 to 3.4.2 ([#71](https://github.com/isolinear-labs/Neosynth/pull/71))
+- Bump `postcss` from 8.5.6 to 8.5.14 ([#72](https://github.com/isolinear-labs/Neosynth/pull/72))
 
 ## [v1.1.0] - 2026-04-20
 
