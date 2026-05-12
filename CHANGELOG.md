@@ -13,7 +13,7 @@
 - Bump `ip-address` from 10.1.0 to 10.2.0 ([#73](https://github.com/isolinear-labs/Neosynth/pull/73))
 - Bump `eslint` from 10.2.1 to 10.3.0 ([#67](https://github.com/isolinear-labs/Neosynth/pull/67), [#66](https://github.com/isolinear-labs/Neosynth/pull/66))
 - Bump `joi` from 18.1.2 to 18.2.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
-- Bump `mongoose` from 9.5.0 to 9.6.1 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68))
+- Bump `mongoose` from 9.5.0 to 9.6.2 ([#68](https://github.com/isolinear-labs/Neosynth/pull/68), [#75](https://github.com/isolinear-labs/Neosynth/pull/75))
 - Bump `flatted` from 3.3.3 to 3.4.2 ([#71](https://github.com/isolinear-labs/Neosynth/pull/71))
 - Bump `postcss` from 8.5.6 to 8.5.14 ([#72](https://github.com/isolinear-labs/Neosynth/pull/72))
 
