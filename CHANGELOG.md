@@ -3,13 +3,19 @@
 ## [Unreleased]
 
 ### Enhancements
-- feat(frontend/mobile): Added `client_error_logging` feature flag and client logger module — captures audio interruption and page lifecycle events and forwards them to the backend logs ([#81](https://github.com/isolinear-labs/Neosynth/pull/81))
-
--feat(admin): Revampted the CSS for the Admin Page - brining the page closer to the theming of the rest of the app ([#82](https://github.com/isolinear-labs/Neosynth/pull/82))
 
 ### Bug Fixes
 
 ### Docs
+
+### Dependencies
+
+## [v1.2.0] - 2026-05-24
+
+### Enhancements
+- feat(frontend/mobile): Added `client_error_logging` feature flag and client logger module — captures audio interruption and page lifecycle events and forwards them to the backend logs ([#81](https://github.com/isolinear-labs/Neosynth/pull/81))
+
+ - feat(admin): Revampted the CSS for the Admin Page - brining the page closer to the theming of the rest of the app ([#82](https://github.com/isolinear-labs/Neosynth/pull/82))
 
 ### Dependencies
 - Bump `express-rate-limit` from 8.3.2 to 8.5.2 ([#64](https://github.com/isolinear-labs/Neosynth/pull/64), [#68](https://github.com/isolinear-labs/Neosynth/pull/68), [#73](https://github.com/isolinear-labs/Neosynth/pull/73), [#78](https://github.com/isolinear-labs/Neosynth/pull/78))
