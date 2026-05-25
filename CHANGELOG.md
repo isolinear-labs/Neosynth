@@ -18,6 +18,7 @@
 - Bump `postcss` from 8.5.6 to 8.5.14 ([#72](https://github.com/isolinear-labs/Neosynth/pull/72))
 - Bump `jest` from 30.3.0 to 30.4.2 ([#74](https://github.com/isolinear-labs/Neosynth/pull/74))
 - Bump `sanitize-html` from 2.17.3 to 2.17.4 ([#78](https://github.com/isolinear-labs/Neosynth/pull/78))
+- Bump `qs` from 6.15.0 to 6.15.2 ([#79](https://github.com/isolinear-labs/Neosynth/pull/79))
 
 ## [v1.1.0] - 2026-04-20
 
