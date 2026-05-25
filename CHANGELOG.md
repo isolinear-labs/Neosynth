@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Enhancements
+- feat(frontend/mobile): Added `client_error_logging` feature flag and client logger module — captures audio interruption and page lifecycle events and forwards them to the backend logs ([#81](https://github.com/isolinear-labs/Neosynth/pull/81))
 
 ### Bug Fixes
 
