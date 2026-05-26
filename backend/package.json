@@ -21,7 +21,7 @@
         "dotenv": "^17.4.2",
         "express": "^5.2.1",
         "express-rate-limit": "^8.5.2",
-        "helmet": "^8.1.0",
+        "helmet": "^8.2.0",
         "ip-range-check": "^0.2.0",
         "joi": "^18.2.1",
         "js-yaml": "^4.1.0",

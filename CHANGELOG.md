@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `helmet` from 8.1.0 to 8.2.0 ([#84](https://github.com/isolinear-labs/Neosynth/pull/84))
 
 ## [v1.2.0] - 2026-05-24
 
