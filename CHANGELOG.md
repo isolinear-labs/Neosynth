@@ -10,6 +10,7 @@
 
 ### Dependencies
 - Bump `helmet` from 8.1.0 to 8.2.0 ([#84](https://github.com/isolinear-labs/Neosynth/pull/84))
+- Bump `eslint` from 10.4.0 to 10.4.1, `js-yaml` from 4.1.1 to 4.2.0, `mongoose` from 9.6.2 to 9.6.3 ([#87](https://github.com/isolinear-labs/Neosynth/pull/87))
 
 ## [v1.2.0] - 2026-05-24
 
