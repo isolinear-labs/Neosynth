@@ -144,28 +144,20 @@ jobs:
   semgrep:
     name: Static Analysis with Semgrep
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: read
+    container:
+      image: semgrep/semgrep:1.164.0
+    if: github.actor != 'dependabot[bot]'
+
     steps:
     - name: Checkout code
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      
+
     - name: Run Semgrep
-      uses: semgrep/semgrep-action@713efdd345f3035192eaa63f56867b88e63e4e5d # v1
+      run: semgrep ci
       env:
         SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-      with:
-        config: >-
-          p/security-audit
-          p/secrets
-          p/owasp-top-ten
-          p/javascript
-    
-    - name: Upload Semgrep results
-      uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
-      if: always() && github.repository_owner == 'RC-Projects'
-      with:
-        sarif_file: semgrep.sarif
-      continue-on-error: true
 
   license-check:
     name: License Compliance Check
