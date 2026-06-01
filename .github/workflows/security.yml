@@ -308,7 +308,7 @@ jobs:
         persist-credentials: false
 
     - name: Run zizmor
-      uses: woodruffw/zizmor-action@v2
+      uses: zizmorcore/zizmor-action@v2
       with:
         min-severity: medium
       continue-on-error: true
