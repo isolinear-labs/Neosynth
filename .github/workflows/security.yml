@@ -295,40 +295,59 @@ jobs:
           kill $SERVER_PID || true
         fi
 
+  zizmor:
+    name: GitHub Actions Security (zizmor)
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Run zizmor
+      uses: woodruffw/zizmor-action@v2
+      with:
+        min-severity: medium
+      continue-on-error: true
+
   security-summary:
     name: Security Summary
     runs-on: ubuntu-latest
-    needs: [npm-audit, dependency-check, secret-scan, semgrep, license-check, security-headers-check]
+    needs: [npm-audit, dependency-check, secret-scan, semgrep, license-check, security-headers-check, zizmor]
     if: always()
-    
+
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v8
-    
+
     - name: Generate security summary
       run: |
         echo "# Security Scan Summary" > security-summary.md
         echo "" >> security-summary.md
         echo "## Scan Results" >> security-summary.md
         echo "" >> security-summary.md
-        
+
         # Check npm audit results
         if [ -f npm-audit-backend/audit-results.json ]; then
           CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit-backend/audit-results.json)
           HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit-backend/audit-results.json)
           echo "- **NPM Audit (Backend)**: $CRITICAL critical, $HIGH high vulnerabilities" >> security-summary.md
         fi
-        
+
         # Add status for other scans
         echo "- **Secret Scanning**: ${{ needs.secret-scan.result }}" >> security-summary.md
         echo "- **OWASP Dependency Check**: ${{ needs.dependency-check.result }}" >> security-summary.md
         echo "- **Semgrep Static Analysis**: ${{ needs.semgrep.result }}" >> security-summary.md
         echo "- **License Check**: ${{ needs.license-check.result }}" >> security-summary.md
         echo "- **Security Headers Check**: ${{ needs.security-headers-check.result }}" >> security-summary.md
-        
+        echo "- **GitHub Actions Security (zizmor)**: ${{ needs.zizmor.result }}" >> security-summary.md
+
         echo "" >> security-summary.md
         echo "Scan completed at: $(date)" >> security-summary.md
-    
+
     - name: Upload security summary
       uses: actions/upload-artifact@v7
       with:
