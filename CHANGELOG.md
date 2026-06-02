@@ -4,6 +4,7 @@
 
 ### Enhancements
 - (backend) Add MongoDB connection retry with exponential backoff on startup — prevents the app from hanging permanently when the database is temporarily unavailable ([#89](https://github.com/isolinear-labs/Neosynth/pull/89))
+- (backend/deployment) Add `/ready` readiness probe endpoint; update k8s and Docker Compose to hold traffic until DB is connected and migrations complete
 
 ### Bug Fixes
 

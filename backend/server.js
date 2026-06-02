@@ -84,8 +84,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Database readiness middleware - blocks all requests until migrations complete
 app.use((req, res, next) => {
-    // Allow health check endpoint even when database is not ready
-    if (req.path === '/health') {
+    // Allow probe endpoints even when database is not ready
+    if (req.path === '/health' || req.path === '/ready') {
         return next();
     }
 
@@ -233,9 +233,9 @@ if (fs.existsSync(indexPath)) {
 }
 
 
-// Health check endpoint for liveness probe (always responds, even during migrations)
+// Liveness probe - always 200 while the process is alive (even during DB retry/migrations)
 app.get('/health', (req, res) => {
-    const healthStatus = {
+    res.status(200).json({
         status: isDatabaseReady ? 'healthy' : 'degraded',
         database: {
             connected: mongoose.connection.readyState === 1,
@@ -244,11 +244,21 @@ app.get('/health', (req, res) => {
         },
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
-    };
+    });
+});
 
-    // Return 200 for liveness (server is running)
-    // Use status field to indicate readiness
-    res.status(200).json(healthStatus);
+// Readiness probe - 503 until DB is connected and migrations complete
+app.get('/ready', (req, res) => {
+    if (!isDatabaseReady) {
+        return res.status(503).json({
+            status: 'not ready',
+            database: {
+                connected: mongoose.connection.readyState === 1,
+                ready: false
+            }
+        });
+    }
+    res.status(200).json({ status: 'ready' });
 });
 
 
