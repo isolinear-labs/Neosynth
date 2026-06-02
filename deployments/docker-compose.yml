@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   neosynth:
-  image: ghcr.io/isolinear-labs/Neosynth:latest
+    image: ghcr.io/isolinear-labs/neosynth:latest
     ports:
       - "5000:5000"
     environment:
@@ -12,7 +12,8 @@ services:
       - COOKIE_SECRET=your_super_secret_cookie_secret_here
       - TOTP_ENCRYPTION_KEY=your_super_secret_totp_encryption_key_here
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - neosynth-network
 
@@ -22,6 +23,12 @@ services:
       - mongodb_data:/data/db
     networks:
       - neosynth-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 volumes:
   mongodb_data:

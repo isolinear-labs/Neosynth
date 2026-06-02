@@ -84,8 +84,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Database readiness middleware - blocks all requests until migrations complete
 app.use((req, res, next) => {
-    // Allow health check endpoint even when database is not ready
-    if (req.path === '/health') {
+    // Allow probe endpoints even when database is not ready
+    if (req.path === '/health' || req.path === '/ready') {
         return next();
     }
 
@@ -101,71 +101,90 @@ app.use((req, res, next) => {
     next();
 });
 
-// Connect to MongoDB and initialize setup status
+// Connect to MongoDB with retry and initialize setup status
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGODB_URI)
-    .then(async () => {
-        console.log('MongoDB connected');
 
-        // Run database migrations before marking database as ready
-        const bypassMigrations = process.env.BYPASS_MIGRATIONS === 'true';
+async function connectWithRetry() {
+    const maxRetries = parseInt(process.env.DB_MAX_RETRIES || '10');
+    const baseDelayMs = parseInt(process.env.DB_RETRY_DELAY_MS || '2000');
 
-        if (bypassMigrations) {
-            console.log('[WARN] ╔════════════════════════════════════════════════════════════════╗');
-            console.log('[WARN] ║         BYPASSING MIGRATIONS - UNSAFE MODE ENABLED             ║');
-            console.log('[WARN] ╚════════════════════════════════════════════════════════════════╝');
-            console.log('[WARN] BYPASS_MIGRATIONS=true detected');
-            console.log('[WARN] Database marked ready WITHOUT running migrations');
-            console.log('[WARN] This should only be used for emergency recovery');
-            isDatabaseReady = true;
-        } else {
-            try {
-                const { runMigrations } = require('./migrations/migrationRunner');
-                const migrationResult = await runMigrations();
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            console.log(`[INFO] MongoDB connection attempt ${attempt}/${maxRetries}...`);
+            await mongoose.connect(process.env.MONGODB_URI);
+            console.log('[OK] MongoDB connected');
+            return true;
+        } catch (err) {
+            if (attempt === maxRetries) {
+                console.error(`[ERROR] MongoDB connection failed after ${maxRetries} attempts: ${err.message}`);
+                return false;
+            }
+            const delay = Math.min(baseDelayMs * Math.pow(2, attempt - 1), 30000);
+            console.error(`[WARN] MongoDB connection attempt ${attempt}/${maxRetries} failed: ${err.message}`);
+            console.log(`[INFO] Retrying in ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
 
-                if (!migrationResult.success) {
-                    console.error('[CRITICAL] Migrations failed - database is NOT ready');
-                    console.error('[CRITICAL] Server will NOT accept requests until migrations succeed');
-                    console.error('[CRITICAL] Please fix migration errors and restart the server');
-                    console.error('[CRITICAL] Or set BYPASS_MIGRATIONS=true to force startup (unsafe)');
-                    // Keep isDatabaseReady = false, blocking all requests
-                    return;
-                }
+(async () => {
+    const connected = await connectWithRetry();
+    if (!connected) {
+        console.error('[CRITICAL] Could not connect to MongoDB - server will not accept requests');
+        return;
+    }
 
-                // Mark database as ready only after successful migrations
-                isDatabaseReady = true;
+    // Run database migrations before marking database as ready
+    const bypassMigrations = process.env.BYPASS_MIGRATIONS === 'true';
 
-                if (migrationResult.migrationsRun > 0) {
-                    console.log(`[OK] Database ready - ${migrationResult.migrationsRun} migration(s) completed successfully`);
-                } else {
-                    console.log('[OK] Database ready');
-                }
+    if (bypassMigrations) {
+        console.log('[WARN] ╔════════════════════════════════════════════════════════════════╗');
+        console.log('[WARN] ║         BYPASSING MIGRATIONS - UNSAFE MODE ENABLED             ║');
+        console.log('[WARN] ╚════════════════════════════════════════════════════════════════╝');
+        console.log('[WARN] BYPASS_MIGRATIONS=true detected');
+        console.log('[WARN] Database marked ready WITHOUT running migrations');
+        console.log('[WARN] This should only be used for emergency recovery');
+        isDatabaseReady = true;
+    } else {
+        try {
+            const { runMigrations } = require('./migrations/migrationRunner');
+            const migrationResult = await runMigrations();
 
-            } catch (error) {
-                console.error('[CRITICAL] Migration runner error:', error);
-                console.error('[CRITICAL] Database is NOT ready - server will reject requests');
-                console.error('[CRITICAL] Set BYPASS_MIGRATIONS=true to force startup (unsafe)');
-                // Keep isDatabaseReady = false, blocking all requests
+            if (!migrationResult.success) {
+                console.error('[CRITICAL] Migrations failed - database is NOT ready');
+                console.error('[CRITICAL] Server will NOT accept requests until migrations succeed');
+                console.error('[CRITICAL] Please fix migration errors and restart the server');
+                console.error('[CRITICAL] Or set BYPASS_MIGRATIONS=true to force startup (unsafe)');
                 return;
             }
-        }
 
-        // Load setup completion status at startup
-        try {
-            const SystemSettings = require('./models/SystemSettings');
-            const settings = await SystemSettings.getSystemSettings();
-            isSetupComplete = settings.firstTimeSetupCompleted;
-            console.log(`[INFO] Setup status loaded: ${isSetupComplete ? 'Completed' : 'Required'}`);
+            isDatabaseReady = true;
+
+            if (migrationResult.migrationsRun > 0) {
+                console.log(`[OK] Database ready - ${migrationResult.migrationsRun} migration(s) completed successfully`);
+            } else {
+                console.log('[OK] Database ready');
+            }
+
         } catch (error) {
-            console.error('[ERROR] Error loading setup status:', error);
-            // Default to incomplete on error to be safe
-            isSetupComplete = false;
+            console.error('[CRITICAL] Migration runner error:', error);
+            console.error('[CRITICAL] Database is NOT ready - server will reject requests');
+            console.error('[CRITICAL] Set BYPASS_MIGRATIONS=true to force startup (unsafe)');
+            return;
         }
-    })
-    .catch(err => {
-        console.error('MongoDB connection error:', err);
-        isDatabaseReady = false;
-    });
+    }
+
+    // Load setup completion status at startup
+    try {
+        const SystemSettings = require('./models/SystemSettings');
+        const settings = await SystemSettings.getSystemSettings();
+        isSetupComplete = settings.firstTimeSetupCompleted;
+        console.log(`[INFO] Setup status loaded: ${isSetupComplete ? 'Completed' : 'Required'}`);
+    } catch (error) {
+        console.error('[ERROR] Error loading setup status:', error);
+        isSetupComplete = false;
+    }
+})();
 
 // Determine frontend path based on current working directory
 let frontendPath;
@@ -214,9 +233,9 @@ if (fs.existsSync(indexPath)) {
 }
 
 
-// Health check endpoint for liveness probe (always responds, even during migrations)
+// Liveness probe - always 200 while the process is alive (even during DB retry/migrations)
 app.get('/health', (req, res) => {
-    const healthStatus = {
+    res.status(200).json({
         status: isDatabaseReady ? 'healthy' : 'degraded',
         database: {
             connected: mongoose.connection.readyState === 1,
@@ -225,11 +244,21 @@ app.get('/health', (req, res) => {
         },
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
-    };
+    });
+});
 
-    // Return 200 for liveness (server is running)
-    // Use status field to indicate readiness
-    res.status(200).json(healthStatus);
+// Readiness probe - 503 until DB is connected and migrations complete
+app.get('/ready', (req, res) => {
+    if (!isDatabaseReady) {
+        return res.status(503).json({
+            status: 'not ready',
+            database: {
+                connected: mongoose.connection.readyState === 1,
+                ready: false
+            }
+        });
+    }
+    res.status(200).json({ status: 'ready' });
 });
 
 

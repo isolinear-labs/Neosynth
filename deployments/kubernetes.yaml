@@ -116,10 +116,11 @@ spec:
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /health
+            path: /ready
             port: 5000
           initialDelaySeconds: 5
           periodSeconds: 5
+          failureThreshold: 60
         resources:
           limits:
             cpu: 500m
