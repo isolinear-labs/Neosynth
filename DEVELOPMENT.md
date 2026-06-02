@@ -272,6 +272,9 @@ TOTP_ENCRYPTION_KEY=secure_random_string
 PORT=5000                 # Server port (default: 5000)
 LOG_LEVEL=info            # Logging level
 CORS_ORIGINS=*            # CORS allowed origins
+DB_MAX_RETRIES=10         # MongoDB connection attempts before giving up (default: 10)
+DB_RETRY_DELAY_MS=2000    # Base retry delay in ms, doubles each attempt up to 30s (default: 2000)
+BYPASS_MIGRATIONS=false   # Skip migrations on startup — emergency use only (default: false)
 ```
 
 ## Security Considerations

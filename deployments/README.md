@@ -33,6 +33,9 @@ node -e "console.log('COOKIE_SECRET=' + require('crypto').randomBytes(32).toStri
 - `MONGODB_URI` - Connection string for MongoDB database
 - `COOKIE_SECRET` - Secret key for cookie encryption (generate using command above)
 - `TOTP_ENCRYPTION_KEY` - Secret key for TOTP encryption (generate using command above)
+- `DB_MAX_RETRIES` - Number of MongoDB connection attempts before giving up (default: `10`)
+- `DB_RETRY_DELAY_MS` - Base delay in ms between connection retries, doubles each attempt up to 30s (default: `2000`)
+- `BYPASS_MIGRATIONS` - Set to `true` to skip database migrations on startup (default: `false`, unsafe — emergency use only)
 
 ## Docker Compose
 

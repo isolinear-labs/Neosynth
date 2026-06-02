@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Enhancements
+- (backend) Add MongoDB connection retry with exponential backoff on startup — prevents the app from hanging permanently when the database is temporarily unavailable ([#89](https://github.com/isolinear-labs/Neosynth/pull/89))
 
 ### Bug Fixes
 
