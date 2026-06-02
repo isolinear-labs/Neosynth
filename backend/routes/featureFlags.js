@@ -545,7 +545,7 @@ router.put('/admin/feature-flags/:id', async (req, res) => {
         const flag = await FeatureFlag.findByIdAndUpdate(
             req.params.id,
             updateData,
-            { new: true }
+            { returnDocument: 'after' }
         );
         
         if (!flag) {
