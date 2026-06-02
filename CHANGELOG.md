@@ -5,6 +5,7 @@
 ### Enhancements
 
 ### Bug Fixes
+- (backend/featureFlags) Replace deprecated `new: true` with `returnDocument: 'after'` in `findByIdAndUpdate` for Mongoose 9.6.1 compatibility ([#85](https://github.com/isolinear-labs/Neosynth/pull/85))
 
 ### Docs
 
