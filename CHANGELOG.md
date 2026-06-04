@@ -15,6 +15,7 @@
 - Bump `helmet` from 8.1.0 to 8.2.0 ([#84](https://github.com/isolinear-labs/Neosynth/pull/84))
 - Bump `eslint` from 10.4.0 to 10.4.1 ([#87](https://github.com/isolinear-labs/Neosynth/pull/87), [#92](https://github.com/isolinear-labs/Neosynth/pull/92))
 - Bump `actions/checkout` from 6.0.2 to 6.0.3 ([#90](https://github.com/isolinear-labs/Neosynth/pull/90))
+- Bump `trufflesecurity/trufflehog` from 3.95.3 to 3.95.5 ([#91](https://github.com/isolinear-labs/Neosynth/pull/91))
 
 ## [v1.2.0] - 2026-05-24
 
