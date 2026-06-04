@@ -19,6 +19,9 @@
 ### Bug Fixes
 - (backend/featureFlags) Replace deprecated `new: true` with `returnDocument: 'after'` in `findByIdAndUpdate` for Mongoose 9.6.1 compatibility ([#88](https://github.com/isolinear-labs/Neosynth/pull/88))
 
+### Docs
+- (docs) Updated `DEVELOPMENT.md` and `deployments/README.md` with newly supported environemnt variables: `DB_MAX_RETRIES`, `DB_RETRY_DELAY_MS` and `BYPASS_MIGRATIONS` ([#89](https://github.com/isolinear-labs/Neosynth/pull/89))
+
 ### Dependencies
 - Bump `helmet` from 8.1.0 to 8.2.0 ([#84](https://github.com/isolinear-labs/Neosynth/pull/84))
 - Bump `eslint` from 10.4.0 to 10.4.1 ([#87](https://github.com/isolinear-labs/Neosynth/pull/87), [#92](https://github.com/isolinear-labs/Neosynth/pull/92))
