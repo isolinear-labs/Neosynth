@@ -3,13 +3,21 @@
 ## [Unreleased]
 
 ### Enhancements
+
+### Bug Fixes
+
+### Docs
+
+### Dependencies
+
+## [v1.2.1] - 2026-06-04
+
+### Enhancements
 - (backend) Add MongoDB connection retry with exponential backoff on startup — prevents the app from hanging permanently when the database is temporarily unavailable ([#89](https://github.com/isolinear-labs/Neosynth/pull/89))
 - (backend/deployment) Add `/ready` readiness probe endpoint; update k8s and Docker Compose to hold traffic until DB is connected and migrations complete
 
 ### Bug Fixes
 - (backend/featureFlags) Replace deprecated `new: true` with `returnDocument: 'after'` in `findByIdAndUpdate` for Mongoose 9.6.1 compatibility ([#88](https://github.com/isolinear-labs/Neosynth/pull/88))
-
-### Docs
 
 ### Dependencies
 - Bump `helmet` from 8.1.0 to 8.2.0 ([#84](https://github.com/isolinear-labs/Neosynth/pull/84))
