@@ -13,6 +13,8 @@
 - Bump `sanitize-html` from 2.17.4 to 2.17.5 ([#97](https://github.com/isolinear-labs/Neosynth/pull/97))
 - Bump `eslint` from 10.4.1 to 10.5.0 ([#96](https://github.com/isolinear-labs/Neosynth/pull/96), [#95](https://github.com/isolinear-labs/Neosynth/pull/95))
 - Bump `form-data` from 4.0.5 to 4.0.6 ([#98](https://github.com/isolinear-labs/Neosynth/pull/98))
+- Bump `js-yaml` from 4.1.0 to 4.2.0 — resolves CVE-2026-53550 (moderate DoS; pinned via `overrides` to also patch the transitive copy from `jest`) ([#99](https://github.com/isolinear-labs/Neosynth/pull/99))
+- Bump `brace-expansion` from 5.0.5 to 5.0.6 — resolves CVE-2026-45149 (ReDoS) ([#99](https://github.com/isolinear-labs/Neosynth/pull/99))
 
 ## [v1.2.1] - 2026-06-04
 
