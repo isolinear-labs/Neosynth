@@ -9,6 +9,8 @@
 ### Docs
 
 ### Dependencies
+- Bump `mongoose` from 9.6.3 to 9.7.0 ([#97](https://github.com/isolinear-labs/Neosynth/pull/97))
+- Bump `sanitize-html` from 2.17.4 to 2.17.5 ([#97](https://github.com/isolinear-labs/Neosynth/pull/97))
 
 ## [v1.2.1] - 2026-06-04
 
