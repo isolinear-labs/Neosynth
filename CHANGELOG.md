@@ -17,6 +17,7 @@
 - Bump `brace-expansion` from 5.0.5 to 5.0.6 — resolves CVE-2026-45149 (ReDoS) ([#99](https://github.com/isolinear-labs/Neosynth/pull/99))
 - Bump `joi` from 18.2.1 to 18.2.3 ([#103](https://github.com/isolinear-labs/Neosynth/pull/103))
 - Bump `trufflesecurity/trufflehog` from 3.95.5 to 3.95.6 ([#102](https://github.com/isolinear-labs/Neosynth/pull/102))
+- Bump `zizmorcore/zizmor-action` from 0.5.6 to 0.5.7 ([#101](https://github.com/isolinear-labs/Neosynth/pull/101))
 
 ## [v1.2.1] - 2026-06-04
 
