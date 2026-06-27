@@ -18,6 +18,7 @@
 - Bump `joi` from 18.2.1 to 18.2.3 ([#103](https://github.com/isolinear-labs/Neosynth/pull/103))
 - Bump `trufflesecurity/trufflehog` from 3.95.5 to 3.95.6 ([#102](https://github.com/isolinear-labs/Neosynth/pull/102))
 - Bump `zizmorcore/zizmor-action` from 0.5.6 to 0.5.7 ([#101](https://github.com/isolinear-labs/Neosynth/pull/101))
+- Bump `actions/checkout` from 6.0.3 to 7.0.0 ([#100](https://github.com/isolinear-labs/Neosynth/pull/100))
 
 ## [v1.2.1] - 2026-06-04
 
