@@ -19,6 +19,7 @@
 - Bump `trufflesecurity/trufflehog` from 3.95.5 to 3.95.6 ([#102](https://github.com/isolinear-labs/Neosynth/pull/102))
 - Bump `zizmorcore/zizmor-action` from 0.5.6 to 0.5.7 ([#101](https://github.com/isolinear-labs/Neosynth/pull/101))
 - Bump `actions/checkout` from 6.0.3 to 7.0.0 ([#100](https://github.com/isolinear-labs/Neosynth/pull/100))
+- Bump `stefanzweifel/git-auto-commit-action` from 7.1.0 to 7.2.0 ([#104](https://github.com/isolinear-labs/Neosynth/pull/104))
 
 ## [v1.2.1] - 2026-06-04
 
