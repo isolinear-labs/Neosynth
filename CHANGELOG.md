@@ -9,6 +9,10 @@
 ### Docs
 
 ### Dependencies
+
+## [v1.2.2] - 2026-07-08
+
+### Dependencies
 - Bump `mongoose` from 9.6.3 to 9.7.3 ([#97](https://github.com/isolinear-labs/Neosynth/pull/97), [#103](https://github.com/isolinear-labs/Neosynth/pull/103), [#108](https://github.com/isolinear-labs/Neosynth/pull/108))
 - Bump `sanitize-html` from 2.17.4 to 2.17.5 ([#97](https://github.com/isolinear-labs/Neosynth/pull/97))
 - Bump `eslint` from 10.4.1 to 10.6.0 ([#96](https://github.com/isolinear-labs/Neosynth/pull/96), [#95](https://github.com/isolinear-labs/Neosynth/pull/95), [#107](https://github.com/isolinear-labs/Neosynth/pull/107), [#105](https://github.com/isolinear-labs/Neosynth/pull/105))
