@@ -9,6 +9,9 @@
 ### Docs
 
 ### Dependencies
+- Bump `helmet` from 8.2.0 to 8.3.0 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
+- Bump `mongoose` from 9.7.3 to 9.7.4 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
+- Bump `sanitize-html` from 2.17.5 to 2.17.6 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
 
 ## [v1.2.2] - 2026-07-08
 
