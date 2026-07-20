@@ -10,8 +10,9 @@
 
 ### Dependencies
 - Bump `helmet` from 8.2.0 to 8.3.0 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
-- Bump `mongoose` from 9.7.3 to 9.7.4 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
+- Bump `mongoose` from 9.7.3 to 9.8.0 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114), [#118](https://github.com/isolinear-labs/Neosynth/pull/118))
 - Bump `sanitize-html` from 2.17.5 to 2.17.6 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
+- Bump `express-rate-limit` from 8.5.2 to 8.6.0 ([#118](https://github.com/isolinear-labs/Neosynth/pull/118))
 
 ## [v1.2.2] - 2026-07-08
 
