@@ -15,6 +15,7 @@
 - Bump `js-yaml` from 4.2.0 to 4.3.0 — resolves CVE affecting merge-key chains (moderate DoS; pinned via `overrides`, same pattern as #99) ([#122](https://github.com/isolinear-labs/Neosynth/pull/122))
 - Bump `postcss` (transitive, via `sanitize-html`) from 8.5.15 to 8.5.18 via `overrides` — resolves GHSA-r28c-9q8g-f849 (sourcemap path traversal) ([#122](https://github.com/isolinear-labs/Neosynth/pull/122))
 - Bump `body-parser` from 2.2.2 to 2.3.0 ([#120](https://github.com/isolinear-labs/Neosynth/pull/120))
+- Bump `brace-expansion` from 5.0.6 to 5.0.8 ([#119](https://github.com/isolinear-labs/Neosynth/pull/119))
 
 ## [v1.2.2] - 2026-07-08
 
