@@ -18,6 +18,7 @@
 - Bump `brace-expansion` from 5.0.6 to 5.0.8 ([#119](https://github.com/isolinear-labs/Neosynth/pull/119))
 - Bump `express-rate-limit` from 8.5.2 to 8.6.0 ([#118](https://github.com/isolinear-labs/Neosynth/pull/118))
 - Bump `zizmorcore/zizmor-action` from 0.5.7 to 0.6.1 ([#116](https://github.com/isolinear-labs/Neosynth/pull/116))
+- Bump `eslint` from 10.6.0 to 10.8.0 ([#113](https://github.com/isolinear-labs/Neosynth/pull/113))
 
 ## [v1.2.2] - 2026-07-08
 
