@@ -234,7 +234,7 @@ if (fs.existsSync(indexPath)) {
 
 
 // Liveness probe - always 200 while the process is alive (even during DB retry/migrations)
-app.get('/health', (req, res) => {
+app.get('/health', publicLimit, (req, res) => {
     res.status(200).json({
         status: isDatabaseReady ? 'healthy' : 'degraded',
         database: {
@@ -248,7 +248,7 @@ app.get('/health', (req, res) => {
 });
 
 // Readiness probe - 503 until DB is connected and migrations complete
-app.get('/ready', (req, res) => {
+app.get('/ready', publicLimit, (req, res) => {
     if (!isDatabaseReady) {
         return res.status(503).json({
             status: 'not ready',
@@ -263,7 +263,7 @@ app.get('/ready', (req, res) => {
 
 
 // Login endpoint  
-app.get('/login', (req, res) => {
+app.get('/login', publicLimit, (req, res) => {
     const loginPath = path.join(frontendPath, 'pages/login.html');
     if (fs.existsSync(loginPath)) {
         res.sendFile(loginPath);
@@ -274,13 +274,22 @@ app.get('/login', (req, res) => {
 
 
 // Register endpoint
-app.get('/register', (req, res) => {
+app.get('/register', publicLimit, (req, res) => {
     const registerPath = path.join(frontendPath, 'pages/register.html');
     if (fs.existsSync(registerPath)) {
         res.sendFile(registerPath);
     } else {
         res.status(404).send(`Register file not found at: ${registerPath}`);
     }
+});
+
+// Rate limiting for public endpoints to prevent abuse/DoS
+const publicLimit = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 100, // 100 requests per 15 minutes per IP
+    message: { message: 'Too many requests' },
+    standardHeaders: false,
+    legacyHeaders: false
 });
 
 // Rate limiting for setup endpoint to prevent DB hammering
