@@ -19,6 +19,7 @@
 - Bump `express-rate-limit` from 8.5.2 to 8.6.0 ([#118](https://github.com/isolinear-labs/Neosynth/pull/118))
 - Bump `zizmorcore/zizmor-action` from 0.5.7 to 0.6.1 ([#116](https://github.com/isolinear-labs/Neosynth/pull/116))
 - Bump `eslint` from 10.6.0 to 10.8.0 ([#113](https://github.com/isolinear-labs/Neosynth/pull/113), [#112](https://github.com/isolinear-labs/Neosynth/pull/112))
+- Bump `trufflesecurity/trufflehog` from 3.95.8 to 3.96.0 ([#111](https://github.com/isolinear-labs/Neosynth/pull/111))
 
 ## [v1.2.2] - 2026-07-08
 
