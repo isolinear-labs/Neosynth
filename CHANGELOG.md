@@ -21,6 +21,7 @@
 - Bump `eslint` from 10.6.0 to 10.8.0 ([#113](https://github.com/isolinear-labs/Neosynth/pull/113), [#112](https://github.com/isolinear-labs/Neosynth/pull/112))
 - Bump `trufflesecurity/trufflehog` from 3.95.8 to 3.96.0 ([#111](https://github.com/isolinear-labs/Neosynth/pull/111))
 - Bump `actions/setup-node` from 6.4.0 to 7.0.0 ([#117](https://github.com/isolinear-labs/Neosynth/pull/117))
+- Bump `actions/checkout` from 7.0.0 to 7.0.1 ([#115](https://github.com/isolinear-labs/Neosynth/pull/115))
 
 ## [v1.2.2] - 2026-07-08
 
