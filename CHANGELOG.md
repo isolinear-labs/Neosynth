@@ -22,6 +22,7 @@
 - Bump `trufflesecurity/trufflehog` from 3.95.8 to 3.96.0 ([#111](https://github.com/isolinear-labs/Neosynth/pull/111))
 - Bump `actions/setup-node` from 6.4.0 to 7.0.0 ([#117](https://github.com/isolinear-labs/Neosynth/pull/117))
 - Bump `actions/checkout` from 7.0.0 to 7.0.1 ([#115](https://github.com/isolinear-labs/Neosynth/pull/115))
+- Bump `ip-address` from 10.2.0 to 10.4.0 ([#127](https://github.com/isolinear-labs/Neosynth/pull/127))
 
 ## [v1.2.2] - 2026-07-08
 
