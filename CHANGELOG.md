@@ -9,6 +9,10 @@
 ### Docs
 
 ### Dependencies
+- Bump `brace-expansion` (transitive) from 5.0.6 to 5.0.9 in `backend`, and from 5.0.8 to 5.0.9 in `frontend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
+- Bump `brace-expansion` (transitive) from 2.1.1 to 2.1.4 and from 1.1.15 to 1.1.18 in `backend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
+- Bump `ip-address` (transitive, via `speakeasy`) from 10.2.0 to 10.4.0 in `backend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
+- Bump `js-yaml` from 4.3.0 to 4.3.1 ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
 - Bump `helmet` from 8.2.0 to 8.3.0 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
 - Bump `mongoose` from 9.7.3 to 9.8.0 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114), [#118](https://github.com/isolinear-labs/Neosynth/pull/118))
 - Bump `sanitize-html` from 2.17.5 to 2.17.6 ([#114](https://github.com/isolinear-labs/Neosynth/pull/114))
