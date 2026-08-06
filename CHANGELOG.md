@@ -9,6 +9,10 @@
 ### Docs
 
 ### Dependencies
+
+## [v1.2.3] - 2026-08-06
+
+### Dependencies
 - Bump `brace-expansion` (transitive) from 5.0.6 to 5.0.9 in `backend`, and from 5.0.8 to 5.0.9 in `frontend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
 - Bump `brace-expansion` (transitive) from 2.1.1 to 2.1.4 and from 1.1.15 to 1.1.18 in `backend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
 - Bump `ip-address` (transitive, via `speakeasy`) from 10.2.0 to 10.4.0 in `backend` ([#128](https://github.com/isolinear-labs/Neosynth/pull/128))
