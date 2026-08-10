@@ -9,6 +9,8 @@
 ### Docs
 
 ### Dependencies
+- Bump `express-rate-limit` from 8.6.1 to 8.6.2 ([#132](https://github.com/isolinear-labs/Neosynth/pull/132))
+- Bump `ip-range-check` from 0.2.0 to 0.2.1 ([#132](https://github.com/isolinear-labs/Neosynth/pull/132))
 
 ## [v1.2.3] - 2026-08-06
 
