@@ -15,6 +15,7 @@
 - Bump `mongoose` from 9.9.1 to 9.9.2 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `sanitize-html` from 2.17.6 to 2.17.7 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `eslint` from 10.8.0 to 10.8.1 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134))
+- Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.0 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133))
 
 ## [v1.2.3] - 2026-08-06
 
