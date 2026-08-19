@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `nanoid` (transitive, via `sanitize-html` -> `postcss`) from 3.3.16 to 3.3.18 — resolves GHSA-2v37-7h3g-55p8 (high severity DoS: custom generators can loop indefinitely when `size` is zero) ([#137](https://github.com/isolinear-labs/Neosynth/pull/137))
 
 ## [v1.2.3] - 2026-08-06
 
