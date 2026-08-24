@@ -12,11 +12,12 @@
 - Bump `nanoid` (transitive, via `sanitize-html` -> `postcss`) from 3.3.16 to 3.3.18 — resolves GHSA-2v37-7h3g-55p8 (high severity DoS: custom generators can loop indefinitely when `size` is zero) ([#137](https://github.com/isolinear-labs/Neosynth/pull/137))
 - Bump `express-rate-limit` from 8.6.1 to 8.6.2 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `ip-range-check` from 0.2.0 to 0.2.1 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
-- Bump `mongoose` from 9.9.1 to 9.9.2 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
+- Bump `mongoose` from 9.9.1 to 9.9.3 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136), [#141](https://github.com/isolinear-labs/Neosynth/pull/141))
 - Bump `sanitize-html` from 2.17.6 to 2.17.7 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `eslint` from 10.8.0 to 10.8.1 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134))
 - Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.0 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133))
 - Bump `zizmorcore/zizmor-action` from 0.6.1 to 0.6.2 ([#131](https://github.com/isolinear-labs/Neosynth/pull/131))
+- Bump `joi` from 18.2.3 to 18.2.5 ([#141](https://github.com/isolinear-labs/Neosynth/pull/141))
 
 ## [v1.2.3] - 2026-08-06
 
