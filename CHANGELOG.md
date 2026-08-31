@@ -15,7 +15,7 @@
 - Bump `mongoose` from 9.9.1 to 9.9.2 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `sanitize-html` from 2.17.6 to 2.17.7 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `eslint` from 10.8.0 to 10.9.0 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134), [#139](https://github.com/isolinear-labs/Neosynth/pull/139))
-- Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.0 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133))
+- Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.1 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133), [#143](https://github.com/isolinear-labs/Neosynth/pull/143))
 - Bump `zizmorcore/zizmor-action` from 0.6.1 to 0.6.2 ([#131](https://github.com/isolinear-labs/Neosynth/pull/131))
 
 ## [v1.2.3] - 2026-08-06
