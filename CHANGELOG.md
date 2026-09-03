@@ -17,6 +17,7 @@
 - Bump `eslint` from 10.8.0 to 10.9.0 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134), [#139](https://github.com/isolinear-labs/Neosynth/pull/139))
 - Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.0 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133))
 - Bump `zizmorcore/zizmor-action` from 0.6.1 to 0.6.2 ([#131](https://github.com/isolinear-labs/Neosynth/pull/131))
+- Bump `qs` from 6.15.2 to 6.16.0 ([#145](https://github.com/isolinear-labs/Neosynth/pull/145))
 
 ## [v1.2.3] - 2026-08-06
 
