@@ -14,7 +14,7 @@
 - Bump `ip-range-check` from 0.2.0 to 0.2.1 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
 - Bump `mongoose` from 9.9.1 to 9.9.4 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136), [#150](https://github.com/isolinear-labs/Neosynth/pull/150))
 - Bump `sanitize-html` from 2.17.6 to 2.17.7 ([#136](https://github.com/isolinear-labs/Neosynth/pull/136))
-- Bump `eslint` from 10.8.0 to 10.9.0 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134), [#139](https://github.com/isolinear-labs/Neosynth/pull/139))
+- Bump `eslint` from 10.8.0 to 10.10.0 ([#135](https://github.com/isolinear-labs/Neosynth/pull/135), [#134](https://github.com/isolinear-labs/Neosynth/pull/134), [#139](https://github.com/isolinear-labs/Neosynth/pull/139), [#142](https://github.com/isolinear-labs/Neosynth/pull/142))
 - Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.4 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133), [#148](https://github.com/isolinear-labs/Neosynth/pull/148))
 - Bump `zizmorcore/zizmor-action` from 0.6.1 to 0.6.4 ([#131](https://github.com/isolinear-labs/Neosynth/pull/131), [#149](https://github.com/isolinear-labs/Neosynth/pull/149))
 - Bump `joi` from 18.2.3 to 18.2.8 ([#150](https://github.com/isolinear-labs/Neosynth/pull/150))
@@ -22,6 +22,7 @@
 - Bump `browserslist` from 4.28.2 to 4.28.9 ([#147](https://github.com/isolinear-labs/Neosynth/pull/147))
 - Bump `@humanfs/node` from 0.16.6 to 0.16.8 ([#146](https://github.com/isolinear-labs/Neosynth/pull/146))
 - Bump `qs` from 6.15.2 to 6.16.0 ([#145](https://github.com/isolinear-labs/Neosynth/pull/145))
+- Bump `jest` from 30.4.2 to 30.5.1 ([#142](https://github.com/isolinear-labs/Neosynth/pull/142))
 
 ## [v1.2.3] - 2026-08-06
 
