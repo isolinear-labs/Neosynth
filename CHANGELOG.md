@@ -23,6 +23,7 @@
 - Bump `@humanfs/node` from 0.16.6 to 0.16.8 ([#146](https://github.com/isolinear-labs/Neosynth/pull/146))
 - Bump `qs` from 6.15.2 to 6.16.0 ([#145](https://github.com/isolinear-labs/Neosynth/pull/145))
 - Bump `jest` from 30.4.2 to 30.5.1 ([#142](https://github.com/isolinear-labs/Neosynth/pull/142))
+- Bump `js-yaml` (transitive) from 4.3.1 to 4.3.2 in `backend` via `npm audit fix` ([#153](https://github.com/isolinear-labs/Neosynth/pull/153))
 
 ## [v1.2.3] - 2026-08-06
 
