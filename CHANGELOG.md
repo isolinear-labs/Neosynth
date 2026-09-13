@@ -20,6 +20,7 @@
 - Bump `joi` from 18.2.3 to 18.2.8 ([#150](https://github.com/isolinear-labs/Neosynth/pull/150))
 - Bump `baseline-browser-mapping` from 2.10.33 to 2.11.23 ([#152](https://github.com/isolinear-labs/Neosynth/pull/152))
 - Bump `browserslist` from 4.28.2 to 4.28.9 ([#147](https://github.com/isolinear-labs/Neosynth/pull/147))
+- Bump `@humanfs/node` from 0.16.6 to 0.16.8 ([#146](https://github.com/isolinear-labs/Neosynth/pull/146))
 
 ## [v1.2.3] - 2026-08-06
 
