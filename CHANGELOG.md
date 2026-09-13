@@ -18,6 +18,7 @@
 - Bump `trufflesecurity/trufflehog` from 3.96.0 to 3.97.0 ([#133](https://github.com/isolinear-labs/Neosynth/pull/133))
 - Bump `zizmorcore/zizmor-action` from 0.6.1 to 0.6.2 ([#131](https://github.com/isolinear-labs/Neosynth/pull/131))
 - Bump `joi` from 18.2.3 to 18.2.8 ([#150](https://github.com/isolinear-labs/Neosynth/pull/150))
+- Bump `baseline-browser-mapping` from 2.10.33 to 2.11.23 ([#152](https://github.com/isolinear-labs/Neosynth/pull/152))
 
 ## [v1.2.3] - 2026-08-06
 
