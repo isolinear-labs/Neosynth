@@ -9,6 +9,8 @@
 ### Docs
 
 ### Dependencies
+- Bump `joi` from 18.2.8 to 18.2.9 ([#155](https://github.com/isolinear-labs/Neosynth/pull/155))
+- Bump `mongoose` from 9.9.4 to 9.10.0 ([#155](https://github.com/isolinear-labs/Neosynth/pull/155))
 
 ## [v1.2.4] - 2026-09-13
 
