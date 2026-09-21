@@ -9,6 +9,9 @@
 ### Docs
 
 ### Dependencies
+- Bump `dotenv` from 17.4.2 to 18.0.0 ([#158](https://github.com/isolinear-labs/Neosynth/pull/158))
+- Bump `joi` from 18.2.8 to 18.2.9 ([#158](https://github.com/isolinear-labs/Neosynth/pull/158))
+- Bump `mongoose` from 9.9.4 to 9.10.1 ([#158](https://github.com/isolinear-labs/Neosynth/pull/158))
 
 ## [v1.2.4] - 2026-09-13
 
