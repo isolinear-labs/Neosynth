@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `jest` from 30.5.1 to 30.5.2 ([#157](https://github.com/isolinear-labs/Neosynth/pull/157))
 
 ## [v1.2.4] - 2026-09-13
 
