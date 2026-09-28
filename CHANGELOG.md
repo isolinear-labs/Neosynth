@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `trufflesecurity/trufflehog` from 3.97.4 to 3.97.9 ([#159](https://github.com/isolinear-labs/Neosynth/pull/159))
 
 ## [v1.2.4] - 2026-09-13
 
