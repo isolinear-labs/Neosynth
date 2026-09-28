@@ -9,6 +9,9 @@
 ### Docs
 
 ### Dependencies
+- Bump `eslint` from 10.10.0 to 10.11.0 ([#161](https://github.com/isolinear-labs/Neosynth/pull/161))
+- Bump `jest` from 30.5.1 to 30.5.2 ([#161](https://github.com/isolinear-labs/Neosynth/pull/161))
+- Bump `supertest` from 7.2.2 to 7.3.0 ([#161](https://github.com/isolinear-labs/Neosynth/pull/161))
 
 ## [v1.2.4] - 2026-09-13
 
