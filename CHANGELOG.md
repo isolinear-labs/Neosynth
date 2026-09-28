@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `eslint` from 10.10.0 to 10.11.0 ([#160](https://github.com/isolinear-labs/Neosynth/pull/160))
 
 ## [v1.2.4] - 2026-09-13
 
