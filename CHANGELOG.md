@@ -9,6 +9,7 @@
 ### Docs
 
 ### Dependencies
+- Bump `ip-address` from 10.4.0 to 10.7.2 ([#162](https://github.com/isolinear-labs/Neosynth/pull/162))
 
 ## [v1.2.4] - 2026-09-13
 
