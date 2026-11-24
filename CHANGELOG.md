@@ -9,6 +9,10 @@
 ### Docs
 
 ### Dependencies
+
+## [v1.2.5] - 2026-11-24
+
+### Dependencies
 - Bump `proxy-addr` (transitive, via `express`) from 2.0.7 to 2.0.8 — resolves GHSA-jqcg-44mw-7w3h (critical severity IP spoofing via IPv4-mapped IPv6 trust subnet) ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
 - Bump `body-parser` (transitive, via `express`) from 2.3.0 to 2.4.0 — resolves GHSA-27r3-jxmh-p828 (high severity DoS via trailing bytes after a compressed request body) ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
 - Bump `mongoose` from 9.9.4 to 9.13.0 — resolves GHSA-gg4r-jv3p-qx3c, GHSA-wr5m-5jph-8m96, GHSA-8332-j7wj-wjw4, and GHSA-6972-9mcm-vhwj (high severity) ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
