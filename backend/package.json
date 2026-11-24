@@ -41,7 +41,8 @@
     "overrides": {
         "js-yaml": "^4.3.0",
         "htmlparser2": "^10.1.0",
-        "postcss": "^8.5.18"
+        "postcss": "^8.5.18",
+        "minimatch": "^11.0.5"
     },
     "jest": {
         "testEnvironment": "node",
