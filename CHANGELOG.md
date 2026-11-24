@@ -26,6 +26,7 @@
 - Bump `actions/setup-node` from 7.0.0 to 7.1.0 ([#164](https://github.com/isolinear-labs/Neosynth/pull/164))
 - Bump `trufflesecurity/trufflehog` from 3.97.4 to 3.100.1 ([#166](https://github.com/isolinear-labs/Neosynth/pull/166))
 - Bump `actions/download-artifact` from 8.0.1 to 8.0.2 ([#165](https://github.com/isolinear-labs/Neosynth/pull/165))
+- Bump `dotenv` from 17.4.2 to 18.0.10 ([#175](https://github.com/isolinear-labs/Neosynth/pull/175))
 
 ## [v1.2.4] - 2026-09-13
 
