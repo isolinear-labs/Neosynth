@@ -9,6 +9,20 @@
 ### Docs
 
 ### Dependencies
+- Bump `proxy-addr` (transitive, via `express`) from 2.0.7 to 2.0.8 — resolves GHSA-jqcg-44mw-7w3h (critical severity IP spoofing via IPv4-mapped IPv6 trust subnet)
+- Bump `body-parser` (transitive, via `express`) from 2.3.0 to 2.4.0 — resolves GHSA-27r3-jxmh-p828 (high severity DoS via trailing bytes after a compressed request body)
+- Bump `mongoose` from 9.9.4 to 9.13.0 — resolves GHSA-gg4r-jv3p-qx3c, GHSA-wr5m-5jph-8m96, GHSA-8332-j7wj-wjw4, and GHSA-6972-9mcm-vhwj (high severity)
+- Bump `joi` from 18.2.8 to 18.3.2 — resolves GHSA-wr44-6hxh-3jwq and GHSA-4528-x5fx-h6hg (high severity)
+- Bump `brace-expansion` (transitive) from 5.0.9 to 5.1.0 and from 2.1.4 to 2.1.8 — resolves GHSA-q2hr-2g5m-vwhr, GHSA-qhr7-859c-m2p7, and GHSA-6j4f-fj2g-mc7p (high severity DoS)
+- Bump `source-map-js` (transitive) from 1.2.1 to 1.2.4 — resolves GHSA-68fv-2mgg-jv7q (high severity DoS)
+- Bump `express` from 5.2.1 to 5.3.0
+- Bump `express-rate-limit` from 8.7.0 to 8.7.5
+- Bump `sanitize-html` from 2.17.7 to 2.18.2
+- Bump `ip-address` (transitive) from 10.4.0 to 10.7.6
+- Bump `qs` (transitive) from 6.16.0 to 6.17.1
+- Bump `eslint` from 10.10.0 to 10.15.0 in `/backend` and `/frontend`
+- Bump `jest` from 30.5.1 to 30.5.2
+- Bump `supertest` from 7.2.2 to 7.3.2
 
 ## [v1.2.4] - 2026-09-13
 
