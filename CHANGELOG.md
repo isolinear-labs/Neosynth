@@ -23,6 +23,7 @@
 - Bump `eslint` from 10.10.0 to 10.15.0 in `/backend` and `/frontend` ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
 - Bump `jest` from 30.5.1 to 30.5.2 ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
 - Bump `supertest` from 7.2.2 to 7.3.2 ([#174](https://github.com/isolinear-labs/Neosynth/pull/174))
+- Bump `actions/setup-node` from 7.0.0 to 7.1.0 ([#164](https://github.com/isolinear-labs/Neosynth/pull/164))
 
 ## [v1.2.4] - 2026-09-13
 
